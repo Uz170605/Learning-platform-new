@@ -24,8 +24,8 @@ public class UserService {
        return userDao.getMentorById(id);
     }
 
-    public List<UserDto> getAllUsers() {
-      return   userDao.getAllUsers();
+    public List<UserDto> getAllUsers(int interval, int currentPage, String text) {
+      return   userDao.getAllUsers(interval, currentPage, text);
     }
 
     public List<Role> getUserRole() {
@@ -60,5 +60,10 @@ public class UserService {
         } else {
             return "Could not deleted!";
         }
+    }
+
+    public int userCountByPageable(String text) {
+
+        return userDao.getUserCount(text);
     }
 }

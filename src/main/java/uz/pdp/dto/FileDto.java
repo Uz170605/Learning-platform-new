@@ -15,5 +15,4 @@ public class FileDto {
     private String fileName;
     private String fileType;
     private LessonDto lessonDto;
-
 }

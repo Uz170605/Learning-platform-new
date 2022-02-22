@@ -98,7 +98,7 @@
 
         <form action="/courses/courseAllData/${course.id}"  <c:url value="/users"/> >
             <div class="card">
-                <button class="button button1 p-2" value="${course.id}">
+                <button class="button button1 p-2" name="backType" value="main">
                     <img src="<c:url value='/assets/images/img.png'/>" alt="Avatar" style="width:100%">
                     <div class="card-body pl-0 pr-0 pt-4 pb-4">
                         <p class="card-title  ">
@@ -111,7 +111,7 @@
                         <p class="card-title ">
                             <b>Authors: </b>
                             <c:forEach var="author" items="${course.authors}">
-                                <a href="/users/userAllData/${author.id}" class="card-title">
+                                <a href="/users/userAllData/${author.id}?backType=main" class="card-title">
                                         ${author.firstName.substring(0, 1)} ${author.lastName}
                                 </a>
                             </c:forEach>

@@ -19,9 +19,22 @@ public class UserController {
     UserService userService;
 
     @GetMapping
-    public String getAllUsers(Model model){
-        List<UserDto> allUsers = userService.getAllUsers();
+    public String getAllUsers(Model model,
+                              @RequestParam(required = false, name = "currentPage") Integer currentPage,
+                              @RequestParam(required = false, name = "text") String search
+                              ){
+
+        if(currentPage==null){
+            currentPage = 1;
+        }
+        int interval = 3;
+        int size = userService.userCountByPageable(search);
+        int size2 = ((size%interval==0)?size/interval:size/interval+1);
+        List<UserDto> allUsers = userService.getAllUsers(interval, currentPage, search);
         model.addAttribute("users",allUsers);
+        model.addAttribute("currentPage",currentPage);
+        model.addAttribute("size",size);
+        model.addAttribute("size2",size2);
         return "view-user";
     }
     @GetMapping("/mentors")
@@ -49,18 +62,22 @@ public class UserController {
     }
 
     @GetMapping("/userAllData/{id}")
-    public String getSelectUserById(@PathVariable String id, Model model){
+    public String getSelectUserById(@PathVariable String id, Model model,
+                                    @RequestParam(required = false, name = "backType") String backType){
         UUID id1 = UUID.fromString(id);
         UserDto mentorById = userService.getMentorById(id1);
         model.addAttribute("author",mentorById);
+        model.addAttribute("backType",backType);
         return "view-select-user";
     }
 
     @GetMapping("/userData/{id}")
-    public String getSelectUser(@PathVariable String id, Model model){
+    public String getSelectUser(@PathVariable String id, Model model
+                                ){
         UUID id1 = UUID.fromString(id);
         UserDto mentorById = userService.getUserById(id1);
         model.addAttribute("user",mentorById);
+
         return "view-select-user-by-id";
     }
 

@@ -51,7 +51,7 @@
                 <c:forEach var="lesson" step="1" items="${lessonList}">
                   <tr>
                       <th scope="row"> ⚫️ </th>
-                      <td><a href="/lessons/lessonAllData/${lesson.id}" style="color:
+                      <td><a href="/download/viewVideo/${lesson.id}" style="color:
                       black;">${lesson.title}</a></td>
 <%--                      <td>--%>
 <%--                          <c:forEach var="author" items="${lesson.authors}">--%>

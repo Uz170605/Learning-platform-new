@@ -18,7 +18,7 @@ public class ModuleDao {
     JdbcTemplate jdbcTemplate;
 
     public List<ModuleDto> getAllModules() {
-        String sql = "select id,name,isactive,price from modules;";
+        String sql = "select id,name,is_active,price from modules;";
         List<ModuleDto> moduleDtoList = jdbcTemplate.query(sql, (rs, row) -> {
             ModuleDto moduleDto = new ModuleDto();
             moduleDto.setId(UUID.fromString(rs.getString(1)));
@@ -44,7 +44,7 @@ public class ModuleDao {
     }
 
     public int addModule(ModuleDto moduleDto) {
-        String sql = "insert into modules(name, isactive, course_id, price) VALUES (" +
+        String sql = "insert into modules(name, is_active, course_id, price) VALUES (" +
                 "        '" + moduleDto.getName() + "'," + moduleDto.isActive() + ",'" + moduleDto.getCourseId() + "'," + moduleDto.getPrice() +
                 " )";
         return jdbcTemplate.update(sql);
@@ -89,7 +89,7 @@ public class ModuleDao {
 
     public List<ModuleDto> getModuleFromDb(Integer page, String search) {
         String sql =
-                "select id,name,isactive,price from modules where name like '%"+search+"%' " +
+                "select id,name,is_active,price from modules where name like '%"+search+"%' " +
                         "limit 3 " +
                         "offset " + page;
         List<ModuleDto> moduleDtoList = jdbcTemplate.query(sql, (rs, row) -> {

@@ -98,17 +98,17 @@ public class FileUploadController {
         FileDto fileById = fileUploadDao.getFileById(fileId);
         if (fileById.getFileType().equals("video/mp4")) {
             fileUploadDao.deleteFile(fileId);
-            File file = new File("D:/JAVA/Learning-platform/Learning-platform/web/assets/fileUpload/lessonVideo/"+fileById.getFileName());
+            File file = new File("D:/cdisk/JAVA BACKEND/5-modul/yangiii/Learning-platform-new/web/assets/fileUpload/lessonVideo/"+fileById.getFileName());
             file.delete();
             return "redirect:/upload/videoData";
         } else if (fileById.getFileType().equals("application/pdf")){
             fileUploadDao.deleteFile(fileId);
-            File file = new File("D:/JAVA/Learning-platform/Learning-platform/web/assets/fileUpload/lessonManual/"+fileById.getFileName());
+            File file = new File("D:/cdisk/JAVA BACKEND/5-modul/yangiii/Learning-platform-new/web/assets/fileUpload/lessonManual/"+fileById.getFileName());
             file.delete();
             return "redirect:/upload/manualData";
         } else {
             fileUploadDao.deleteFile(fileId);
-            File file = new File("D:/JAVA/Learning-platform/Learning-platform/web/assets/fileUpload/lessonTask/"+fileById.getFileName());
+            File file = new File("D:/cdisk/JAVA BACKEND/5-modul/yangiii/Learning-platform-new/web/assets/fileUpload/lessonTask/"+fileById.getFileName());
             file.delete();
             return "redirect:/upload/taskData";
         }

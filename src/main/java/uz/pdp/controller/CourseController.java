@@ -53,6 +53,8 @@ public class CourseController {
         model.addAttribute("courseList", allCourses);
         model.addAttribute("interval", interval);
         model.addAttribute("condition", condition);
+        model.addAttribute("backType", "main");
+
 
         return "taskview-tasks";
     }
@@ -62,17 +64,38 @@ public class CourseController {
 
 
     @GetMapping
-    public String getAllCourses(Model model) {
-        List<CourseDto> allCourses = courseService.getAllCourses();
+    public String getAllCourses(Model model,
+                                @RequestParam(required = false, name = "currentPage") Integer currentPage,  // TODO: 2/20/2022 add request param
+                                @RequestParam(required = false, name = "backType") String backType,  // TODO: 2/20/2022 add request param
+                                @RequestParam(required = false, name = "text") String text  // TODO: 2/20/2022 add request param
+                                ) {
+
+        if(currentPage==null){
+            currentPage = 1;
+        }
+        int interval = 6;
+        int size = courseService.getAllCourseTableCount(text);
+
+        int size2 = ((size%interval==0)?size/interval:size/interval+1);
+
+
+        List<CourseDto> allCourses = courseService.getAllCourses(interval, currentPage, text);
         model.addAttribute("courseList", allCourses);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("size2", size2);
+        model.addAttribute("size", size);
         return "view-courses";
     }
 
     @GetMapping("/courseAllData/{id}")
-    public String getCourseByIdWithAuthor(@PathVariable(required = false) String id, Model model) {
+    public String getCourseByIdWithAuthor(@PathVariable(required = false) String id, Model model,
+    @RequestParam(required = false, name = "backType") String backType
+                                          ) {
+        backType = backType;
         UUID id1 = UUID.fromString(id);
         CourseDto courseById = courseService.getCourseById(id1);
         model.addAttribute("selectCourse", courseById);
+        model.addAttribute("backType", backType);
         return "view-select-course";
     }
 

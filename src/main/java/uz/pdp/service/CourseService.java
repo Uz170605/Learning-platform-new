@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import uz.pdp.dao.CourseDao;
 import uz.pdp.dto.CourseDto;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,8 +17,8 @@ public class CourseService {
     @Autowired
     CourseDao courseDao;
 
-    public List<CourseDto> getAllCourses() {
-        List<CourseDto> allCourses = courseDao.getAllCourses();
+    public List<CourseDto> getAllCourses(Integer interval, Integer currentPage, String search) {
+        List<CourseDto> allCourses = courseDao.getAllCourses(interval, currentPage, search);
         return allCourses;
     }
 
@@ -76,4 +75,13 @@ public class CourseService {
         CourseDto courseDto = courseDao.getCourseById(id);
         return courseDto;
     }
+
+    public int getAllCourseTableCount(String search){
+        if(search!=null){
+            return  courseDao.getCourseCountBySearch(search);
+        }
+        return courseDao.getCourseCountByType();
+    }
+
+
 }

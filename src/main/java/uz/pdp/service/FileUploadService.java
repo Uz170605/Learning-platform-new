@@ -31,11 +31,11 @@ public class FileUploadService {
                 String originalFilename = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "-" + file.getOriginalFilename();
                 String contentType = file.getContentType();
                 if (Objects.requireNonNull(contentType).equals("video/mp4")){
-                 fileName = "D:/JAVA/Learning-platform/Learning-platform/web/assets/fileUpload/lessonVideo/" + originalFilename;
+                 fileName = "D:/cdisk/JAVA BACKEND/5-modul/yangiii/Learning-platform-new/web/assets/fileUpload/lessonVideo/" + originalFilename;
                 } else if (Objects.equals(contentType, "application/pdf")){
-                    fileName = "D:/JAVA/Learning-platform/Learning-platform/web/assets/fileUpload/lessonManual/"+originalFilename;
+                    fileName = "D:/cdisk/JAVA BACKEND/5-modul/yangiii/Learning-platform-new/web/assets/fileUpload/lessonManual/"+originalFilename;
                 } else if (contentType.equals("application/msword")){
-                    fileName = "D:/JAVA/Learning-platform/Learning-platform/web/assets/fileUpload/lessonTask/"+originalFilename;
+                    fileName = "D:/cdisk/JAVA BACKEND/5-modul/yangiii/Learning-platform-new/web/assets/fileUpload/lessonTask/"+originalFilename;
                 }
                 bos = new BufferedOutputStream(new FileOutputStream(new File(fileName)));
                 bos.write(fileBytes);

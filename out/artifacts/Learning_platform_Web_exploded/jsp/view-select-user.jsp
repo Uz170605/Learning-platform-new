@@ -29,7 +29,13 @@
         <c:forEach var="course" items="${author.courses}">
             <p><a href="/courses/courseAllData/${course.id}" style="color: black;">${course.name}</a></p>
         </c:forEach>
-        <a href="/courses/test" class="btn btn-primary mt-3 mb-5"> Back </a>
+        <c:if test="${backType == 'main'}">
+            <a href="/courses/test" class="btn btn-primary mt-3 mb-5"> Back </a>
+        </c:if>
+
+        <c:if test="${backType == 'userMain'}">
+            <a href="/users" class="btn btn-primary mt-3 mb-5"> Back </a>
+        </c:if>
     </div>
 </div>
 

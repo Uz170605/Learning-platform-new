@@ -35,20 +35,30 @@ public class ModuleController {
     @GetMapping("{id}")
     public String getModuleById(@PathVariable(required = false) String id, Model model) {
         UUID uuid = UUID.fromString(id);
-        ModuleDto module = moduleService.getAllModules(uuid);
-        List<CourseDto> allCourses = courseService.getAllCourses();
-        model.addAttribute("courseList", allCourses);
-        model.addAttribute("selectModule", module);
+        ModuleDto module=moduleService.getAllModules(uuid);
+        List<CourseDto> allCourses = courseService.getAllCourses(null, null, null);  // TODO: 2/20/2022 add null value
+        model.addAttribute("courseList",allCourses);
+        model.addAttribute("selectModule",module);
         return "module-form";
     }
+    @GetMapping(    "/addModule")
+    public String getModule(@ModelAttribute("module" ) ModuleDto moduleDto,Model model){
+        List<CourseDto> allCourses = courseService.getAllCourses(null, null, null); // TODO: 2/20/2022 add null value
 
-    @GetMapping("/addModule")
-    public String getModule(@ModelAttribute("module") ModuleDto moduleDto, Model model) {
-        List<CourseDto> allCourses = courseService.getAllCourses();
 
         model.addAttribute("courseList", allCourses);
+
         return "module-form";
     }
+//
+//    @GetMapping("/addModule")
+//    public String getModule(@ModelAttribute("module") ModuleDto moduleDto, Model model) {
+//        List<CourseDto> allCourses = courseService.getAllCourses();
+//>>>>>>> 9639ba46f5b568f6d6504c5014a0c5c0c43e89a4
+//
+//        model.addAttribute("courseList", allCourses);
+//        return "module-form";
+//    }
 
     @PostMapping
     public String addModule(@ModelAttribute("modules") ModuleDto moduleDto, Model model) {

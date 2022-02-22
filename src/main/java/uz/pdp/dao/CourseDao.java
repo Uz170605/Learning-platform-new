@@ -24,8 +24,16 @@ public class CourseDao {
     JdbcTemplate jdbcTemplate;
 
 
-    public List<CourseDto> getAllCourses() {
-        String sqlQuery = "select * from get_course_by_user_and_module()";
+    public List<CourseDto> getAllCourses(Integer interval, Integer currentPage, String search) { // TODO: 2/20/2022 add checked and pagabel
+        String sqlQuery = "";
+        if (search != null) {
+            sqlQuery = "select * from get_all_courses_by_pageable_and_search('"+search+"', "+interval+", "+currentPage+")";
+        } else if (interval == null && currentPage == null) {
+            sqlQuery = "select *\n" +
+                    "from get_course_by_user_and_module();";
+        } else {
+            sqlQuery = "select * from get_course_by_user_and_module(" + interval + ", " + currentPage + ")";
+        }
         List<CourseDto> courseDtoListFromDb = jdbcTemplate.query(sqlQuery, (rs, row) -> {
             CourseDto courseDto = new CourseDto();
             courseDto.setId(UUID.fromString(rs.getString(1)));
@@ -39,11 +47,13 @@ public class CourseDao {
             }.getType();
             List<UserDto> authorList = new Gson().fromJson(authors.toString(), listType);
             courseDto.setAuthors(authorList);
-            Array module = rs.getArray(7);
-            Type type = new TypeToken<ArrayList<ModuleDto>>() {
-            }.getType();
-            List<ModuleDto> moduleDtoList = new Gson().fromJson(module.toString(), type);
-            courseDto.setModule(moduleDtoList);
+            if(search==null) {
+                Array module = rs.getArray(7);
+                Type type = new TypeToken<ArrayList<ModuleDto>>() {
+                }.getType();
+                List<ModuleDto> moduleDtoList = new Gson().fromJson(module.toString(), type);
+                courseDto.setModule(moduleDtoList);
+            }
             return courseDto;
         });
         return courseDtoListFromDb;
@@ -123,7 +133,7 @@ public class CourseDao {
             sqlQuery = "select *\n" +
                     "from get_all_courses_by_pageable(" + interval + "," + currentPage + ");";
         }
-      List<CourseDto> courseDtoList=  jdbcTemplate.query(sqlQuery,(rs, rowNum) -> {
+        List<CourseDto> courseDtoList = jdbcTemplate.query(sqlQuery, (rs, rowNum) -> {
             CourseDto courseDto = new CourseDto();
             courseDto.setId(UUID.fromString(rs.getString(1)));
             courseDto.setName(rs.getString(2));
@@ -138,25 +148,30 @@ public class CourseDao {
             courseDto.setAuthors(authorList);
             return courseDto;
         });
-        return  courseDtoList;
+        return courseDtoList;
     }
 
 
-        public int getCourseCountByPage () {
-            String sqlQuery = "select count (*) from courses";
-            return jdbcTemplate.queryForObject(sqlQuery, (rs, row) -> rs.getInt(1));
-        }
+    public int getCourseCountByPage() {
+        String sqlQuery = "select count (*) from courses";
+        return jdbcTemplate.queryForObject(sqlQuery, (rs, row) -> rs.getInt(1));
+    }
 
-        public int getCourseCountBySearch (String text){
-            String sqlQuery = "select count(*)\n" +
-                    "from get_all_courses_by_cound_and_search('" + text + "');";
-            return jdbcTemplate.queryForObject(sqlQuery, (rs, row) -> rs.getInt(1));
-        }
+    public int getCourseCountBySearch(String text) {
+        String sqlQuery = "select count(*)\n" +
+                "from get_all_courses_by_cound_and_search('" + text + "');";
+        return jdbcTemplate.queryForObject(sqlQuery, (rs, row) -> rs.getInt(1));
+    }
 
-        public int getCourseCountByType ( boolean type){
-            String sqlQuery = "select count(*)\n" +
-                    "from get_all_courses_by_search_and_status_count(" + type + ");";
-            return jdbcTemplate.queryForObject(sqlQuery, (rs, row) -> rs.getInt(1));
-        }
+    public int getCourseCountByType(boolean type) {
+        String sqlQuery = "select count(*)\n" +
+                "from get_all_courses_by_search_and_status_count(" + type + ");";
+        return jdbcTemplate.queryForObject(sqlQuery, (rs, row) -> rs.getInt(1));
+    }
+
+    public int getCourseCountByType() {
+        String sqlQuery = "select count(*) from get_course_by_user_and_module_count();";
+        return jdbcTemplate.queryForObject(sqlQuery, (rs, row) -> rs.getInt(1));
+    }
 
 }
