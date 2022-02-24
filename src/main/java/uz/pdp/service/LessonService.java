@@ -52,4 +52,7 @@ public class LessonService {
         LessonDto lessonDto = lessonDao.getLessonById(id);
         return lessonDto;
     }
+    public List<LessonDto> searchLesson(String word){
+       return lessonDao.searchLesson(word);
+    }
 }

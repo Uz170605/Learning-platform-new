@@ -97,4 +97,22 @@ public class LessonDao {
         }
         return integer/5;
     }
+
+    public List<LessonDto> searchLesson(String word) {
+        String sqlQuery = "select * from lesson_search('"+word+"')";
+        List<LessonDto> lessonDtoList = jdbcTemplate.query(sqlQuery, (rs, row) -> {
+            LessonDto lessonDto = new LessonDto();
+            lessonDto.setId(UUID.fromString(rs.getString(1)));
+            lessonDto.setTitle(rs.getString(2));
+            Object module = rs.getObject(3);
+
+            Type listType = new TypeToken<ModuleDto>() {
+            }.getType();
+            ModuleDto moduleDto = new Gson().fromJson(module.toString(), listType);
+
+            lessonDto.setModuleDto(moduleDto);
+            return lessonDto;
+        });
+        return lessonDtoList;
+    }
 }

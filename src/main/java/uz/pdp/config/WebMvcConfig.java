@@ -25,6 +25,7 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import uz.pdp.dao.CourseDao;
 import uz.pdp.dao.FileDownloadDao;
+import uz.pdp.dao.LoginDao;
 import uz.pdp.dao.UserDao;
 import uz.pdp.service.CourseService;
 import uz.pdp.service.UserService;
@@ -120,6 +121,8 @@ public class WebMvcConfig implements WebMvcConfigurer, ApplicationContextAware {
         return  new CourseDao();
     }
 
+    @Bean
+    public LoginDao loginDao(){return new LoginDao();}
     @Bean
     public FileDownloadDao fileDownloadDao(){
         return  new FileDownloadDao();

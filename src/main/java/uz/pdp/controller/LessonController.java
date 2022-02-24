@@ -82,4 +82,10 @@ public class LessonController {
         return "redirect:/lessons";
     }
 
+    @GetMapping("/search")
+    public String searchLesson(@RequestParam String word,Model model){
+        List<LessonDto> lessonDtos = lessonService.searchLesson(word);
+        return "";
+    }
+
 }
