@@ -24,7 +24,7 @@
 <body  style="background-color: rgba(19,213,246,0.1);">
 <div class="row mt-5 ml-0 mr-0" style="height: 400px;">
     <div class="col-md-6 offset-3 " style="background-color: white; border-radius:10px ;border: 2px solid gray;box-shadow: 5px 10px 8px #888888;z-index: 11;" >
-        <form action="/courses" method="post" class="mt-5 mb-5">
+        <form action="/courses" method="post" class="mt-5 mb-5" data-type="">
             <div class="form-group">
                 <input hidden value="${selectCourse.id ==null ? null:selectCourse.id}" name="id" type="text" class="form-control">
             </div>
