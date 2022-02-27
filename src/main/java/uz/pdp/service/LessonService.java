@@ -55,4 +55,8 @@ public class LessonService {
     public List<LessonDto> searchLesson(String word){
        return lessonDao.searchLesson(word);
     }
+    public List<LessonDto> getLessonsByModuleId(UUID id){
+        List<LessonDto> lessonsByModuleId = lessonDao.getLessonsByModuleId(id);
+        return lessonsByModuleId;
+    }
 }

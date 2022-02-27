@@ -61,6 +61,13 @@ public class LessonController {
         model.addAttribute("selectLesson",lessonById);
         return "lesson-form";
     }
+    @GetMapping("/add/{id}")
+    public String addLessonByModule(@PathVariable String id,Model model){
+        UUID uuid = UUID.fromString(id);
+        List<LessonDto> lessonsByModuleId = lessonService.getLessonsByModuleId(uuid);
+        model.addAttribute("module_lessons",lessonsByModuleId);
+        return "view-modul-lessons";
+    }
     @GetMapping("/addLesson")
     public String getLesson(Model model){
         model.addAttribute("modules",moduleDao.getAllModules());

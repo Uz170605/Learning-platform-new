@@ -17,6 +17,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import uz.pdp.dao.CourseDao;
 import uz.pdp.dao.FileDownloadDao;
+import uz.pdp.dao.LoginDao;
 import uz.pdp.dao.UserDao;
 import uz.pdp.service.CourseService;
 import uz.pdp.service.UserService;
@@ -49,6 +50,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return  new CourseDao();
     }
 
+    @Bean
+    public LoginDao loginDao(){return new LoginDao();}
     @Bean
     public FileDownloadDao fileDownloadDao(){
         return  new FileDownloadDao();

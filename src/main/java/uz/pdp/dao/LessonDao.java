@@ -115,4 +115,18 @@ public class LessonDao {
         });
         return lessonDtoList;
     }
+    public List<LessonDto> getLessonsByModuleId(UUID id){
+        String sqlString = "select * from get_all_lessons_by_module_id('"+id+"')";
+        List<LessonDto> lessonDtoListFromDb = jdbcTemplate.query(sqlString, (rs, row) -> {
+            LessonDto lessonDto = new LessonDto();
+            lessonDto.setId(UUID.fromString(rs.getString(1)));
+            lessonDto.setTitle(rs.getString(2));
+            Object modules =  rs.getObject(3);
+            Type listType = new TypeToken<ModuleDto>(){}.getType();
+            ModuleDto moduleDto = new Gson().fromJson( modules.toString(), listType);
+            lessonDto.setModuleDto(moduleDto);
+            return lessonDto;
+        });
+        return lessonDtoListFromDb;
+    }
 }
