@@ -1,4 +1,5 @@
 // login page
+
 .login-body{
     margin: 0;
     padding:0;
@@ -11,7 +12,7 @@
     top: 50%;
     left: 50%;
     width: 480px;
-    padding: 90px 45px 60px 45px;
+    padding: 80px 45px 20px 45px!important;
     @media #{$xs}{
         width: 282px;
         padding: 90px 15px 15px 15px;

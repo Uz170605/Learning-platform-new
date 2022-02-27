@@ -22,4 +22,5 @@ public class UserDto {
     private List<CourseDto> courses;
     private UUID[] role;
     private List<Role> roles;
+    private String image;
 }
