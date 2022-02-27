@@ -3,7 +3,6 @@ package uz.pdp.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import uz.pdp.model.User;
 
 import java.util.List;
 import java.util.UUID;
@@ -11,14 +10,19 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CourseDto {
-    private UUID id ;
+public class MentorCourseDto {
+    private UUID courseId;
     private String name;
-    private double price;
     private String description;
-    private boolean isActive;
-    private String status;
-    private List<UserDto> authors;
+    private byte[] courseImage;
+
     private UUID[] authorsId;
-    private List<ModuleDto> module;
+
+    private String moduleName;
+    private double modulePrice;
+
+    private String lessonTitle;
+    private String lessonVideoPath;
+
+
 }
