@@ -22,7 +22,7 @@
 </head>
 <body style="background-color: rgba(19,213,246,0.1);">
 
-<h1 style="color: red; text-align: center">
+<h1 style=" color: red; text-align: center">
     ${error}
 </h1>
 <div class="row mt-5 ml-0 mr-0" style="height: 400px;">
