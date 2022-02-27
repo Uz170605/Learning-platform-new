@@ -17,6 +17,7 @@ public class CourseDto {
     private double price;
     private String description;
     private boolean isActive;
+    private String status;
     private List<UserDto> authors;
     private UUID[] authorsId;
     private List<ModuleDto> module;

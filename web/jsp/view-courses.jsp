@@ -66,7 +66,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Author</th>
+                    <th scope="col">Module</th>
                     <th scope="col">Price</th>
                     <th scope="col">Is active</th>
                     <th scope="col">Edit</th>
@@ -80,9 +80,10 @@
                         <td><a href="/courses/courseAllData/${course.id}?backType=courseMain"
                                style="color: black;">${course.name}</a></td>
                         <td>
-                            <c:forEach var="author" items="${course.authors}">
-                            <span><a href="/users/userAllData/${author.id}"
-                                     style="color: black">${author.firstName} ${author.lastName}</a>,</span>
+                            <c:forEach var="module" items="${course.module}">
+                            <span><a href="/users/userAllData/${module.id}"
+                                     style="color: black">${module.name} </a>,
+                            </span>
                             </c:forEach>
                         </td>
                         <td>${course.price}</td>

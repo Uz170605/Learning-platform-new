@@ -1,4 +1,8 @@
 .idea
 target
+<<<<<<< HEAD
+out
+=======
 out
 web/assets/fileUpload
+>>>>>>> 255b74c9af133fbff61e1e86cab18a0e2dbf55bb

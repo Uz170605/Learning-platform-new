@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import uz.pdp.dto.CourseDto;
 import uz.pdp.dto.ModuleDto;
 
-import java.lang.reflect.Type;
 import java.util.*;
 
 @Component

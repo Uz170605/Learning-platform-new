@@ -34,13 +34,6 @@
                        placeholder="Enter course name here">
             </div>
             <div class="form-group">
-                <label for="coursePrice">Price: </label>
-                <input value="${selectCourse.price}" name="price" type="number" class="form-control"
-                       id="coursePrice"
-                       placeholder="Enter course price here">
-            </div>
-
-            <div class="form-group">
                 <label for="courseDescription">Description: </label>
                 <textarea  name="description" type="text" class="form-control"
                        id="courseDescription" placeholder="Enter course description here">${selectCourse.description}</textarea>
