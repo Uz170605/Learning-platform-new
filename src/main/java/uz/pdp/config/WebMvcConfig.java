@@ -1,6 +1,7 @@
 package uz.pdp.config;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -15,10 +16,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
-import uz.pdp.dao.CourseDao;
-import uz.pdp.dao.FileDownloadDao;
-import uz.pdp.dao.LoginDao;
-import uz.pdp.dao.UserDao;
+import uz.pdp.dao.*;
 import uz.pdp.service.CourseService;
 import uz.pdp.service.UserService;
 
@@ -51,6 +49,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return  new CourseDao();
     }
 
+    @Bean
+    public AdminDao adminDao(){return new AdminDao();}
     @Bean
     public LoginDao loginDao(){return new LoginDao();}
     @Bean

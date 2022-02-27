@@ -17,6 +17,7 @@ public class MentorCourseDto {
     private byte[] courseImage;
 
     private UUID[] authorsId;
+    private List<UserDto> userDtos;
 
     private String moduleName;
     private double modulePrice;

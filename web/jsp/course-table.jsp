@@ -58,7 +58,15 @@
                     <tr>
                         <th scope="row"> ⚫️</th>
                         <td>${course.name}</td>
-                        <td>${course.status}</td>
+                        <c:if test="${course.status == 'Accepted'}">
+                        <td style="color: blue">${course.status}</td>
+                        </c:if>
+                        <c:if test="${course.status == 'Rejected'}">
+                            <td style="color: red">${course.status}</td>
+                        </c:if>
+                        <c:if test="${course.status == 'Process'}">
+                            <td>${course.status}</td>
+                        </c:if>
                         <td><a href="#/${course.id}">modules</a></td>
                         <td><a href="/courses/editCourse/${course.id}">edit</a></td>
                         <td>

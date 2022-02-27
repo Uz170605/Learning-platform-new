@@ -22,4 +22,7 @@ public class UserDto {
     private List<CourseDto> courses;
     private UUID[] role;
     private List<Role> roles;
+    private UUID messageId;
+    private String message;
+    private UUID courseId;
 }
