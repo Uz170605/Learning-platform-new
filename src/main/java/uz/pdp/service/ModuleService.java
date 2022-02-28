@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uz.pdp.dao.ModuleDao;
 import uz.pdp.dto.CourseDto;
+import uz.pdp.dto.MentorCourseDto;
 import uz.pdp.dto.ModuleDto;
 
 import java.util.List;
@@ -25,15 +26,16 @@ public class ModuleService {
         return moduleDtoList;
     }
 
-    public String addModules(ModuleDto moduleDto) {
-        if (moduleDto.getId() != null) {
+    public String addModulesAndLesson(MentorCourseDto moduleDto, UUID uuid) {
+        if (moduleDto.getCourseId()!= null) {
             if (modelDao.editModule(moduleDto) != 0) {
                 return "Successfully edited";
             } else {
                 return "Could not edited!";
             }
-        } else {
-            if (modelDao.addModule(moduleDto) != 0) {
+        }
+        else {
+            if (modelDao.addModuleAndLesson(moduleDto, uuid) != 0) {
                 return "Successfully added!";
             } else {
                 return "Could not added!";
@@ -41,7 +43,7 @@ public class ModuleService {
         }
     }
     public String delete(UUID uuid){
-        if(modelDao.deleteModule(uuid)==0){
+        if(modelDao.deleteModule(uuid ).equals('0')){
             return "Successfully delete";
         }else return "Unsuccessfully delete";
     }

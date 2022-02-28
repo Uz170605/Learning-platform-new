@@ -25,7 +25,7 @@ public class LoginDao {
                 "join users_roles ur on u.id = ur.user_id\n" +
                 "join roles r on ur.role_id = r.id\n" +
                 "where (email = '"+emailOrTelephoneNumber+"' or" +
-                " phone_number = '"+emailOrTelephoneNumber+"')\n" +
+                " \"phoneNumber\" = '"+emailOrTelephoneNumber+"')\n" +
                 "  and password = '"+password+"'\n" +
                 "group by u.email;";
 
@@ -37,8 +37,8 @@ public class LoginDao {
                         userDto.setEmail(rs.getString(1));
                         Array authors = rs.getArray(2);
 
-                            Type listType = new TypeToken<ArrayList<Role>>() {
-                            }.getType();
+                        Type listType = new TypeToken<ArrayList<Role>>() {
+                        }.getType();
                         List<Role> roles = new Gson().fromJson(authors.toString(), listType);
                         userDto.setRoles(roles);
                         return userDto;
@@ -57,7 +57,7 @@ public class LoginDao {
                 "         join users_roles ur on u.id = ur.user_id\n" +
                 "         join roles r on ur.role_id = r.id\n" +
                 "where (u.email = '"+emailOrPhoneNumber+"'\n" +
-                "    or u.phone_number = '"+emailOrPhoneNumber+"')\n" +
+                "    or u.\"phoneNumber\" = '"+emailOrPhoneNumber+"')\n" +
                 "  AND r.name = '"+role+"';\n";
         try {
 

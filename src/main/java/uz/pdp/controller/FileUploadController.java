@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/upload")
+@RequestMapping(    "/upload")
 public class FileUploadController {
 
     @Autowired
