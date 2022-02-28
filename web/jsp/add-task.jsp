@@ -24,45 +24,47 @@
 <body  style="background-color: rgba(19,213,246,0.1);">
 <div class="row mt-5 ml-0 mr-0" style="height: 400px;">
     <div class="col-md-6 offset-3 " style="background-color: white; border-radius:10px ;border: 2px solid gray;box-shadow: 5px 10px 8px #888888;z-index: 11;" >
-        <form action="/lessons" method="post" class="mt-5 mb-5">
-            <div class="form-group">
-                <input hidden value="${selectLesson.id ==null ? null:selectLesson.id}" name="id" type="text" class="form-control">
-            </div>
+        <form action="/lessons/addTask" method="post" class="mt-5 mb-5">
+<%--            <div class="form-group">--%>
+<%--                <input hidden value="${moduleId}" name="id" type="text" class="form-control">--%>
+<%--            </div>--%>
+    <div class="form-group">
+        <input hidden value="${lessonId}" name="lesson_id" type="text"
+               class="form-control">
+    </div>
             <div class="form-group">
                 <label for="lessonName">Title: </label>
-                <input value="${selectLesson.title}" name="title" type="text" class="form-control"
+                <input  name="title" type="text" class="form-control"
                        id="lessonName"
-                       placeholder="Enter lesson title here">
+                       placeholder="Enter task title here">
             </div>
-<%--            <div class="form-group">--%>
-<%--                <label for="moduleName">Lesson module: </label>--%>
-<%--                <select class="custom-select custom-select-md mb-3" id="moduleName"--%>
-<%--                        name="moduleId">--%>
-<%--                    <c:forEach var="modul" items="${modules}">--%>
-<%--                        <option value="${modul.id}">--%>
-<%--                                ${modul.name}</option>--%>
-<%--                    </c:forEach>--%>
+    <div class="form-group">
+        <label for="lessonName1">Difficulty degree: </label>
+        <input  name="difficulty_degree" type="number" class="form-control"
+                id="lessonName1"
+                placeholder="Enter task title here">
+    </div>
+    <div class="form-group">
+        <label for="lessonName12">Grade: </label>
+        <input  name="grade" type="number" class="form-control"
+                id="lessonName12"
+                placeholder="Enter students grade">
+    </div>
+    <div class="form-group">
+        <label for="lessonName4">Task body: </label>
+        <input  name="body" type="text" class="form-control"
+                id="lessonName4"
+                placeholder="Enter task body here">
+    </div>
+            <div class="form-group">
+                <input hidden value="${moduleId}" name="module_id" type="text"
+                       class="form-control">
+            </div>
 
-<%--                </select>--%>
-<%--            </div>--%>
 
-
-
-
-
-
-<%--            <div class="form-check my-4">--%>
-<%--                <label class="form-check-label mr-2" for="status">Is active: </label>--%>
-<%--                <input--%>
-<%--                <c:if test="${selectLesson.active == true}">--%>
-<%--                        checked--%>
-<%--                </c:if>--%>
-<%--                        name="active"--%>
-<%--                        type="checkbox"--%>
-<%--                        class="form-check-input ml-0 mt-2 mb-0"--%>
-<%--                        id="status">--%>
-<%--            </div>--%>
             <button type="submit" class="btn btn-success">Save</button>
+    <a href="/lessons/byModuleId/${moduleId}" class="btn btn-success
+                      mr-3">Back</a>
         </form>
     </div>
 

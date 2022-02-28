@@ -29,7 +29,7 @@
              <div class="row">
              <table>
                  <tr>
-         <td> <a href="/lessons/addLesson" class="btn btn-success mr-3">+Add</a> </td>
+         <td> <a href="/lessons/addLesson/${moduleId}" class="btn btn-success mr-3">+Add</a> </td>
 
 
 <%--          <td><a href="/upload/manualData" class="btn btn-success">Add Manual</a></td>--%>
@@ -68,15 +68,16 @@
 <%--                      </td>--%>
 <%--                      <td>${lesson.task}</td>--%>
 <%--                      <td>${lesson.guide}</td>--%>
-                      <td><a href="/upload/taskData/${lesson.id}" class="btn btn-success
+                      <td><a href="/lessons/addVideo/${lesson.id}" class="btn btn-success
+                      mr-3">Add Video</a></td>
+                      <td><a href="/lessons/addTask/${lesson.id}"
+                             class="btn btn-success
                       mr-3">Add Task</a></td>
 
-                      <td><a href="/upload/taskData/${lesson.id}" class="btn btn-success
-                      mr-3">Add Task</a></td>
                       <td><a href="/lessons/${lesson.id}" class="btn btn-warning">Edit</a></td>
 <%--                      <td><a href="lessons/delete/${lesson.id}" class="btn btn-danger" >Delete</a></td>--%>
-                      <td><button class="btn btn-danger"
-                      onclick="makeDELETErequest('/lessons/${lesson.id}')"> Delete </button></td>
+                      <td><a href="/lessons/delete/${lesson.id}" class="btn btn-danger">Delete
+                      </a></td>
                   </tr>
                 </c:forEach>
                   </tbody>

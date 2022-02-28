@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uz.pdp.dao.LessonDao;
 import uz.pdp.dto.LessonDto;
+import uz.pdp.model.Attachment;
+import uz.pdp.model.Lesson;
+import uz.pdp.model.Task;
 
 import java.util.List;
 import java.util.UUID;
@@ -54,5 +57,22 @@ public class LessonService {
     }
     public List<LessonDto> searchLesson(String word){
        return lessonDao.searchLesson(word);
+    }
+    public List<LessonDto> getLessonsByModuleId(UUID id){
+        List<LessonDto> lessonsByModuleId = lessonDao.getLessonsByModuleId(id);
+        return lessonsByModuleId;
+    }
+    public int addLessonToModule(Lesson lesson){
+        int i = lessonDao.addLessonByModuleId(lesson);
+        return i;
+    }
+    public int addTask(Task task){
+        return lessonDao.addTask(task);
+    }
+    public String getModuleIdByLessonId(UUID uuid){
+        return lessonDao.getModuleIdByLessonId(uuid);
+    }
+    public int saveVideo(Attachment attachment){
+        return lessonDao.saveVideo(attachment);
     }
 }

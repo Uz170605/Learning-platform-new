@@ -1,7 +1,6 @@
 package uz.pdp.service;
 
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uz.pdp.dao.ModuleDao;
