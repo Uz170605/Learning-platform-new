@@ -42,7 +42,7 @@
                   <tr>
                       <th scope="col">#</th>
                       <th scope="col">Title</th>
-                      <th scope="col">Lesson module</th>
+<%--                      <th scope="col">Lesson module</th>--%>
                       <th scope="col">Add Video</th>
                       <th scope="col">Add Task</th>
                       <th scope="col">Edit</th>
@@ -55,7 +55,7 @@
                   <tr>
                       <th scope="row"> ⚫️ </th>
                       <td><a href="/download/viewVideo/${lesson.id}" style="color:
-                      black;">${lesson.title}</a></td>
+                      black">${lesson.title}</a></td>
 <%--                      <td>--%>
 <%--                          <c:forEach var="author" items="${lesson.authors}">--%>
 <%--                              <span><a href="/users/userAllData/${author.id}" style="color: black">${author.firstName} ${author.lastName}</a>,</span>--%>
@@ -68,6 +68,8 @@
 <%--                      </td>--%>
 <%--                      <td>${lesson.task}</td>--%>
 <%--                      <td>${lesson.guide}</td>--%>
+                      <td><a href="/upload/taskData/${lesson.id}" class="btn btn-success
+                      mr-3">Add Task</a></td>
 
                       <td><a href="/upload/taskData/${lesson.id}" class="btn btn-success
                       mr-3">Add Task</a></td>

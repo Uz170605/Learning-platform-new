@@ -25,7 +25,7 @@ public class LoginDao {
                 "join users_roles ur on u.id = ur.user_id\n" +
                 "join roles r on ur.role_id = r.id\n" +
                 "where (email = '"+emailOrTelephoneNumber+"' or" +
-                " \"phoneNumber\" = '"+emailOrTelephoneNumber+"')\n" +
+                " phone_number = '"+emailOrTelephoneNumber+"')\n" +
                 "  and password = '"+password+"'\n" +
                 "group by u.email;";
 
@@ -57,7 +57,7 @@ public class LoginDao {
                 "         join users_roles ur on u.id = ur.user_id\n" +
                 "         join roles r on ur.role_id = r.id\n" +
                 "where (u.email = '"+emailOrPhoneNumber+"'\n" +
-                "    or u.\"phoneNumber\" = '"+emailOrPhoneNumber+"')\n" +
+                "    or u.phone_number = '"+emailOrPhoneNumber+"')\n" +
                 "  AND r.name = '"+role+"';\n";
         try {
 

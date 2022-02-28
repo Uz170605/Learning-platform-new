@@ -4,17 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Lesson {
-    private UUID id ;
-    private String title;
+public class Attachment {
+    private UUID id;
+    private String file_path;
+    private String file_type;
+    private UUID lesson_id;
     private UUID module_id;
-
-
 }

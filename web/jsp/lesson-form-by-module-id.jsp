@@ -24,51 +24,48 @@
 <body  style="background-color: rgba(19,213,246,0.1);">
 <div class="row mt-5 ml-0 mr-0" style="height: 400px;">
     <div class="col-md-6 offset-3 " style="background-color: white; border-radius:10px ;border: 2px solid gray;box-shadow: 5px 10px 8px #888888;z-index: 11;" >
-        <form action="/courses" method="post" class="mt-5 mb-5">
+        <form action="/lessons/addLessonToModule" method="get" class="mt-5 mb-5">
+<%--            <div class="form-group">--%>
+<%--                <input hidden value="${moduleId}" name="id" type="text" class="form-control">--%>
+<%--            </div>--%>
             <div class="form-group">
-                <input hidden value="${selectCourse.id ==null ? null:selectCourse.id}" name="id" type="text" class="form-control">
+                <label for="lessonName">Title: </label>
+                <input  name="title" type="text" class="form-control"
+                       id="lessonName"
+                       placeholder="Enter lesson title here">
             </div>
             <div class="form-group">
-                <label for="courseName">Name: </label>
-                <input value="${selectCourse.name}" name="name" type="text" class="form-control" id="courseName"
-                       placeholder="Enter course name here">
+                <input hidden value="${moduleId}" name="module_id" type="text"
+                       class="form-control">
             </div>
-            <div class="form-group">
-                <label for="courseDescription">Description: </label>
-                <textarea  name="description" type="text" class="form-control"
-                       id="courseDescription" placeholder="Enter course description here">${selectCourse.description}</textarea>
-            </div>
+<%--            <div class="form-group">--%>
+<%--                <label for="moduleName">Lesson module: </label>--%>
+<%--                <select class="custom-select custom-select-md mb-3" id="moduleName"--%>
+<%--                        name="moduleId">--%>
+<%--                    <c:forEach var="modul" items="${modules}">--%>
+<%--                        <option value="${modul.id}">--%>
+<%--                                ${modul.name}</option>--%>
+<%--                    </c:forEach>--%>
 
-
-            <div class="form-group">
-
-
-                <label for="authors">Authors: </label>
-
-                <select required=${selectCourse.id != null ? "": "required" }  aria-invalid="true" id="authors" placeholder="Search author name" multiple name="authorsId">
-                    <c:forEach var="author" items="${authors}">
-                        <option  value="${author.id}" >${author.firstName} ${author.lastName}</option>
-                    </c:forEach>
-                </select>
-
-                </div>
+<%--                </select>--%>
+<%--            </div>--%>
 
 
 
 
 
 
-            <div class="form-check my-4">
-                <label class="form-check-label mr-2" for="status">Is active: </label>
-                <input
-                <c:if test="${selectCourse.active == true}">
-                        checked
-                </c:if>
-                        name="active"
-                        type="checkbox"
-                        class="form-check-input ml-0 mt-2 mb-0"
-                        id="status">
-            </div>
+<%--            <div class="form-check my-4">--%>
+<%--                <label class="form-check-label mr-2" for="status">Is active: </label>--%>
+<%--                <input--%>
+<%--                <c:if test="${selectLesson.active == true}">--%>
+<%--                        checked--%>
+<%--                </c:if>--%>
+<%--                        name="active"--%>
+<%--                        type="checkbox"--%>
+<%--                        class="form-check-input ml-0 mt-2 mb-0"--%>
+<%--                        id="status">--%>
+<%--            </div>--%>
             <button type="submit" class="btn btn-success">Save</button>
         </form>
     </div>

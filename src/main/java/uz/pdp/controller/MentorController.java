@@ -1,4 +1,3 @@
-
 package uz.pdp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,33 +11,19 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/admin")
-public class AdminRoleController {
+@RequestMapping("/mentor")
+public class MentorController {
     @Autowired
     LoginService loginService;
-    static String role = "ADMIN";
+    static String role = "MENTOR";
 
     @GetMapping
-    public String test(
-            Model model,
-            HttpServletRequest request) {
+    public String test(Model model,HttpServletRequest request) {
         UUID uuid = loginService.sessionGetEmail(request, role);
-
         if (uuid == null) {
             model.addAttribute("firstPassword", "Enter the password first");
             return "/login";
         }
         return "redirect:/courses/test";
-    }
-
-
-
-    @GetMapping("/dasfdsf")
-    public String test1(HttpServletRequest request) {
-        UUID uuid = loginService.sessionGetEmail(request, role);
-        if(uuid!=null){
-
-        }
-        return null;
     }
 }

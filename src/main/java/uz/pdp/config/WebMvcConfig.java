@@ -30,7 +30,8 @@ import java.io.IOException;
 @ComponentScan(basePackages = "uz.pdp")
 public class WebMvcConfig implements WebMvcConfigurer {
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    public void
+    addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/assets/**").addResourceLocations("/assets/");
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 

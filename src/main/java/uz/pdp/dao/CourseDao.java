@@ -30,7 +30,7 @@ public class CourseDao {
             sqlQuery = "select * from get_all_courses_by_pageable_and_search('"+search+"', "+interval+", "+currentPage+")";
         } else if (interval == null && currentPage == null) {
             sqlQuery = "select *\n" +
-                    "from get_course_by_user_and_module();";
+                        "from get_course_by_user_and_module();";
         } else {
             sqlQuery = "select * from get_course_by_user_and_module(" + interval + ", " + currentPage + ")";
         }
@@ -38,17 +38,16 @@ public class CourseDao {
             CourseDto courseDto = new CourseDto();
             courseDto.setId(UUID.fromString(rs.getString(1)));
             courseDto.setName(rs.getString(2));
-            courseDto.setPrice(rs.getDouble(3));
-            courseDto.setActive(rs.getBoolean(5));
-            courseDto.setDescription(rs.getString(4));
-            Array authors = rs.getArray(6);
+            courseDto.setDescription(rs.getString(3));
+            courseDto.setActive(rs.getBoolean(4));
+            Array authors = rs.getArray(5);
 
             Type listType = new TypeToken<ArrayList<UserDto>>() {
             }.getType();
             List<UserDto> authorList = new Gson().fromJson(authors.toString(), listType);
             courseDto.setAuthors(authorList);
             if(search==null) {
-                Array module = rs.getArray(7);
+                Array module = rs.getArray(6);
                 Type type = new TypeToken<ArrayList<ModuleDto>>() {
                 }.getType();
                 List<ModuleDto> moduleDtoList = new Gson().fromJson(module.toString(), type);
@@ -59,16 +58,17 @@ public class CourseDao {
         return courseDtoListFromDb;
     }
 
-    public int addCourse(CourseDto courseDto) {
-        String sqlQuery = "Insert into courses(name,price,is_active,description) values('" + courseDto.getName() + "'," + courseDto.getPrice() + "," + courseDto.isActive() + ",'" + courseDto.getDescription() + "') returning id";
+    public String addCourse(CourseDto courseDto) {
+        String sqlQuery = "Insert into courses(name,is_active,description) values('" + courseDto.getName() + "'," + courseDto.isActive() + ",'" + courseDto.getDescription() + "') returning id";
         String idStr = jdbcTemplate.queryForObject(sqlQuery, (rs, rowNum) -> rs.getString("id"));
-        UUID uuid = UUID.fromString(Objects.requireNonNull(idStr));
-        int res = 0;
-        for (UUID uuid1 : courseDto.getAuthorsId()) {
-            res = jdbcTemplate.update("INSERT INTO authors_courses values ('" + uuid1 + "','" + uuid + "');");
-
-        }
-        return res;
+//        UUID uuid = UUID.fromString(Objects.requireNonNull(idStr));
+//        int res = 0;
+//        for (UUID uuid1 : courseDto.getAuthorsId()) {
+//            res = jdbcTemplate.update("INSERT INTO authors_courses values ('" + uuid1 + "','" + uuid + "');");
+//
+//        }
+//        return res;
+        return idStr;
     }
 
     public int deleteCourse(UUID id) {

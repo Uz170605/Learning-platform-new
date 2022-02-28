@@ -57,7 +57,7 @@ public class LoginController {
     public String role(@PathVariable(required = false) UUID roleId) {
         String role = loginService.role(roleId);
         if (role.equals("MENTOR")) {
-
+            return "redirect:/mentor";
         } else if (role.equals("ADMIN")) {
             return "redirect:/admin";
         } else if (role.equals("SUPERADMIN")) {

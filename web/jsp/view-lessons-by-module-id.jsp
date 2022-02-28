@@ -29,7 +29,7 @@
              <div class="row">
              <table>
                  <tr>
-         <td> <a href="/lessons/addLesson" class="btn btn-success mr-3">+Add</a> </td>
+         <td> <a href="/lessons/addLesson/${moduleId}" class="btn btn-success mr-3">+Add</a> </td>
 
 
 <%--          <td><a href="/upload/manualData" class="btn btn-success">Add Manual</a></td>--%>
@@ -42,19 +42,20 @@
                   <tr>
                       <th scope="col">#</th>
                       <th scope="col">Title</th>
+<%--                      <th scope="col">Lesson module</th>--%>
                       <th scope="col">Add Video</th>
                       <th scope="col">Add Task</th>
-<%--                      <th scope="col">Lesson module</th>--%>
                       <th scope="col">Edit</th>
                       <th scope="col">Delete</th>
+
                   </tr>
                   </thead>
                   <tbody>
-                <c:forEach var="lesson" step="1" items="${module_lessons}">
+                <c:forEach var="lesson" step="1" items="${lessonList}">
                   <tr>
                       <th scope="row"> ⚫️ </th>
                       <td><a href="/download/viewVideo/${lesson.id}" style="color:
-                      black;">${lesson.title}</a></td>
+                      black">${lesson.title}</a></td>
 <%--                      <td>--%>
 <%--                          <c:forEach var="author" items="${lesson.authors}">--%>
 <%--                              <span><a href="/users/userAllData/${author.id}" style="color: black">${author.firstName} ${author.lastName}</a>,</span>--%>
@@ -67,15 +68,16 @@
 <%--                      </td>--%>
 <%--                      <td>${lesson.task}</td>--%>
 <%--                      <td>${lesson.guide}</td>--%>
-                      <td> <a href=" /upload/videoData/${lesson.id}"
-                              class="btn btn-success mr-3">Add
-                          Video</a></td>
-                      <td><a href="/upload/taskData/${lesson.id}" class="btn btn-success
+                      <td><a href="/lessons/addVideo/${lesson.id}" class="btn btn-success
+                      mr-3">Add Video</a></td>
+                      <td><a href="/lessons/addTask/${lesson.id}"
+                             class="btn btn-success
                       mr-3">Add Task</a></td>
+
                       <td><a href="/lessons/${lesson.id}" class="btn btn-warning">Edit</a></td>
 <%--                      <td><a href="lessons/delete/${lesson.id}" class="btn btn-danger" >Delete</a></td>--%>
-                      <td><button class="btn btn-danger"
-                      onclick="makeDELETErequest('/lessons/${lesson.id}')"> Delete </button></td>
+                      <td><a href="/lessons/delete/${lesson.id}" class="btn btn-danger">Delete
+                      </a></td>
                   </tr>
                 </c:forEach>
                   </tbody>

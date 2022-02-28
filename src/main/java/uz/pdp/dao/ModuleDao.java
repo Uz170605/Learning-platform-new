@@ -7,8 +7,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import uz.pdp.dto.CourseDto;
 import uz.pdp.dto.ModuleDto;
+import uz.pdp.model.Attachment;
 
-import java.lang.reflect.Type;
 import java.util.*;
 
 @Component

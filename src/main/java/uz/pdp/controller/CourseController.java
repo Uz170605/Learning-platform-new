@@ -19,7 +19,6 @@ public class CourseController {
     CourseService courseService;
     @Autowired
     ModuleService moduleService;
-
     @Autowired
     UserService userService;
 
