@@ -10,7 +10,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @Data
 public class MentorCourseDto {
-
     private UUID courseId;
     private String name;
     private String description;
@@ -23,6 +22,8 @@ public class MentorCourseDto {
     private String status;
 
     private String lessonTitle;
-    private String lessonVidePath;
+
+    private String lessonVideoPath;
+
 
 }

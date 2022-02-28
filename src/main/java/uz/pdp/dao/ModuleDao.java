@@ -133,7 +133,8 @@ public class ModuleDao {
         UUID lessonUUid = UUID.fromString(Objects.requireNonNull(lessonId));
 
         String attachmentSql = "insert into attachment(video_path,lesson_id,file_type) values " +
-                "('" + moduleLessonDto.getLessonVidePath() + "','" + lessonUUid + "','" + "vide/mp4" + "')";
+                "('" + moduleLessonDto.getLessonVideoPath() + "','" + lessonUUid + "','" + "vide" +
+                "/mp4" + "')";
         int check = jdbcTemplate.update(attachmentSql);
         return check;
     }
@@ -157,7 +158,8 @@ public class ModuleDao {
         UUID lessonUuid = UUID.fromString(Objects.requireNonNull(lessonId));
 
         String attachmentSql =
-                "update attachment set video_path='" + mentorCourseDto.getLessonVidePath() + "'," +
+                "update attachment set video_path='" + mentorCourseDto.getLessonVideoPath() +
+                        "'," +
                         "lesson_id='" + lessonUuid + "',file_type='" + "video/mp4" + "'";
         int check = jdbcTemplate.update(attachmentSql);
         return check;

@@ -70,6 +70,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         dataSource.setUrl("jdbc:postgresql://localhost:5432/learning_platform");
         dataSource.setUsername("postgres");
         dataSource.setPassword("avaz1999");
+
+
         return new JdbcTemplate(dataSource);
     }
 
