@@ -37,8 +37,9 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Module name</th>
-                    <th scope="col">Is Active</th>
                     <th scope="col">Price</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Add Lessons</th>
                     <th scope="col">Edit</th>
                     <th scope="col">Delete</th>
                 </tr>
@@ -51,13 +52,26 @@
                         black;">${module.name}
                         </a>
                         </td>
-                        <td>${module.active == true ? "Active":"No active"}</td>
+<%--                        <td>${module.active == true ? "Active":"No active"}</td>--%>
                         <td>${module.price}</td>
+                        <td>${module.status}</td>
+                        <td>
+                            <c:forEach var="lesson" items="${module.lessons}">
+                                <span><a href="/lessons/${lesson.id}"
+                                         style="color: black">${lesson.title}</a>
+                                </span>
+                            </c:forEach>
+                        </td>
                         <td><a href="/modules/${module.id}" class="btn btn-warning">Edit
                         </a> </td>
-                        <td><button class="btn btn-danger"
-                                    onclick="makeDELETErequest('/modules/${module.id}')">Delete
-                        </button> </td>
+                        <td><a href="/modules/delete/${module.id}" class="btn btn-success">Delete
+                        </a>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger"
+                    onclick="makeDELETErequest('//${module.id}')">Send</button>
+                        </td>
+
                     </tr>
                 </c:forEach>
                 </tbody>

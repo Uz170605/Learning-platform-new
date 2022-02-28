@@ -57,7 +57,8 @@ public class LoginDao {
                 "         join users_roles ur on u.id = ur.user_id\n" +
                 "         join roles r on ur.role_id = r.id\n" +
                 "where (u.email = '"+emailOrPhoneNumber+"'\n" +
-                "    or u.\"phoneNumber\" = '"+emailOrPhoneNumber+"')\n" +
+                "    or u.\"pho" +
+                "neNumber\" = '"+emailOrPhoneNumber+"')\n" +
                 "  AND r.name = '"+role+"';\n";
         try {
 

@@ -4,11 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.UUID;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class MentorCourseDto {
     private UUID courseId;
@@ -20,8 +19,10 @@ public class MentorCourseDto {
 
     private String moduleName;
     private double modulePrice;
+    private String status;
 
     private String lessonTitle;
+
     private String lessonVideoPath;
 
 

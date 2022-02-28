@@ -28,30 +28,24 @@ public class CourseDao {
         if (search != null) {
             sqlQuery = "select * from get_all_courses_by_pageable_and_search('" + search + "', " + interval + ", " + currentPage + ")";
         } else if (interval == null && currentPage == null) {
-            sqlQuery = "select *\n" +
-                    "from get_course_by_user_and_module();";
+            sqlQuery = "select *\n" +"from get_course_by_user_and_module();";
         } else {
             sqlQuery = "select * from get_course_by_user_and_module(" + interval + ", " + currentPage + ")";
         }
-        List<CourseDto> courseDtoListFromDb = jdbcTemplate.query(sqlQuery, (rs, row) -> {
+            List<CourseDto> courseDtoListFromDb = jdbcTemplate.query(sqlQuery, (rs, row) -> {
             CourseDto courseDto = new CourseDto();
             courseDto.setId(UUID.fromString(rs.getString(1)));
             courseDto.setName(rs.getString(2));
             courseDto.setDescription(rs.getString(3));
-            courseDto.setActive(rs.getBoolean(4));
-            Array authors = rs.getArray(5);
+            Array authors = rs.getArray(4);
 
             Type listType = new TypeToken<ArrayList<UserDto>>() {
             }.getType();
             List<UserDto> authorList = new Gson().fromJson(authors.toString(), listType);
             courseDto.setAuthors(authorList);
-//<<<<<<< HEAD
-//            if (search == null) {
-//                Array module = rs.getArray(7);
-//=======
-            if (search == null) {
-                Array module = rs.getArray(6);
-//>>>>>>> e47b4ee99b6ac7f6b67ca926fa8a7ea3fcbb14d9
+            if(search==null) {
+                Array module = rs.getArray(5);
+
                 Type type = new TypeToken<ArrayList<ModuleDto>>() {
                 }.getType();
                 List<ModuleDto> moduleDtoList = new Gson().fromJson(module.toString(), type);
