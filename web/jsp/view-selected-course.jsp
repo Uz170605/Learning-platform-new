@@ -23,29 +23,46 @@
     <div class="col-md-6 offset-3 "
          style="background-color: white; border-radius:10px ;border: 2px solid gray;box-shadow: 5px 10px 8px #888888;z-index: 11;">
         <div class="form-group">
-            <h3>Name: ${course.name} </h3>
+            <h3 style="text-align: center">Name: ${course.name} </h3>
+            <br>
             <div>
 
-<%--                <video width="320" height="240" controls>--%>
-<%--                    <source src="${course.lessonVideoPath}" type="video/mp4">--%>
-<%--&lt;%&ndash;                    <source src="movie.ogg" type="video/ogg">&ndash;%&gt;--%>
-<%--                    Your browser does not support the video tag.--%>
-<%--                </video>--%>
+                <%--                <video width="320" height="240" controls>--%>
+                <%--                    <source src="${course.lessonVideoPath}" type="video/mp4">--%>
+                <%--&lt;%&ndash;                    <source src="movie.ogg" type="video/ogg">&ndash;%&gt;--%>
+                <%--                    Your browser does not support the video tag.--%>
+                <%--                </video>--%>
 
-                <video width="400" height="200" controls>
-                    <source src="<c:url value="${course.lessonVideoPath}"/>
-                " type="video/mp4">
-                </video>
+                <%--                <video width="400" height="200" controls>--%>
+                <%--                    <source src="<c:url value="${course.lessonVideoPath}"/>--%>
+                <%--                " type="video/mp4">--%>
+                <%--                </video>"--%>
+
+                <iframe width="400" height="200" src="${course.lessonVideoPath}"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                </iframe>
+<%--                <div style="width: 400px; height: 200px">--%>
+<%--                    ${course.lessonVideoPath}--%>
+<%--                </div>--%>
             </div>
+            <br>
+            <hr>
             <h4>Description: ${course.description} </h4>
             <h4>Module name: ${course.moduleName} </h4>
             <h4>Module price: ${course.modulePrice} </h4>
+            <hr>
             <h3 style="text-align: center">Authors</h3>
             <c:forEach items="${course.userDtos}" var="author">
                 <h4>Full name: ${author.firstName} ${author.lastName}</h4>
                 <h4>Phone number: ${author.phoneNumber}</h4>
                 <h4>Email: ${author.email}</h4>
             </c:forEach>
+            <hr>
+
+            https://youtu.be/msURNBiKtac
+            https://www.youtube.com/embed/msURNBiKtac
 
             <h4>Lesson title: ${course.lessonTitle} </h4>
             <%--                        <input hidden name="messageId" value="${message.courseId}">--%>
