@@ -10,6 +10,7 @@ import uz.pdp.dto.LessonDto;
 import uz.pdp.dto.MentorCourseDto;
 
 import uz.pdp.dto.ModuleDto;
+import uz.pdp.model.Attachment;
 
 import java.lang.reflect.Type;
 import java.sql.Array;

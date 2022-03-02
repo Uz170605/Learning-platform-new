@@ -9,12 +9,11 @@
         <webroots>
           <root url="file://$MODULE_DIR$/web" relative="/" />
         </webroots>
+        <sourceRoots />
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
-      <configuration process_explicitly_annotated="false">
-        <fileset id="initializer uz.pdp.config.AppInit servlet context" name="MVC dispatcher initializer servlet context" removed="true" />
-      </configuration>
+      <configuration />
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">

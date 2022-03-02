@@ -14,7 +14,5 @@ import java.util.UUID;
 public class Lesson {
     private UUID id ;
     private String title;
-    private Module module;
-
-
+    private UUID module_id;
 }
