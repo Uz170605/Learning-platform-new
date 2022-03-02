@@ -47,12 +47,12 @@ public class ModuleController {
         model.addAttribute("courseList", allCourses);
         return "module-form";
     }
-    @PostMapping
-    public String addModule(@ModelAttribute("modules") ModuleDto moduleDto, Model model) {
-        String s = moduleService.addModules(moduleDto);
-        model.addAttribute("message", s);
-        return "redirect:/modules";
-    }
+//    @PostMapping
+//    public String addModule(@ModelAttribute("modules") ModuleDto moduleDto, Model model) {
+//        String s = moduleService.addModules(moduleDto);
+//        model.addAttribute("message", s);
+//        return "redirect:/modules";
+//    }
 
     @DeleteMapping("/{id}")
     public String deleteModule(@PathVariable String id, Model model) {

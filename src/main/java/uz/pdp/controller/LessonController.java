@@ -13,6 +13,8 @@ import uz.pdp.model.Task;
 import uz.pdp.service.LessonService;
 import uz.pdp.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.UUID;
 
@@ -64,6 +66,13 @@ public class LessonController {
         model.addAttribute("selectLesson",lessonById);
         return "lesson-form";
     }
+    @GetMapping("/editModuleId/{id}")
+    public String editLessonByModuleId(@PathVariable(required = false) String id, Model model){
+        UUID id1 =UUID.fromString(id);
+        LessonDto lessonById = lessonService.getLessonById(id1);
+        model.addAttribute("selectLesson",lessonById);
+        return "lesson-form-by-module-id";
+    }
 //    @GetMapping("/add/{id}")
 //    public String addLessonByModule(@PathVariable String id,Model model){
 //        UUID uuid = UUID.fromString(id);
@@ -77,8 +86,9 @@ public class LessonController {
         return "lesson-form";
     }
     @GetMapping("/addLesson/{moduleId}")
-    public String getLessonByModuleId(@PathVariable UUID moduleId, Model model) {
-        model.addAttribute("moduleId",moduleId);
+    public String getLessonByModuleId(@PathVariable String moduleId, Model model) {
+        UUID modulId = UUID.fromString(moduleId);
+        model.addAttribute("moduleId",modulId);
         return "lesson-form-by-module-id";
     }
 
@@ -88,22 +98,13 @@ public class LessonController {
         model.addAttribute("message",str);
         return "redirect:/lessons";
     }
-
-    @DeleteMapping("/{id}")
-    public String deleteLesson(@PathVariable String id, Model model){
-       UUID id1=UUID.fromString(id);
-        String str = lessonService.deleteLesson(id1);
-        model.addAttribute("message",str);
-        UUID id2 = UUID.fromString(lessonService.getModuleIdByLessonId(id1));
-        return "redirect:/lessons/byModuleId/" + id2;
-    }
     @GetMapping("/delete/{id}")
     public String Cascade(@PathVariable String id, Model model){
         UUID id1=UUID.fromString(id);
         String str = lessonService.deleteLesson(id1);
         model.addAttribute("message",str);
-        UUID id2 = UUID.fromString(lessonService.getModuleIdByLessonId(id1));
-        return "redirect:/lessons/byModuleId/" + id2;
+//        UUID id2 = UUID.fromString(lessonService.getModuleIdByLessonId(id1));
+        return "redirect:/lessons/byModuleId";
     }
 
     @GetMapping("/search")
@@ -113,8 +114,23 @@ public class LessonController {
     }
 
     @GetMapping("/byModuleId/{id}")
-    public String getLessonsByModuleId(@PathVariable String id,Model model){
-        UUID moduleId = UUID.fromString(id);
+    public String getLessonsByModuleId(@PathVariable String id, Model model,
+                                       HttpServletRequest request){
+        if (id!= null){
+        HttpSession moduleSession = request.getSession();
+        moduleSession.setAttribute("moduleId",id);
+        }
+        UUID moduleId =  UUID.fromString(String.valueOf(request.getSession().getAttribute("moduleId")));
+        List<LessonDto> moduleDtoList = lessonService.getLessonsByModuleId(moduleId);
+        int buttonCount = lessonDao.pageLessonsByModuleId(moduleId);
+        model.addAttribute("moduleId",moduleId);
+        model.addAttribute("lessonList", moduleDtoList);
+        model.addAttribute("buttonCount",buttonCount);
+        return "view-lessons-by-module-id";
+    }
+    @GetMapping("/byModuleId")
+    public String getLessonsByModuleId2( Model model,HttpServletRequest request){
+        UUID moduleId = UUID.fromString(String.valueOf(request.getSession().getAttribute("moduleId")));
         List<LessonDto> moduleDtoList = lessonService.getLessonsByModuleId(moduleId);
         int buttonCount = lessonDao.pageLessonsByModuleId(moduleId);
         model.addAttribute("moduleId",moduleId);
@@ -124,10 +140,17 @@ public class LessonController {
     }
     @GetMapping("/addLessonToModule")
     public String addLessonToSelectedModule(@ModelAttribute("lessons") Lesson lesson, Model model){
-        if(lessonService.addLessonToModule(lesson)>0){
-            model.addAttribute("message","Succesfully added!!!");
-        }else {model.addAttribute("message","Could not added!!!");}
-        return  "redirect:/lessons/byModuleId/"+lesson.getModule_id();
+        if (lesson.getId() != null){
+                lessonDao.editLesson(lesson);
+                model.addAttribute("msg","Succesfully edited!!!");
+        }else {
+            if (lessonService.addLessonToModule(lesson) > 0) {
+                model.addAttribute("message", "Succesfully added!!!");
+            } else {
+                model.addAttribute("message", "Could not added!!!");
+            }
+        }
+            return "redirect:/lessons/byModuleId";
     }
 
     @GetMapping("/addVideo/{lessonId}")

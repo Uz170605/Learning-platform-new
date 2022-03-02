@@ -74,7 +74,8 @@
                              class="btn btn-success
                       mr-3">Add Task</a></td>
 
-                      <td><a href="/lessons/${lesson.id}" class="btn btn-warning">Edit</a></td>
+                      <td><a href="/lessons/editModuleId/${lesson.id}" class="btn btn-warning">Edit
+                      </a></td>
 <%--                      <td><a href="lessons/delete/${lesson.id}" class="btn btn-danger" >Delete</a></td>--%>
                       <td><a href="/lessons/delete/${lesson.id}" class="btn btn-danger">Delete
                       </a></td>
