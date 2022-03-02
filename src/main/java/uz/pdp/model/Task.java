@@ -4,15 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Lesson {
-    private UUID id ;
+public class Task {
+    private UUID id;
     private String title;
+    private Integer difficulty_degree;
+    private Integer grade;
+    private String body;
+    private UUID lesson_id;
     private UUID module_id;
 }

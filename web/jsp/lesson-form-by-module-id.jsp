@@ -24,15 +24,23 @@
 <body  style="background-color: rgba(19,213,246,0.1);">
 <div class="row mt-5 ml-0 mr-0" style="height: 400px;">
     <div class="col-md-6 offset-3 " style="background-color: white; border-radius:10px ;border: 2px solid gray;box-shadow: 5px 10px 8px #888888;z-index: 11;" >
-        <form action="/lessons" method="post" class="mt-5 mb-5">
+
+        <form action="/lessons/addLessonToModule" method="get" class="mt-5 mb-5">
             <div class="form-group">
                 <input hidden value="${selectLesson.id ==null ? null:selectLesson.id}" name="id" type="text" class="form-control">
             </div>
+<%--            <div class="form-group">--%>
+<%--                <input hidden value="${moduleId}" name="id" type="text" class="form-control">--%>
+<%--            </div>--%>
             <div class="form-group">
                 <label for="lessonName">Title: </label>
-                <input value="${selectLesson.title}" name="title" type="text" class="form-control"
-                       id="lessonName"
+                <input  name="title" type="text" class="form-control"
+                       id="lessonName" value="${selectLesson.title}"
                        placeholder="Enter lesson title here">
+            </div>
+            <div class="form-group">
+                <input hidden value="${moduleId}" name="module_id" type="text"
+                       class="form-control">
             </div>
 <%--            <div class="form-group">--%>
 <%--                <label for="moduleName">Lesson module: </label>--%>
@@ -63,7 +71,10 @@
 <%--                        id="status">--%>
 <%--            </div>--%>
             <button type="submit" class="btn btn-success">Save</button>
+
         </form>
+            <a href="/lessons/byModuleId/${selectLesson.moduleDto.id}" class="btn btn-success
+                      mr-3">Back</a>
     </div>
 
 </div>
