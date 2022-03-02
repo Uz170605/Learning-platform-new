@@ -37,14 +37,15 @@ public class CourseDao {
             courseDto.setId(UUID.fromString(rs.getString(1)));
             courseDto.setName(rs.getString(2));
             courseDto.setDescription(rs.getString(3));
-            Array authors = rs.getArray(4);
+            courseDto.setActive(rs.getBoolean(4));
+            Array authors = rs.getArray(5);
 
             Type listType = new TypeToken<ArrayList<UserDto>>() {
             }.getType();
             List<UserDto> authorList = new Gson().fromJson(authors.toString(), listType);
             courseDto.setAuthors(authorList);
             if(search==null) {
-                Array module = rs.getArray(5);
+                Array module = rs.getArray(6);
 
                 Type type = new TypeToken<ArrayList<ModuleDto>>() {
                 }.getType();
@@ -56,9 +57,9 @@ public class CourseDao {
         return courseDtoListFromDb;
     }
 
-    public String addCourse(CourseDto courseDto) {
-        String sqlQuery = "Insert into courses(name,is_active,description) values('" + courseDto.getName() + "'," + courseDto.isActive() + ",'" + courseDto.getDescription() + "') returning id";
-        String idStr = jdbcTemplate.queryForObject(sqlQuery, (rs, rowNum) -> rs.getString("id"));
+//    public String addCourse(CourseDto courseDto) {
+//        String sqlQuery = "Insert into courses(name,is_active,description) values('" + courseDto.getName() + "'," + courseDto.isActive() + ",'" + courseDto.getDescription() + "') returning id";
+//        String idStr = jdbcTemplate.queryForObject(sqlQuery, (rs, rowNum) -> rs.getString("id"));
 //        UUID uuid = UUID.fromString(Objects.requireNonNull(idStr));
 //        int res = 0;
 //        for (UUID uuid1 : courseDto.getAuthorsId()) {
@@ -66,8 +67,8 @@ public class CourseDao {
 //
 //        }
 //        return res;
-        return idStr;
-    }
+//        return idStr;
+//    }
 
     public int deleteCourse(UUID id) {
         String sqlQuery1 = "Delete from authors_courses where course_id='" + id + "'";
@@ -83,16 +84,15 @@ public class CourseDao {
             CourseDto courseDto = new CourseDto();
             courseDto.setId(UUID.fromString(rs.getString(1)));
             courseDto.setName(rs.getString(2));
-            courseDto.setPrice(rs.getDouble(3));
-            courseDto.setActive(rs.getBoolean(5));
-            courseDto.setDescription(rs.getString(4));
-            Array authors = rs.getArray(6);
+            courseDto.setDescription(rs.getString(3));
+            courseDto.setActive(rs.getBoolean(4));
+            Array authors = rs.getArray(5);
 
             Type listType = new TypeToken<ArrayList<UserDto>>() {
             }.getType();
             List<UserDto> authorList = new Gson().fromJson(authors.toString(), listType);
             courseDto.setAuthors(authorList);
-            Array module = rs.getArray(7);
+            Array module = rs.getArray(6);
             Type type = new TypeToken<ArrayList<ModuleDto>>() {
             }.getType();
             List<ModuleDto> moduleDtoList = new Gson().fromJson(module.toString(), type);

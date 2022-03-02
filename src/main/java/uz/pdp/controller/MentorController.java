@@ -24,6 +24,6 @@ public class MentorController {
             model.addAttribute("firstPassword", "Enter the password first");
             return "/login";
         }
-        return "redirect:/modules";
+        return "redirect:/courses/course-table";
     }
 }

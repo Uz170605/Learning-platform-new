@@ -17,9 +17,11 @@ public class MentorCourseDto {
 
     private UUID[] authorsId;
 
+    private UUID moduleId;
     private String moduleName;
     private double modulePrice;
     private String status;
+    private boolean is_active;
 
     private String lessonTitle;
 

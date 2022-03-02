@@ -10,7 +10,8 @@
 <html>
 <head>
     <title>Modules</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
     <script src=
@@ -26,10 +27,12 @@
             </c:when>
         </c:choose>
         <a href="/modules/addModule" class="btn btn-success">+Add</a>
-        <form action="${pageContext.request.contextPath}/modules?search" class="d-flex" style="width:100%; margin-top: 20px;">
-                <input type="search" name="search" style="width: 85%;" class="form-control"
-                       placeholder="Search......">
-                <a href="/modules" class="btn btn-primary ml-3" style="width: 150px; height: 40px;">  Reset  </a>
+        <form action="${pageContext.request.contextPath}/modules?search" class="d-flex"
+              style="width:100%; margin-top: 20px;">
+            <input type="search" name="search" style="width: 85%;" class="form-control"
+                   placeholder="Search......">
+            <a href="/modules" class="btn btn-primary ml-3" style="width: 150px; height: 40px;">
+                Reset </a>
         </form>
         <div class="row mt-4 mr-0 ml-0">
             <table class="table table-hover table-responsive-sm table-striped">
@@ -47,12 +50,12 @@
                 <tbody>
                 <c:forEach var="module" step="1" items="${moduleList}">
                     <tr>
-                        <th scope="row"> 📀 </th>
-                        <td><a href="/modules/moduleAllData/${module.id}"style="color:
-                        black;">${module.name}
+                        <th scope="row"> 📀</th>
+                        <td><a href="/modules/moduleAllData/${module.id}"
+                               style="color:black;">${module.name}
                         </a>
                         </td>
-<%--                        <td>${module.active == true ? "Active":"No active"}</td>--%>
+                            <%--                        <td>${module.active == true ? "Active":"No active"}</td>--%>
                         <td>${module.price}</td>
                         <td>${module.status}</td>
                         <td>
@@ -63,15 +66,18 @@
                             </c:forEach>
                         </td>
                         <td><a href="/modules/${module.id}" class="btn btn-warning">Edit
-                        </a> </td>
-                        <td><a href="/modules/delete/${module.id}" class="btn btn-success">Delete
-                        </a>
-                        </td>
+                        </a></td>
                         <td>
-                            <button class="btn btn-danger"
-                    onclick="makeDELETErequest('//${module.id}')">Send</button>
+                            <c:if test="${module.active==false}">
+                                <a href="/modules/delete/${module.id}" class="btn btn-success">
+                                    Delete</a>
+                            </c:if>
                         </td>
+                            <td>
 
+                                <c:if test="${module.active==true}">Send</c:if>
+                                    <a href="/modules/module_message/${module.id}">Send </a>
+                            </td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -84,10 +90,9 @@
                 </c:forEach>
             </div>
         </div>
-<a href="/courses/test" class="btn btn-primary mt-3"> Back </a>
+        <a href="/courses/test" class="btn btn-primary mt-3"> Back </a>
     </div>
 </div>
-
 
 
 <script>
@@ -104,7 +109,7 @@
     function makeDELETErequest(url) {
         fetch(
             url,
-            {method:'DELETE'}
+            {method: 'DELETE'}
         ).then(response => location.reload())
     }
 </script>

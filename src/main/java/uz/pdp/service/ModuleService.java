@@ -46,7 +46,7 @@ public class ModuleService {
     public String delete(UUID uuid){
         if(modelDao.deleteModule(uuid ).equals('0')){
             return "Successfully delete";
-        }else return "Unsuccessfully delete";
+        }else return "Could not  delete";
     }
     public ModuleDto getAllModules(UUID uuid){
         ModuleDto moduleDto=modelDao.getModuleById(uuid);

@@ -128,8 +128,8 @@ public class CourseController {
 
     @PostMapping
     public String addCourse(@ModelAttribute("courses") CourseDto courseDto, Model model) {
-        String str = courseService.addCourse(courseDto);
-        model.addAttribute("message", str);
+      //  String str = courseService.addCourse(courseDto);
+      //  model.addAttribute("message", str);
         return "redirect:/courses";
     }
 

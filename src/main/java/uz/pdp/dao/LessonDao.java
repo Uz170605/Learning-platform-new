@@ -49,8 +49,8 @@ public class LessonDao {
         return res;
     }
 
-    public LessonDto getLessonById(UUID id) {
-        String sqlQuery = "select * from get_all_lessons where lesson_id ='" + id+"'";
+    public LessonDto getLessonById(UUID lessonId) {
+        String sqlQuery = "select * from get_all_lessons('"+lessonId+"')";
         return  jdbcTemplate.queryForObject(sqlQuery, (rs, row) -> {
             LessonDto lessonDto = new LessonDto();
             lessonDto.setId(UUID.fromString(rs.getString(1)));

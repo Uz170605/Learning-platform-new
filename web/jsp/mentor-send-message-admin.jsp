@@ -25,11 +25,6 @@
     <div class="col-md-6 offset-3 "
          style="background-color: white; border-radius:10px ;border: 2px solid gray;box-shadow: 5px 10px 8px #888888;z-index: 11;">
         <form action="/courses/courseMessage/${id}" class="mt-5 mb-5" enctype="multipart/form-data">
-
-
-
-
-
 <
             <div class="form-group">
                 <label for="bio">Message </label>

@@ -14,6 +14,8 @@ import uz.pdp.dto.ModuleDto;
 import java.lang.reflect.Type;
 import java.sql.Array;
 import java.util.*;
+import java.util.UUID;
+
 
 @Component
 public class ModuleDao {
@@ -113,10 +115,29 @@ public class ModuleDao {
         return getModuleAndLessonByCourseId;
     }
 
+    public List<ModuleDto> getModuleByCourseId (UUID uuid){
+        String sql="select * from module_by_course_id('" + uuid + "');";
+        List<ModuleDto> mentorCourseDto1=jdbcTemplate.query(sql,
+                (rs, rowNum) -> {
+            ModuleDto mentorCourseDto=new ModuleDto();
+            mentorCourseDto.setId(UUID.fromString(rs.getString(1)));
+            mentorCourseDto.setName(rs.getString(2));
+            mentorCourseDto.setStatus(rs.getString(3));
+            mentorCourseDto.setPrice(rs.getDouble(4));
+            mentorCourseDto.setActive(rs.getBoolean(5));
+            Array lessonArray=rs.getArray(6);
+            Type lessonType=new TypeToken<ArrayList<LessonDto>>(){}.getType();
+            List<LessonDto> lessonDtoList=new Gson().fromJson(lessonArray.toString(),lessonType);
+            mentorCourseDto.setLessons(lessonDtoList);
+            return mentorCourseDto;
+                });
+        return mentorCourseDto1;
+    }
+
     public int addModuleAndLesson(MentorCourseDto moduleLessonDto, UUID uuid2) {
-        String uuid = "361af984-a12e-466c-89c4-07f7599e0122";
+
         String addModuleSql = "insert into modules(name,price,course_id) values " +
-                "('" + moduleLessonDto.getModuleName() + "'," + moduleLessonDto.getModulePrice() + ",'" + uuid +
+                "('" + moduleLessonDto.getModuleName() + "'," + moduleLessonDto.getModulePrice() + ",'" + uuid2 +
                 "') returning id";
         String moduleId = jdbcTemplate.queryForObject(addModuleSql, (rs, rowNum) -> rs.getString("id"));
         UUID moduleUuid = UUID.fromString(Objects.requireNonNull(moduleId));
@@ -170,4 +191,11 @@ public class ModuleDao {
         return jdbcTemplate.queryForObject(optionalDeleteSql, (rs, rowNum) -> rs.getString(1));
     }
 
+    public int sendMessage(UUID uuid, String message, UUID userId,UUID courseId) {
+        String sql="insert into admin_mentors_requests_modules(user_id,course_id,module_id," +
+                "description) values ('"+userId+"','"+courseId+"','"+uuid+"','"+message+"')";
+        return jdbcTemplate.update(sql);
+
+
+    }
 }
