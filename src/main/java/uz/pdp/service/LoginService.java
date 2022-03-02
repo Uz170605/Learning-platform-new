@@ -4,6 +4,7 @@ package uz.pdp.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import uz.pdp.dao.LoginDao;
 import uz.pdp.dao.UserDao;
 import uz.pdp.dto.UserDto;
@@ -43,9 +44,22 @@ public class LoginService {
             String username = String.valueOf(session1.getAttribute("username"));
             if(username.equals("null"))
               return null;
+            try{
+
             return UUID.fromString(loginDao.getUserId(username, role));
+            }catch (Exception e){
+                return null;
+            }
         }
         return null;
+    }
+
+    public UUID checked(Model model, HttpServletRequest request, String role){
+        UUID uuid = sessionGetEmail(request, role);
+        if(uuid == null){
+            model.addAttribute("error", "password or email invalid");
+        }
+        return uuid;
     }
 
     public String role(UUID uuid) {

@@ -30,46 +30,57 @@
                        type="text" class="form-control">
             </div>
             <div class="form-group">
-                <label for="moduleName">Name: </label>
-                <input value="${selectModule.name}" name="name" type="text" class="form-control"
+                <label for="moduleName">Module Name: </label>
+                <input value="${selectModule.name}" name="moduleName" type="text" class="form-control"
                        id="moduleName"
                        placeholder="Enter module name here">
             </div>
             <div class="form-group">
-                <label for="modulePrice">Price: </label>
-                <input value="${selectModule.price}" name="price" type="number" class="form-control"
+
+                <label for="modulePrice">Module Price: </label>
+                <input value="${selectModule.price}" name="modulePrice" type="number" class="form-control"
                        id="modulePrice"
-                       placeholder="Enter course price here">
+                       placeholder="Enter module price here">
             </div>
             <div class="form-group">
-                <label for="moduleForm"><b>Select course:</b></label>
-                <select class="custom-select custom-select-md mb-3" name="courseId" id="moduleForm">
-                    <c:forEach var="course" items="${courseList}">
-                    <option value="${course.id}">${course.name}</option>
+                <label for="authors">Authors: </label>
+                <select required=${selectModule.id != null ? "": "required" }  aria-invalid="true"
+                        id="authors" placeholder="Search author name" multiple name="authorsId">
+                    <c:forEach var="authors" items="${authors}">
+                        <option  value="${authors.id}" >${authors.firstName}
+                                ${authors.lastName}</option>
                     </c:forEach>
-
                 </select>
             </div>
-            <div class="form-check my-4">
-                <label class="form-check-label mr-2" for="status">Is active: </label>
-                <input
-                <c:if test="${selectModule.active == true}">
-                        checked
-                </c:if>
-                        name="active"
-                        type="checkbox"
-                        class="form-check-input ml-0 mt-2 mb-0"
-                        id="status">
+            <div class="form-group">
+                <label for="LessonTitle">Lesson Title</label>
+                <input value="${selectLesson.title}" name="lessonTitle" type="text" class="form-control"
+                id="LessonTitle" placeholder="Enter lesson title">
             </div>
-
-
-
-
+            <div class="form-group">
+                <label for="lessonVidePath">Video Path:</label>
+                <input name="lessonVidePath" type="text" class="form-control"
+                id="lessonVidePath" placeholder="Enter video path">
+            </div>
             <button type="submit" class="btn btn-success">Save</button>
+
+
         </form>
     </div>
 </div>
-
+<script>
+    $(document).ready(function (){
+        var multipleCancelButton = new Choices('#authors',{
+            removeItemButton: true,
+            maxItemCount: 5,
+            searchResultLimit: 5,
+            renderChoiceLimit: 5
+        });
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

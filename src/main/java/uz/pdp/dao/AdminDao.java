@@ -4,10 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import uz.pdp.dto.CourseDto;
-import uz.pdp.dto.MentorCourseDto;
-import uz.pdp.dto.ModuleDto;
-import uz.pdp.dto.UserDto;
+import uz.pdp.dto.*;
 
 import java.lang.reflect.Type;
 import java.sql.Array;
@@ -43,25 +40,57 @@ public class AdminDao {
         return userDtoListFromDb;
     }
 
-    public List<UserDto> getMessageById(UUID messageId) {
-        String sqlQuery = "select user_id, description, course_id, u.\"lastName\", u.\"firstName\"\n" +
+//    public List<UserDto> getMessageById(UUID messageId) {
+//        String sqlQuery = "select user_id, description, course_id, u.\"lastName\", u.\"firstName\", send_time\n" +
+//                "from admins_mentors_requests_courses a\n" +
+//                "join users u on a.user_id = u.id\n" +
+//                "where user_id = '"+messageId+"';";
+//
+////        String sqlQuery = "select c.id, c.name, c.status, c.is_active from courses c\n" +
+////                " join modules m on c.id = m.course_id group by c.id ";
+//
+//        List<UserDto> userDtoListFromDb = jdbcTemplate.query(sqlQuery, (rs, row) -> {
+//            UserDto userDto = new UserDto();
+//            userDto.setId(UUID.fromString(rs.getString(1)));
+//            userDto.setMessage(rs.getString(2));
+//            userDto.setCourseId(UUID.fromString(rs.getString(3)));
+//            userDto.setLastName(rs.getString(4));
+//            userDto.setFirstName(rs.getString(5));
+//            userDto.setTime(String.valueOf(rs.getTime(6)));
+//            return userDto;
+//        });
+//        return userDtoListFromDb;
+//    }
+
+
+    public UserDto getMessageById(UUID messageId) {
+        String sqlQuery = "select user_id,\n" +
+                "       u.\"lastName\",\n" +
+                "       u.\"firstName\",\n" +
+                "       json_agg(json_build_object('message', description,\n" +
+                "                                  'courseId', course_id,\n" +
+                "                                  'time', send_time))\n" +
                 "from admins_mentors_requests_courses a\n" +
-                "join users u on a.user_id = u.id\n" +
-                "where user_id = '"+messageId+"';";
+                "         join users u on a.user_id = u.id\n" +
+                "where user_id = '"+messageId+"'\n" +
+                "group by user_id, u.\"lastName\", u.\"firstName\";";
 
 //        String sqlQuery = "select c.id, c.name, c.status, c.is_active from courses c\n" +
 //                " join modules m on c.id = m.course_id group by c.id ";
 
-        List<UserDto> userDtoListFromDb = jdbcTemplate.query(sqlQuery, (rs, row) -> {
+        return jdbcTemplate.queryForObject(sqlQuery, (rs, row) -> {
             UserDto userDto = new UserDto();
             userDto.setId(UUID.fromString(rs.getString(1)));
-            userDto.setMessage(rs.getString(2));
-            userDto.setCourseId(UUID.fromString(rs.getString(3)));
-            userDto.setLastName(rs.getString(4));
-            userDto.setFirstName(rs.getString(5));
+            userDto.setLastName(rs.getString(2));
+            userDto.setFirstName(rs.getString(3));
+            Array authors = rs.getArray(4);
+            Type listType = new TypeToken<ArrayList<MessageDto>>() {
+            }.getType();
+            List<MessageDto> authorList = new Gson().fromJson(authors.toString(), listType);
+            userDto.setMessageDtos(authorList);
             return userDto;
         });
-        return userDtoListFromDb;
+
     }
 
     public String rejectedCourse(UUID uuid) {
@@ -78,6 +107,8 @@ public class AdminDao {
             String courseDto = rs.getString(1);
             return courseDto;
         });
+
+
     }
 
     public MentorCourseDto getCourseById(UUID id) {

@@ -41,23 +41,15 @@
 
 
             <div class="form-group">
-
-
                 <label for="authors">Authors: </label>
-
-                <select required=${selectCourse.id != null ? "": "required" }  aria-invalid="true" id="authors" placeholder="Search author name" multiple name="authorsId">
+                <select required=${selectCourse.id != null ? "": "required" }  aria-invalid="true" id="authors"
+                        placeholder="Search author name" multiple name="authorsId">
                     <c:forEach var="author" items="${authors}">
-                        <option  value="${author.id}" >${author.firstName} ${author.lastName}</option>
+                        <option  value="${author.id}" >${author.firstName}
+                                ${author.lastName}</option>
                     </c:forEach>
                 </select>
-
                 </div>
-
-
-
-
-
-
             <div class="form-check my-4">
                 <label class="form-check-label mr-2" for="status">Is active: </label>
                 <input

@@ -28,30 +28,24 @@ public class CourseDao {
         if (search != null) {
             sqlQuery = "select * from get_all_courses_by_pageable_and_search('" + search + "', " + interval + ", " + currentPage + ")";
         } else if (interval == null && currentPage == null) {
-            sqlQuery = "select *\n" +
-                    "from get_course_by_user_and_module();";
+            sqlQuery = "select *\n" +"from get_course_by_user_and_module();";
         } else {
             sqlQuery = "select * from get_course_by_user_and_module(" + interval + ", " + currentPage + ")";
         }
-        List<CourseDto> courseDtoListFromDb = jdbcTemplate.query(sqlQuery, (rs, row) -> {
+            List<CourseDto> courseDtoListFromDb = jdbcTemplate.query(sqlQuery, (rs, row) -> {
             CourseDto courseDto = new CourseDto();
             courseDto.setId(UUID.fromString(rs.getString(1)));
             courseDto.setName(rs.getString(2));
             courseDto.setDescription(rs.getString(3));
-            courseDto.setActive(rs.getBoolean(4));
-            Array authors = rs.getArray(5);
+            Array authors = rs.getArray(4);
 
             Type listType = new TypeToken<ArrayList<UserDto>>() {
             }.getType();
             List<UserDto> authorList = new Gson().fromJson(authors.toString(), listType);
             courseDto.setAuthors(authorList);
-//<<<<<<< HEAD
-//            if (search == null) {
-//                Array module = rs.getArray(7);
-//=======
-            if (search == null) {
-                Array module = rs.getArray(6);
-//>>>>>>> e47b4ee99b6ac7f6b67ca926fa8a7ea3fcbb14d9
+            if(search==null) {
+                Array module = rs.getArray(5);
+
                 Type type = new TypeToken<ArrayList<ModuleDto>>() {
                 }.getType();
                 List<ModuleDto> moduleDtoList = new Gson().fromJson(module.toString(), type);
@@ -253,10 +247,14 @@ public class CourseDao {
         });
     }
 
-    public List<CourseDto> getAllCourse() {
+    public List<CourseDto> getAllCourse(UUID authorId) {
 
-        String sqlQuery = "select c.id, c.name, c.status, c.is_active from courses c\n" +
-                "join modules m on c.id = m.course_id group by c.id";
+        String sqlQuery = "select c.id, c.name, c.status, c.is_active\n" +
+                "from courses c\n" +
+                "         join modules m on c.id = m.course_id\n" +
+                "join authors_modules am on m.id = am.module_id\n" +
+                "where am.author_id = '"+authorId+"'\n" +
+                "group by c.id;";
 
         List<CourseDto> courseDtoListFromDb = jdbcTemplate.query(sqlQuery, (rs, row) -> {
             CourseDto courseDto = new CourseDto();
@@ -292,28 +290,19 @@ public class CourseDao {
 
 
     public String deleteCourseMentor(UUID id) {
-        String sqlQuery = "select delete_course('"+id+"')";
-        return jdbcTemplate.queryForObject(sqlQuery, (rs, row) -> {
-            String text = rs.getString(1);
-//            CourseDto courseDto = new CourseDto();
-//            courseDto.setId(UUID.fromString(rs.getString(1)));
-//            courseDto.setName(rs.getString(2));
-//            courseDto.setPrice(rs.getDouble(3));
-//            courseDto.setActive(rs.getBoolean(5));
-//            courseDto.setDescription(rs.getString(4));
-//            Array authors = rs.getArray(6);
-//
-//            Type listType = new TypeToken<ArrayList<UserDto>>() {
-//            }.getType();
-//            List<UserDto> authorList = new Gson().fromJson(authors.toString(), listType);
-//            courseDto.setAuthors(authorList);
-//            Array module = rs.getArray(7);
-//            Type type = new TypeToken<ArrayList<ModuleDto>>() {
-//            }.getType();
-//            List<ModuleDto> moduleDtoList = new Gson().fromJson(module.toString(), type);
-//            courseDto.setModule(moduleDtoList);
-            return text;
-        });
+        try {
+            String sqlQuery = "select delete_course_all('"+id+"')";
+            return jdbcTemplate.queryForObject(sqlQuery, (rs, row) -> {
+                String text = rs.getString(1);
+                return text;
+            });
+        }catch (Exception e){
+            String sqlQuery = "select delete_course('"+id+"')";
+            return jdbcTemplate.queryForObject(sqlQuery, (rs, row) -> {
+                String text = rs.getString(1);
+                return text;
+            });
+        }
     }
 
 

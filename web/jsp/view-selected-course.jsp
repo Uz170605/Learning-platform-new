@@ -27,17 +27,6 @@
             <br>
             <div>
 
-                <%--                <video width="320" height="240" controls>--%>
-                <%--                    <source src="${course.lessonVideoPath}" type="video/mp4">--%>
-                <%--&lt;%&ndash;                    <source src="movie.ogg" type="video/ogg">&ndash;%&gt;--%>
-                <%--                    Your browser does not support the video tag.--%>
-                <%--                </video>--%>
-
-                <%--                <video width="400" height="200" controls>--%>
-                <%--                    <source src="<c:url value="${course.lessonVideoPath}"/>--%>
-                <%--                " type="video/mp4">--%>
-                <%--                </video>"--%>
-
                 <iframe width="400" height="200" src="${course.lessonVideoPath}"
                         title="YouTube video player" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -60,25 +49,16 @@
                 <h4>Email: ${author.email}</h4>
             </c:forEach>
             <hr>
-
-            https://youtu.be/msURNBiKtac
-            https://www.youtube.com/embed/msURNBiKtac
-
             <h4>Lesson title: ${course.lessonTitle} </h4>
             <%--                        <input hidden name="messageId" value="${message.courseId}">--%>
-
             <div style="text-align: center">
                 <a href="<c:url value="/admin/accept?messageId=${course.courseId}"/>" class="btn btn-success">
                     accept</a>
-
                 <a href="<c:url value="/admin/reject?messageId=${course.courseId}"/>" class="btn btn-success">
                     reject</a>
             </div>
         </div>
-
-
     </div>
-
 </div>
 </body>
 </html>
