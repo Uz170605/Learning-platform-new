@@ -58,9 +58,9 @@
                 id="LessonTitle" placeholder="Enter lesson title">
             </div>
             <div class="form-group">
-                <label for="lessonVidePath">Video Path:</label>
-                <input name="lessonVidePath" type="text" class="form-control"
-                id="lessonVidePath" placeholder="Enter video path">
+                <label for="lessonVideoPath">Video Path:</label>
+                <input  name="lessonVideoPath" type="text" class="form-control"
+                id="lessonVideoPath" placeholder="Enter video path">
             </div>
             <button type="submit" class="btn btn-success">Save</button>
 
