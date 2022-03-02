@@ -1,9 +1,8 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
-  User: Akbarali
-  Date: 2/26/2022
-  Time: 1:51 PM
+  User: HP
+  Date: 02.03.2022
+  Time: 3:11
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -24,16 +23,27 @@
 <div class="row mt-5 ml-0 mr-0" style="height: 400px;">
     <div class="col-md-6 offset-3 "
          style="background-color: white; border-radius:10px ;border: 2px solid gray;box-shadow: 5px 10px 8px #888888;z-index: 11;">
-        <form action="/courses/courseMessage/${id}" class="mt-5 mb-5" enctype="multipart/form-data">
-<
+        <form action="/modules/editModule" method="POST" class="mt-5 mb-5"
+              enctype="multipart/form-data">
+
+            <input name="moduleId" hidden value="${module.moduleId}">
+
             <div class="form-group">
-                <label for="bio">Message </label>
-                <textarea name="message" type="text" class="form-control"
-                          id="bio" placeholder="Enter course description here">your massage</textarea>
+                <label for="ModuleName">Moudle name </label>
+                <input value="${module.moduleName}" name="moduleName" type="text"
+                       class="form-control"
+                       id="ModuleName"
+                       placeholder="Enter Module name">
             </div>
 
 
-            <button type="submit" class="btn btn-success">send</button>
+            <div class="form-group">
+                <label for="bio">Price: </label>
+                <textarea name="modulePrice" type="number" class="form-control"
+                          id="bio"
+                          placeholder="Enter module price here">${module.modulePrice}</textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Save</button>
         </form>
     </div>
 
