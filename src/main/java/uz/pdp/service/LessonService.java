@@ -44,7 +44,7 @@ public class LessonService {
   }
 
     public String deleteLesson(UUID id) {
-        if (lessonDao.deleteLesson(id) == 0) {
+        if (lessonDao.deleteLesson(id) != 0) {
             return "Successfuly deleted!";
         } else {
         return "Could not deleted!";

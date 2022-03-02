@@ -15,6 +15,4 @@ public class Lesson {
     private UUID id ;
     private String title;
     private UUID module_id;
-
-
 }
