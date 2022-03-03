@@ -28,11 +28,11 @@ public class CourseDao {
         if (search != null) {
             sqlQuery = "select * from get_all_courses_by_pageable_and_search('" + search + "', " + interval + ", " + currentPage + ")";
         } else if (interval == null && currentPage == null) {
-            sqlQuery = "select *\n" +"from get_course_by_user_and_module();";
+            sqlQuery = "select *\n" + "from get_course_by_user_and_module();";
         } else {
             sqlQuery = "select * from get_course_by_user_and_module(" + interval + ", " + currentPage + ")";
         }
-            List<CourseDto> courseDtoListFromDb = jdbcTemplate.query(sqlQuery, (rs, row) -> {
+        List<CourseDto> courseDtoListFromDb = jdbcTemplate.query(sqlQuery, (rs, row) -> {
             CourseDto courseDto = new CourseDto();
             courseDto.setId(UUID.fromString(rs.getString(1)));
             courseDto.setName(rs.getString(2));
@@ -44,7 +44,7 @@ public class CourseDao {
             }.getType();
             List<UserDto> authorList = new Gson().fromJson(authors.toString(), listType);
             courseDto.setAuthors(authorList);
-            if(search==null) {
+            if (search == null) {
                 Array module = rs.getArray(6);
 
                 Type type = new TypeToken<ArrayList<ModuleDto>>() {
@@ -247,10 +247,14 @@ public class CourseDao {
         });
     }
 
-    public List<CourseDto> getAllCourse() {
+    public List<CourseDto> getAllCourse(UUID authorId) {
 
-        String sqlQuery = "select c.id, c.name, c.status, c.is_active from courses c\n" +
-                "join modules m on c.id = m.course_id group by c.id";
+        String sqlQuery = "select c.id, c.name, c.status, c.is_active\n" +
+                "from courses c\n" +
+                "         join modules m on c.id = m.course_id\n" +
+                "join authors_modules am on m.id = am.module_id\n" +
+                "where am.author_id = '" + authorId + "'\n" +
+                "group by c.id;";
 
         List<CourseDto> courseDtoListFromDb = jdbcTemplate.query(sqlQuery, (rs, row) -> {
             CourseDto courseDto = new CourseDto();
@@ -274,8 +278,8 @@ public class CourseDao {
 
 
     public int editCourseMentor(MentorCourseDto courseDto, byte[] file) {
-        String sql = "update courses set name = '"+courseDto.getName()+"', " +
-                "description = '"+courseDto.getDescription()+"', image = ? where id = '"+courseDto.getCourseId()+"'";
+        String sql = "update courses set name = '" + courseDto.getName() + "', " +
+                "description = '" + courseDto.getDescription() + "', image = ? where id = '" + courseDto.getCourseId() + "'";
         return jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(
                     sql);
@@ -286,28 +290,19 @@ public class CourseDao {
 
 
     public String deleteCourseMentor(UUID id) {
-        String sqlQuery = "select delete_course('"+id+"')";
-        return jdbcTemplate.queryForObject(sqlQuery, (rs, row) -> {
-            String text = rs.getString(1);
-//            CourseDto courseDto = new CourseDto();
-//            courseDto.setId(UUID.fromString(rs.getString(1)));
-//            courseDto.setName(rs.getString(2));
-//            courseDto.setPrice(rs.getDouble(3));
-//            courseDto.setActive(rs.getBoolean(5));
-//            courseDto.setDescription(rs.getString(4));
-//            Array authors = rs.getArray(6);
-//
-//            Type listType = new TypeToken<ArrayList<UserDto>>() {
-//            }.getType();
-//            List<UserDto> authorList = new Gson().fromJson(authors.toString(), listType);
-//            courseDto.setAuthors(authorList);
-//            Array module = rs.getArray(7);
-//            Type type = new TypeToken<ArrayList<ModuleDto>>() {
-//            }.getType();
-//            List<ModuleDto> moduleDtoList = new Gson().fromJson(module.toString(), type);
-//            courseDto.setModule(moduleDtoList);
-            return text;
-        });
+        try {
+            String sqlQuery = "select delete_course_all('" + id + "')";
+            return jdbcTemplate.queryForObject(sqlQuery, (rs, row) -> {
+                String text = rs.getString(1);
+                return text;
+            });
+        } catch (Exception e) {
+            String sqlQuery = "select delete_course('" + id + "')";
+            return jdbcTemplate.queryForObject(sqlQuery, (rs, row) -> {
+                String text = rs.getString(1);
+                return text;
+            });
+        }
     }
 
 
@@ -316,7 +311,77 @@ public class CourseDao {
                 " admins_mentors_requests_courses" +
                 "(" +
                 "user_id, course_id, description" +
-                ") values ('"+userId+"', '"+courseId+"', '"+message+"') ";
+                ") values ('" + userId + "', '" + courseId + "', '" + message + "') ";
         return jdbcTemplate.update(query);
     }
+
+    //todo by module
+
+
+    public String byModule(UUID moduleId, UUID userId) {
+        String sqlQuery = "select *\n" +
+                "from by_modules('" + userId + "', '" + moduleId + "');";
+        return jdbcTemplate.queryForObject(sqlQuery, (rs, row) -> {
+            return rs.getString(1);
+        });
+    }
+
+    public int byCourse(UUID moduleId, UUID userId) {
+        String sqlQuery = "";
+
+        String priceQuery = "select sum(m.price)\n" +
+                "from modules m\n" +
+                "         join courses c on c.id = m.course_id\n" +
+                "where m.id not in (select modules_id\n" +
+                "                   from users_modules\n" +
+                "                   where user_id = '" + userId + "')\n" +
+                "  and c.id = '" + moduleId + "';";
+        try {
+
+            String priceStr = jdbcTemplate.queryForObject(priceQuery, (rs, row) -> {
+                return rs.getString(1);
+            });
+            double price = Double.parseDouble(priceStr);
+
+            String balanceQuery = "select balance from users where id = '" + userId + "';";
+
+            String balanceStr = jdbcTemplate.queryForObject(balanceQuery, (rs, row) -> {
+                return rs.getString(1);
+            });
+            double balance = Double.parseDouble(balanceStr);
+
+            if (balance < price) {
+                return 0;
+            }
+
+            sqlQuery = "select m.id\n" +
+                    "from modules m\n" +
+                    "         join courses c on c.id = m.course_id\n" +
+                    "where m.id not in (select modules_id\n" +
+                    "                   from users_modules\n" +
+                    "                   where user_id = '" + userId + "')\n" +
+                    "  and c.id = '" + moduleId + "';";
+
+
+            List<UUID> courseDtoList = jdbcTemplate.query(sqlQuery, (rs, rowNum) -> {
+                UUID courseDto = UUID.fromString(rs.getString(1));
+                return courseDto;
+            });
+
+            for (UUID uuid : courseDtoList) {
+                String byCourses = "insert into users_modules(user_id, modules_id) VALUES ('" + userId + "', '" + uuid + "')";
+                jdbcTemplate.update(byCourses);
+            }
+
+            String checkout = "update users set balance = balance- '" + price + "' where id = '" + userId + "'";
+            return jdbcTemplate.update(checkout);
+
+        } catch (Exception e) {
+            return 0;
+        }
+
+
+    }
+
+
 }
