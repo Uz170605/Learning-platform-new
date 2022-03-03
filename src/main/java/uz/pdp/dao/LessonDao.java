@@ -21,7 +21,7 @@ public class LessonDao {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
-    
+
 
 
     public List<LessonDto> getAllLessons() {
@@ -34,7 +34,7 @@ public class LessonDao {
             Object modules =  rs.getObject(3);
             Type listType = new TypeToken<ModuleDto>(){}.getType();
             ModuleDto moduleDto = new Gson().fromJson( modules.toString(), listType);
-             lessonDto.setModuleDto(moduleDto);
+            lessonDto.setModuleDto(moduleDto);
             return lessonDto;
         });
         return lessonDtoListFromDb;
@@ -45,7 +45,7 @@ public class LessonDao {
                 "','" + lessonDto.getModuleId()+ "')";
 //        String idStr = jdbcTemplate.queryForObject(sqlQuery, (rs, rowNum) -> rs.getString("id"));
 //        UUID uuid = UUID.fromString(Objects.requireNonNull(idStr));
-         return jdbcTemplate.update(sqlQuery);
+        return jdbcTemplate.update(sqlQuery);
     }
     public int addLessonByModuleId(Lesson lesson) {
         String sqlQuery ="Insert into lessons(title, module_id) values('" + lesson.getTitle() +
@@ -70,16 +70,16 @@ public class LessonDao {
     }
     public int deleteAttachment(UUID lesson__id){
         try {
-        String sql = "delete from attachment where lesson_id='" + lesson__id +"'";
-        return jdbcTemplate.update(sql);
+            String sql = "delete from attachment where lesson_id='" + lesson__id +"'";
+            return jdbcTemplate.update(sql);
         }catch (Exception e){
             return 0;
         }
     }
     public int deletetask(UUID lesson__id){
         try {
-        String sql = "delete from tasks where lesson_id='" + lesson__id +"'";
-        return jdbcTemplate.update(sql);
+            String sql = "delete from tasks where lesson_id='" + lesson__id +"'";
+            return jdbcTemplate.update(sql);
         }catch (Exception e){
             return 0;
         }
@@ -103,7 +103,7 @@ public class LessonDao {
     public int editLesson(LessonDto lessonDto) {
         String sqlString =
                 "update lessons set title='"+lessonDto.getTitle()+"' where id='" + lessonDto.getId() +"'";
-    return jdbcTemplate.update(sqlString);
+        return jdbcTemplate.update(sqlString);
     }
     public int editLesson(Lesson lesson) {
         String sqlString =
@@ -122,7 +122,7 @@ public class LessonDao {
             Object object = rs.getObject(4);
             Type listType = new TypeToken<ModuleDto>(){}.getType();
             ModuleDto moduleDto = new Gson().fromJson( object.toString(), listType);
-                  lessonDto.setModuleDto(moduleDto);
+            lessonDto.setModuleDto(moduleDto);
             return lessonDto;
         });
         return lessonDtoListFromDb;
@@ -204,14 +204,14 @@ public class LessonDao {
     public List<Attachment> getAttachmentByLessonId(UUID lessonID){
         String sql ="select json_agg(row_to_json(a.*))\n" +
                 "from attachment a  where lesson_id='"+lessonID+"';";
-         List<Attachment> attachmentList= jdbcTemplate.queryForObject(sql, (rs, row) -> {
+        List<Attachment> attachmentList= jdbcTemplate.queryForObject(sql, (rs, row) -> {
             List<Attachment> attachmentList1 = new ArrayList<>();
-             Array array = rs.getArray(1);
-             Type listType = new TypeToken<List<Attachment>>(){}.getType();
-             attachmentList1 = new Gson().fromJson(array.toString(), listType);
-             return attachmentList1;
+            Array array = rs.getArray(1);
+            Type listType = new TypeToken<List<Attachment>>(){}.getType();
+            attachmentList1 = new Gson().fromJson(array.toString(), listType);
+            return attachmentList1;
         });
-         return attachmentList;
+        return attachmentList;
     }
 
     public List<Task> getTaskByLessonId(UUID lessonID){

@@ -47,21 +47,21 @@ public class CourseService {
 
 
 
-    public String addCourse(CourseDto courseDto) {
-        if (courseDto.getId() != null) {
-            if (courseDao.editCourse(courseDto) != 0) {
-                return "Successfully edited!";
-            } else {
-                return "Could not edited!";
-            }
-        } else {
-            if (!courseDao.addCourse(courseDto).equals(null)) {
-                return "Successfully added!";
-            } else {
-                return "Could not added!";
-            }
-        }
-    }
+//    public String addCourse(CourseDto courseDto) {
+//        if (courseDto.getId() != null) {
+//            if (courseDao.editCourse(courseDto) != 0) {
+//                return "Successfully edited!";
+//            } else {
+//                return "Could not edited!";
+//            }
+//        } else {
+//            if (!courseDao.addCourse(courseDto).equals(null)) {
+//                return "Successfully added!";
+//            } else {
+//                return "Could not added!";
+//            }
+//        }
+//    }
 
     public String deleteCourse(UUID id) {
         if (courseDao.deleteCourse(id) == 0) {

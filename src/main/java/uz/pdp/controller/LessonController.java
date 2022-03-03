@@ -62,7 +62,7 @@ public class LessonController {
         UUID id1 =UUID.fromString(id);
         LessonDto lessonById = lessonService.getLessonById(id1);
         model.addAttribute("authors",userService.getAllMentors());
-        model.addAttribute("modules",moduleDao.getAllModules());
+//        model.addAttribute("modules",moduleDao.getAllModules());
         model.addAttribute("selectLesson",lessonById);
         return "lesson-form";
     }
@@ -82,7 +82,7 @@ public class LessonController {
 //    }
     @GetMapping("/addLesson")
     public String getLesson(Model model){
-        model.addAttribute("modules",moduleDao.getAllModules());
+//        model.addAttribute("modules",moduleDao.getAllModules());
         return "lesson-form";
     }
     @GetMapping("/addLesson/{moduleId}")

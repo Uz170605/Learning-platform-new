@@ -59,11 +59,12 @@
                         <th scope="row"> ⚫️</th>
                         <td>${course.name}</td>
                         <td>${course.status}</td>
-                        <td><a href="#/${course.id}">modules</a></td>
+                        <td><a href="/modules/courses_modules?courseId=${course.id}">modules</a></td>
                         <td><a href="/courses/editCourse/${course.id}">edit</a></td>
                         <td>
                                 <c:if test="${course.active==false}">
                                     <a href="/courses/deleteCourses/${course.id}">delete</a>
+
                                 </c:if>
                         </td>
                         <td>
