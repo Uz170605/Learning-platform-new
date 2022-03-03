@@ -27,19 +27,19 @@
 
         <form action="/lessons/addLessonToModule" method="get" class="mt-5 mb-5">
             <div class="form-group">
-                <input hidden value="${selectLesson.id ==null ? null:selectLesson.id}" name="id" type="text" class="form-control">
+                <input hidden value="${selectLesson.id ==null ? null:selectLesson.id}" name="lessonId" type="text" class="form-control">
             </div>
 <%--            <div class="form-group">--%>
 <%--                <input hidden value="${moduleId}" name="id" type="text" class="form-control">--%>
 <%--            </div>--%>
             <div class="form-group">
                 <label for="lessonName"> Lesson Title: </label>
-                <input  name="title" type="text" class="form-control"
+                <input  name="lessonTitle" type="text" class="form-control"
                        id="lessonName" value="${selectLesson.title}"
                        placeholder="Enter lesson title here">
             </div>
             <div class="form-group">
-                <input hidden value="${moduleId}" name="module_id" type="text"
+                <input hidden value="${moduleId}" name="moduleId" type="text"
                        class="form-control">
             </div>
 <%--            <div class="form-group">--%>
@@ -73,19 +73,19 @@
             <h5>Add Task: </h5>
             <div class="form-group">
                 <label for="lessonName8">Title: </label>
-                <input  name="title" type="text" class="form-control"
+                <input  name="taskTitle" type="text" class="form-control"
                         id="lessonName8"
                         placeholder="Enter task title here">
             </div>
             <div class="form-group">
                 <label for="lessonName1">Difficulty degree: </label>
-                <input  name="difficulty_degree" type="number" class="form-control"
+                <input  name="taskDegree" type="number" class="form-control"
                         id="lessonName1"
                         placeholder="Enter task difficulty degree here">
             </div>
             <div class="form-group">
                 <label for="lessonName12">Grade: </label>
-                <input  name="grade" type="number" class="form-control"
+                <input  name="taskGrade" type="number" class="form-control"
                         id="lessonName12"
                         placeholder="Enter students grade">
             </div>
@@ -94,7 +94,7 @@
                 <%--        <input   name="body" type="text" class="form-control"--%>
                 <%--                id="lessonName4"--%>
                 <%--                placeholder="Enter task body here">--%>
-                <textarea id="lessonName4" name="body" type="text" class="form-control"
+                <textarea id="lessonName4" name="taskBody" type="text" class="form-control"
                           placeholder="Enter task body here">
 
         </textarea>
@@ -102,7 +102,7 @@
             <h5>Add Video: </h5>
             <div class="form-group">
                 <label for="lessonName7">Video link: </label>
-                <input  name="file_path" type="text" class="form-control"
+                <input  name="lessonVideoPath" type="text" class="form-control"
                         id="lessonName7"
                         placeholder="Enter video link here">
             </div>
@@ -111,7 +111,7 @@
                        class="form-control">
             </div>
             <button type="submit" class="btn btn-success">Save</button>
-            <a href="/lessons/byModuleId/${selectLesson.moduleDto.id}" class="btn btn-success
+            <a href="/lessons/byModuleId/${moduleId}" class="btn btn-success
                       mr-3">Back</a>
         </form>
 
