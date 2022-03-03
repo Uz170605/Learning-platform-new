@@ -142,8 +142,13 @@ public class CourseController {
     }
 
     @GetMapping("/course-table")
-    public String mentorCourses(Model model) {
-        model.addAttribute("courses", courseDao.getAllCourse());
+    public String mentorCourses(Model model, HttpServletRequest request) {
+        UUID uuid = loginService.sessionGetEmail(request, role);
+        if (uuid == null) {
+            model.addAttribute("firstPassword", "Enter the password first");
+            return "/login";
+        }
+        model.addAttribute("courses", courseDao.getAllCourse(uuid));
         return "course-table";
     }
 
@@ -231,6 +236,14 @@ public class CourseController {
         }
         return "redirect:/courses/select-mentor";
     }
+
+
+
+
+
+    //todo by course and module
+
+
 
 
 }

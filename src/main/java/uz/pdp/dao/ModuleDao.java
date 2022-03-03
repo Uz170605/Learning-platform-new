@@ -52,11 +52,11 @@ public class ModuleDao {
         String lessonId = jdbcTemplate.queryForObject(lessonSql, (rs, rowNum) -> rs.getString(
                 "id"));
         UUID lessonUUID = UUID.fromString(Objects.requireNonNull(lessonId));
-        String attachmentSql = "insert into attachment(file_name,file_type,lesson_id)values " +
+        String attachmentSql = "insert into attachment(video_path,file_type,lesson_id)values " +
                 "('" + mentorCourseDto.getLessonVideoPath() + "','" + "video/mp4" + "','" + lessonUUID + "')";
         int check = 0;
         check = jdbcTemplate.update(attachmentSql);
-        String taskSql="insert into tasks(title,difficult_degree,grade,body,lesson_id) values " +
+        String taskSql="insert into tasks(title,difficulty_degree,grade,body,lesson_id) values " +
                 "('"+mentorCourseDto.getTaskTitle()+"',"+mentorCourseDto.getTaskDegree()+","+mentorCourseDto.getTaskGrade()+
                 ",'"+mentorCourseDto.getTaskBody()+"','"+lessonUUID+"')";
         check=jdbcTemplate.update(taskSql);
@@ -80,10 +80,9 @@ public class ModuleDao {
     }
 
     public int editModuleMentor(MentorCourseDto mentorCourseDto) {
-        String courseId = "63efece5-3fef-433d-a164-d64c7b357135";
         String updateSql = "update modules set name = '" + mentorCourseDto.getModuleName() + "',price " +
                 "=" + mentorCourseDto.getModulePrice() + "\n" +
-                "              ,course_id ='" + courseId + "' where id='" + mentorCourseDto.getModuleId() + "'";
+                   " where id='" + mentorCourseDto.getModuleId() + "'";
         return jdbcTemplate.update(updateSql);
     }
 
