@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="zxx">
+<html class="no-js" lang="zxx" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -53,7 +53,7 @@
                             <!-- Logo -->
                             <div class="col-xl-2 col-lg-2">
                                 <div class="logo">
-                                    <a href="index.html"><img src="/assets/img/logo/logo.png" alt=""></a>
+                                    <a href="/openHomePage"><img src="/assets/img/logo/logo.png" alt=""></a>
                                 </div>
                             </div>
                             <div class="col-xl-10 col-lg-10">
@@ -62,7 +62,7 @@
                                     <div class="main-menu d-none d-lg-block">
                                         <nav>
                                             <ul id="navigation">                                                                                          
-                                                <li class="active" ><a href="index.html">Home</a></li>
+                                                <li class="active" ><a href="/openHomePage">Home</a></li>
                                                 <li><a href="courses.html">Courses</a></li>
                                                 <li><a href="about.html">About</a></li>
                                                 <li><a href="#">Blog</a>
@@ -164,17 +164,27 @@
                 </div>
                 <div class="courses-actives">
                     <!-- Single -->
+                    <div th:each="course:${courseList}">
+
+
                     <div class="properties pb-20">
                         <div class="properties__card">
                             <div class="properties__img overlay1">
-                                <a href="#"><img src="/assets/img/gallery/featured1.png" alt=""></a>
+<!--                                <a href="#"><img src="/assets/img/gallery/featured1.png" alt=""></a>-->
+                                <a th:href="@{'/openHomePage/selectCourse/'+${course.id}}">
+                                    <!--/*@thymesVar id="course" type="uz.pdp.dto.CourseDto"*/-->
+                                <img th:src="|data:image/png;base64,${course.image}|" alt="" style="width: 360px; height: 360px;">
+                                </a>
                             </div>
                             <div class="properties__caption">
                                 <p>User Experience</p>
-                                <h3><a href="#">Fundamental of UX for Application design</a></h3>
-                                <p>The automated process all your website tasks. Discover tools and techniques to engage effectively with vulnerable children and young people.
+                                <h3>
+                                    <!--/*@thymesVar id="name" type="uz.pdp.dto.CourseDto"*/-->
+                                    <a href="#" th:text="${course.name}"/>
+                                </h3>
 
-                                </p>
+                                <!--/*@thymesVar id="description" type="uz.pdp.dto.CourseDto"*/-->
+                                <p th:text="${course.description}"></p>
                                 <div class="properties__footer d-flex justify-content-between align-items-center">
                                     <div class="restaurant-name">
                                         <div class="rating">
@@ -187,112 +197,16 @@
                                         <p><span>(4.5)</span> based on 120</p>
                                     </div>
                                     <div class="price">
-                                        <span>$135</span>
+                                        <span th:text="'$'+${course.price}"></span>
                                     </div>
                                 </div>
-                                <a href="#" class="border-btn border-btn2">Find out more</a>
+                                <a th:href="@{'/openHomePage/selectCourse/'+${course.id}}" class="border-btn border-btn2">Find out more</a>
                             </div>
 
                         </div>
                     </div>
-                    <!-- Single -->
-                    <!-- Single -->
-                    <div class="properties pb-20">
-                        <div class="properties__card">
-                            <div class="properties__img overlay1">
-                                <a href="#"><img src="/assets/img/gallery/featured2.png" alt=""></a>
-                            </div>
-                            <div class="properties__caption">
-                                <p>User Experience</p>
-                                <h3><a href="#">Fundamental of UX for Application design</a></h3>
-                                <p>The automated process all your website tasks. Discover tools and techniques to engage effectively with vulnerable children and young people.
-                                </p>
-                                <div class="properties__footer d-flex justify-content-between align-items-center">
-                                    <div class="restaurant-name">
-                                        <div class="rating">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star-half"></i>
-                                        </div>
-                                        <p><span>(4.5)</span> based on 120</p>
-                                    </div>
-                                    <div class="price">
-                                        <span>$135</span>
-                                    </div>
-                                </div>
-                                <a href="#" class="border-btn border-btn2">Find out more</a>
-                            </div>
-                        </div>
+
                     </div>
-                    <!-- Single -->
-                    <!-- Single -->
-                    <div class="properties pb-20">
-                        <div class="properties__card">
-                            <div class="properties__img overlay1">
-                                <a href="#"><img src="/assets/img/gallery/featured3.png" alt=""></a>
-                            </div>
-                            <div class="properties__caption">
-                                <p>User Experience</p>
-                                <h3><a href="#">Fundamental of UX for Application design</a></h3>
-                                <p>The automated process all your website tasks. Discover tools and techniques to engage effectively with vulnerable children and young people.
-
-                                </p>
-                                <div class="properties__footer d-flex justify-content-between align-items-center">
-                                    <div class="restaurant-name">
-                                        <div class="rating">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star-half"></i>
-                                        </div>
-                                        <p><span>(4.5)</span> based on 120</p>
-                                    </div>
-                                    <div class="price">
-                                        <span>$135</span>
-                                    </div>
-                                </div>
-                                <a href="#" class="border-btn border-btn2">Find out more</a>
-                            </div>
-
-                        </div>
-                    </div>
-                    <!-- Single -->
-                    <!-- Single -->
-                    <div class="properties pb-20">
-                        <div class="properties__card">
-                            <div class="properties__img overlay1">
-                                <a href="#"><img src="/assets/img/gallery/featured2.png" alt=""></a>
-                            </div>
-                            <div class="properties__caption">
-                                <p>User Experience</p>
-                                <h3><a href="#">Fundamental of UX for Application design</a></h3>
-                                <p>The automated process all your website tasks. Discover tools and techniques to engage effectively with vulnerable children and young people.
-
-                                </p>
-                                <div class="properties__footer d-flex justify-content-between align-items-center">
-                                    <div class="restaurant-name">
-                                        <div class="rating">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star-half"></i>
-                                        </div>
-                                        <p><span>(4.5)</span> based on 120</p>
-                                    </div>
-                                    <div class="price">
-                                        <span>$135</span>
-                                    </div>
-                                </div>
-                                <a href="#" class="border-btn border-btn2">Find out more</a>
-                            </div>
-
-                        </div>
-                    </div>
-                    <!-- Single -->
                 </div>
             </div>
         </div>
@@ -537,48 +451,13 @@
                         </div>
                         <div class="cat-cap">
                                 <!--/*@thymesVar id="firstName" type="uz.pdp.dto.UserDto"*/-->
-                            <h5> <a href="services.html" th:text="${mentor.firstName}"></a></h5>
+                            <h5> <a  href="services.html" th:style="'pointer-events: none'" th:text="${mentor.firstName}"></a></h5>
                            <h5><a href="services.html" th:text="${mentor.lastName}"></a></h5>
                             <p th:text="${mentor.bio}"></p>
                         </div>
                     </div>
                     </div>
-<!--                    <div class="single-cat text-center">-->
-<!--                        <div class="cat-icon">-->
-<!--                            <img src="/assets/img/gallery/team2.png" alt="">-->
-<!--                        </div>-->
-<!--                        <div class="cat-cap">-->
-<!--                            <h5><a href="services.html">Mr. Uttom</a></h5>-->
-<!--                            <p>The automated process all your website tasks.</p>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="single-cat text-center">-->
-<!--                        <div class="cat-icon">-->
-<!--                            <img src="/assets/img/gallery/team3.png" alt="">-->
-<!--                        </div>-->
-<!--                        <div class="cat-cap">-->
-<!--                            <h5><a href="services.html">Mr. Shakil</a></h5>-->
-<!--                            <p>The automated process all your website tasks.</p>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="single-cat text-center">-->
-<!--                        <div class="cat-icon">-->
-<!--                            <img src="/assets/img/gallery/team4.png" alt="">-->
-<!--                        </div>-->
-<!--                        <div class="cat-cap">-->
-<!--                            <h5><a href="services.html">Mr. Arafat</a></h5>-->
-<!--                            <p>The automated process all your website tasks.</p>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="single-cat text-center">-->
-<!--                        <div class="cat-icon">-->
-<!--                            <img src="/assets/img/gallery/team3.png" alt="">-->
-<!--                        </div>-->
-<!--                        <div class="cat-cap">-->
-<!--                            <h5><a href="services.html">Mr. saiful</a></h5>-->
-<!--                            <p>The automated process all your website tasks.</p>-->
-<!--                        </div>-->
-<!--                    </div>-->
+
                 </div>
             </div>
         </section>

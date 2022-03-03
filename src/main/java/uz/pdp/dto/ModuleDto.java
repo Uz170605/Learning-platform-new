@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,4 +16,5 @@ public class ModuleDto {
     private double price;
     private UUID courseId;
     private boolean isActive;
+    private List<LessonDto> lessonList;
 }

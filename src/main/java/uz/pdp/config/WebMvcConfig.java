@@ -92,7 +92,7 @@ public class WebMvcConfig implements WebMvcConfigurer, ApplicationContextAware {
     public ThymeleafViewResolver thymeleafViewResolver(){
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
-        viewResolver.setViewNames(new String[] {"index","login","user","selectRole","register","*.html", "*th"});
+        viewResolver.setViewNames(new String[] {"index","my-courses","login","user","selectRole","select-course","mentor","register","my-modules","*.html", "*th"});
         viewResolver.setOrder(1);
         return viewResolver;
     }
@@ -141,7 +141,7 @@ public class WebMvcConfig implements WebMvcConfigurer, ApplicationContextAware {
         dataSource.setUrl("jdbc:postgresql://localhost:5432/learning_platform");
         dataSource.setUsername("postgres");
 
-        dataSource.setPassword("akbarali");
+        dataSource.setPassword("root123");
 
 
         return new JdbcTemplate(dataSource);

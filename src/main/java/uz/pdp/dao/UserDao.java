@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import uz.pdp.dto.CourseDto;
+import uz.pdp.dto.ModuleDto;
 import uz.pdp.dto.UserDto;
 import uz.pdp.model.Role;
 
@@ -63,12 +64,15 @@ public class UserDao {
             userDto.setEmail(rs.getString(5));
             userDto.setPassword(rs.getString(6));
             userDto.setBio(rs.getString(7));
-            Array course = rs.getArray(8);
-
-            Type type = new TypeToken<ArrayList<CourseDto>>() {
-            }.getType();
-            List<CourseDto> courses = new Gson().fromJson(course.toString(), type);
-            userDto.setCourses(courses);
+            byte[] encode = Base64.getEncoder().encode(rs.getBytes(8));
+            String base64Encode=null;
+            try {
+                base64Encode = new String(encode, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            userDto.setImage(base64Encode);
+            userDto.setBalance(rs.getDouble(9));
             return userDto;
         });
     }
@@ -194,5 +198,53 @@ public class UserDao {
 //        return jdbcTemplate.queryForObject(sqlQuery, (rs, row) -> rs.getInt(1));
 //    }
         return 0;
+    }
+
+    public List<UserDto> getCourseAuthors(String id) {
+        UUID courseId=UUID.fromString(id);
+        String sqlQuery = "Select * from get_course_authors where course_id='"+courseId+"';";
+        List<UserDto> getUserDb = jdbcTemplate.query(sqlQuery, (rs, row) -> {
+            UserDto userDto = new UserDto();
+            userDto.setId(UUID.fromString(rs.getString(2)));
+            userDto.setFirstName(rs.getString(3));
+            userDto.setLastName(rs.getString(4));
+            userDto.setPhoneNumber(rs.getString(5));
+            userDto.setEmail(rs.getString(6));
+            userDto.setPassword(rs.getString(7));
+            userDto.setBio(rs.getString(8));
+            byte[] encode = Base64.getEncoder().encode(rs.getBytes(12));
+            String base64Encode=null;
+            try {
+                base64Encode = new String(encode, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            userDto.setImage(base64Encode);
+            return userDto;
+        });
+        return getUserDb;
+    }
+
+    public List<CourseDto> getMyCourse(UUID userId) {
+      String sql="Select * from get_user_all_courses where user_id='"+userId+"';";
+      return jdbcTemplate.query(sql, (rs, rowNum) -> {
+         CourseDto courseDto = new CourseDto();
+         courseDto.setName(rs.getString(1));
+         courseDto.setDescription(rs.getString(2));
+          byte[] encode = Base64.getEncoder().encode(rs.getBytes(3));
+          String base64Encode=null;
+          try {
+              base64Encode = new String(encode, "UTF-8");
+          } catch (UnsupportedEncodingException e) {
+              e.printStackTrace();
+          }
+          courseDto.setImage(base64Encode);
+          Array module = rs.getArray(4);
+          Type type = new TypeToken<ArrayList<ModuleDto>>() {
+          }.getType();
+          List<ModuleDto> moduleList = new Gson().fromJson(module.toString(), type);
+          courseDto.setModule(moduleList);
+          return courseDto;
+      });
     }
 }

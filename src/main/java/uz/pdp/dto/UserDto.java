@@ -23,4 +23,5 @@ public class UserDto {
     private UUID[] role;
     private List<Role> roles;
     private String image;
+    private Double balance;
 }

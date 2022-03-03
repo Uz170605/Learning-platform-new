@@ -29,7 +29,7 @@ public class LoginService {
     }
 
     public int userRegister(UserDto userDto) {
-        if (userDto == null) return 0;
+        if (userDto == null) return 1;
         UUID[]roles = {UUID.fromString(loginDao.roleId())};
 
 

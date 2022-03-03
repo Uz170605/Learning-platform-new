@@ -6,15 +6,15 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import uz.pdp.dto.CourseDto;
-import uz.pdp.dto.MentorCourseDto;
-import uz.pdp.dto.ModuleDto;
-import uz.pdp.dto.UserDto;
+import uz.pdp.dto.*;
 
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.sql.Array;
 import java.sql.PreparedStatement;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class CourseDao {
@@ -76,7 +76,7 @@ public class CourseDao {
     }
 
     public int deleteCourse(UUID id) {
-        String sqlQuery1 = "Delete from authors_courses where course_id='" + id + "'";
+        String sqlQuery1 = "Delete from authors_modules where module_id='" + id + "'";
         int res = jdbcTemplate.update(sqlQuery1);
         String sqlQuery = "Delete from courses where id ='" + id + "'";
         int res1 = jdbcTemplate.update(sqlQuery);
@@ -111,13 +111,13 @@ public class CourseDao {
         int res2 = 0;
         int res = 0;
         if (courseDto.getAuthorsId().length != 0) {
-            String sqlQuery1 = "Delete from authors_courses where course_id='" + courseDto.getId() + "'";
+            String sqlQuery1 = "Delete from authors_modules where module_id ='" + courseDto.getId() + "'";
             res = jdbcTemplate.update(sqlQuery1);
             for (UUID uuid : courseDto.getAuthorsId()) {
-                res2 = jdbcTemplate.update("Insert INTO authors_courses values ('" + uuid + "','" + courseDto.getId() + "')");
+                res2 = jdbcTemplate.update("Insert INTO authors_modules values ('" + uuid + "','" + courseDto.getId() + "')");
             }
         }
-        String sqlQuery = "Update courses Set name='" + courseDto.getName() + "', price=" + courseDto.getPrice() + ", is_active =" + courseDto.isActive() + ", description='" + courseDto.getDescription() + "', updated_at=now()  where id='" + courseDto.getId() + "'";
+        String sqlQuery = "Update courses Set name='" + courseDto.getName() + "',  is_active =" + courseDto.isActive() + ", description='" + courseDto.getDescription() + "', updated_at=now()  where id='" + courseDto.getId() + "'";
         int res1 = jdbcTemplate.update(sqlQuery);
         return res1 + (res - res2);
     }
@@ -227,8 +227,8 @@ public class CourseDao {
 
         UUID lessonUuid = UUID.fromString(Objects.requireNonNull(lessonId));
 
-        String attachmentQuery = "insert into attachment(video_path, lesson_id, file_type)" +
-                " values ('" + courseDto.getLessonVideoPath() + "', '" + lessonUuid + "', '" + "video/mp4" + "')";
+        String attachmentQuery = "insert into attachment(video_path, lesson_id)" +
+                " values ('" + courseDto.getLessonVideoPath() + "', '" + lessonUuid + "')";
 
         int check = jdbcTemplate.update(attachmentQuery);
 
@@ -324,5 +324,80 @@ public class CourseDao {
                 "user_id, course_id, description" +
                 ") values ('"+userId+"', '"+courseId+"', '"+message+"') ";
         return jdbcTemplate.update(query);
+    }
+
+    public List<CourseDto> getAllCourseForIndex() {
+        String sql="SELECT c.name, c.is_active, c.created_at, c.updated_at, c.id, c.description, c.image, c.status, json_agg(row_to_json(m)) as module FROM courses c " +
+                "join modules m on c.id = m.course_id where c.is_active=true group by c.name, c.is_active, c.created_at, c.id";
+        List<CourseDto> courseDtoList = jdbcTemplate.query(sql,(rs, rowNum) -> {
+           CourseDto courseDto = new CourseDto();
+           courseDto.setId(UUID.fromString(rs.getString(5)));
+           courseDto.setName(rs.getString(1));
+           courseDto.setDescription(rs.getString(6));
+            byte[] encode = Base64.getEncoder().encode(rs.getBytes(7));
+            String base64Encode=null;
+            try {
+                base64Encode = new String(encode, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            courseDto.setImage(base64Encode);
+            Array module = rs.getArray(9);
+           Type type = new TypeToken<ArrayList<ModuleDto>>() {
+             }.getType();
+             List<ModuleDto> moduleDtoList = new Gson().fromJson(module.toString(), type);
+            Double coursePrice = Double.valueOf(0);
+            for (ModuleDto moduleDto : moduleDtoList) {
+                coursePrice+=moduleDto.getPrice();
+            }
+            courseDto.setPrice(coursePrice);
+            return courseDto;
+        });
+        return courseDtoList;
+    }
+
+    public CourseAllData getCourseAllData(UUID id){
+        String sql="SELECT * FROM get_course_all_data where id='"+id+"';";
+        return jdbcTemplate.queryForObject(sql,(rs, rowNum) -> {
+           CourseAllData courseAllData = new CourseAllData();
+           courseAllData.setId(UUID.fromString(rs.getString(1)));
+           courseAllData.setName(rs.getString(2));
+           courseAllData.setIsActive(rs.getBoolean(3));
+            String created_at = rs.getTimestamp(4).toLocalDateTime().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            courseAllData.setCreated_at(created_at);
+           courseAllData.setDescription(rs.getString(5));
+            byte[] encode = Base64.getEncoder().encode(rs.getBytes(6));
+            String base64Encode=null;
+            try {
+                base64Encode = new String(encode, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+           courseAllData.setImage(base64Encode);
+            Array module = rs.getArray(7);
+            Type type = new TypeToken<ArrayList<ModuleDto>>() {
+            }.getType();
+            List<ModuleDto> moduleDtoList = new Gson().fromJson(module.toString(), type);
+           return courseAllData;
+        });
+    }
+
+    public  List<ModuleDto> getModule(UUID id){
+        String sql="SELECT * FROM get_course_module where course_id='"+id+"';";
+        return jdbcTemplate.query(sql,(rs, rowNum) -> {
+           ModuleDto moduleDto= new ModuleDto();
+           moduleDto.setId(UUID.fromString(rs.getString(1)));
+           moduleDto.setActive(rs.getBoolean(2));
+           moduleDto.setName(rs.getString(3));
+           moduleDto.setPrice(rs.getDouble(4));
+           moduleDto.setCourseId(UUID.fromString(rs.getString(5)));
+            Array lesson = rs.getArray(6);
+            Type lessonType = new TypeToken<ArrayList<LessonDto>>() {
+            }.getType();
+            List<LessonDto> lessonDtoList = new Gson().fromJson(lesson.toString(), lessonType);
+            moduleDto.setLessonList(lessonDtoList);
+           return moduleDto;
+        });
     }
 }

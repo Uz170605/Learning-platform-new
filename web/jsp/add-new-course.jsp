@@ -35,13 +35,13 @@
             <div class="form-group">
                 <label for="bio">Description: </label>
                 <textarea  name="description" type="text" class="form-control"
-                           id="bio" placeholder="Enter course description here">Text...</textarea>
+                           id="bio" placeholder="Enter course description here"></textarea>
             </div>
 
             <div class="form-group">
                 <label for="imageUpload">select course image: </label>
                 <input type="file" name="file" id="imageUpload"
-                       accept="image/jpeg"
+                       accept="image/png"
                 >
             </div>
 

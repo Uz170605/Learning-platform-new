@@ -21,4 +21,5 @@ public class CourseDto {
     private List<UserDto> authors;
     private UUID[] authorsId;
     private List<ModuleDto> module;
+    private String image;
 }

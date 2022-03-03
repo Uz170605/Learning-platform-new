@@ -3,11 +3,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.support.HttpRequestHandlerServlet;
+import uz.pdp.dao.CourseDao;
 import uz.pdp.dao.UserDao;
+import uz.pdp.dto.CourseDto;
 import uz.pdp.dto.UserDto;
 import uz.pdp.model.Role;
 import uz.pdp.service.LoginService;
 
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -20,6 +24,8 @@ public class LoginController {
     LoginService loginService;
     @Autowired
     UserDao userDao;
+    @Autowired
+     CourseDao courseDao;
 
     @GetMapping
     public String login(
@@ -39,9 +45,7 @@ public class LoginController {
                 model.addAttribute("roles", roles);
                 return "selectRole";
             }else{
-                List<UserDto> allMentors = userDao.getAllMentors();
-                model.addAttribute("mentorList",allMentors);
-                return "user";
+                return "redirect:/userPanel";
             }
         }
         model.addAttribute("error", "password or email invalid");
@@ -49,14 +53,14 @@ public class LoginController {
     }
 
     @PostMapping
-    public String saveUser(UserDto userDto,Model model){
+    public String saveUser(UserDto userDto, Model model,  HttpServletRequest request){
         int check = loginService.userRegister(userDto);
         if(check==0){
-            List<UserDto> allMentors = userDao.getAllMentors();
-            model.addAttribute("mentorList",allMentors);
-            return "user";
+            HttpSession session = request.getSession();
+            session.setAttribute("username", userDto.getEmail());
+            session.getMaxInactiveInterval();
+            return "redirect:/userPanel";
         }
-
         model.addAttribute("error","There is a problem with the registration. Please try again");
         return "register";
     }
@@ -65,17 +69,14 @@ public class LoginController {
     public String role(@PathVariable(required = false) UUID roleId,Model model) {
         String role = loginService.role(roleId);
         if (role.equals("MENTOR")) {
-            return "redirect:/mentor";
+            return "redirect:/mentors";
         } else if (role.equals("ADMIN")) {
             return "redirect:/admin";
         } else if (role.equals("SUPERADMIN")) {
 
         }
-        List<UserDto> allMentors = userDao.getAllMentors();
-        model.addAttribute("mentorList",allMentors);
-        return "user";
+        return "redirect:/userPanel";
     }
-
     @GetMapping("/logout")
     public String logout(HttpServletRequest request){
         HttpSession session = request.getSession();
