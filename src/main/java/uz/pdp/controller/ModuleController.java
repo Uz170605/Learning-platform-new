@@ -37,11 +37,14 @@ public class ModuleController {
         if (userUUID == null) {
             return "/login";
         }
+        String id = courseId;
         HttpSession session = request.getSession();
-        session.setAttribute("courseId",courseId);
+        if(courseId!=null){
+       session.setAttribute("courseId",courseId);
+        }else id = (String) session.getAttribute("courseId");
 
         List<MentorCourseDto> getAllModules =
-                moduleService.getAllModulesFromDb(UUID.fromString(courseId),userUUID );
+                moduleService.getAllModulesFromDb(UUID.fromString(id),userUUID );
         model.addAttribute("moduleList", getAllModules);
         return "view-modules";
     }
@@ -101,9 +104,12 @@ public class ModuleController {
             return "/login";
         }
         else {
+            if(message==null){
+                return "mentor-send-module-message-admin";
+            }
             int dsck = moduleDao.sendMessage(userUUID, message, id);
             model.addAttribute("message",dsck);
-            return "mentor-send-module-message-admin";
+            return "redirect:/modules/courses_modules";
         }
     }
 }

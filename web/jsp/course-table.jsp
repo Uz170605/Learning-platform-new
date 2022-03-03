@@ -77,7 +77,7 @@
                         <c:if test="${course.status == 'Process'}">
                             <td>${course.status}</td>
                         </c:if>
-                        <td><a href="#/${course.id}" class="btn btn-success">modules</a></td>
+                        <td><a href="/modules/courses_modules?courseId=${course.id}" class="btn btn-success">modules</a></td>
                         <td><a href="/courses/editCourse/${course.id} " class="btn btn-warning">edit</a></td>
                         <td>
                             <c:if test="${course.active==false}">

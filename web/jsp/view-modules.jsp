@@ -67,18 +67,19 @@
                            class="btn btn-warning">Edit</a>
                         </td>
                         <td>
-                            <c:if test="${module._active==false}">
-                                <a href="/modules/delete/${module.moduleId}" class="btn btn-danger">
+
+                                <a href="/modules/delete/${module.moduleId}" class="btn btn-danger" <c:if test="${module._active==true}"> style="pointer-events: none;"</c:if>>
                                     Delete</a>
-                            </c:if>
+
                         </td>
                             <td>
 
-                                <c:if test="${module._active==true}" >Send</c:if>
-                                    <a
+
+                                    <a <c:if test="${module._active==true}">style="pointer-events: none;" </c:if>
                                             href="/modules/module_message/${module.moduleId}"
                                             class="btn btn-primary">Send
                                     </a>
+
                             </td>
                     </tr>
                 </c:forEach>

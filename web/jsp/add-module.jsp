@@ -44,41 +44,41 @@
 
             <div class="form-group">
                 <label for="ModulePrice">Module Price</label>
-                <input name="modulePrice" type="number" class="form-group" id="ModulePrice">
+                <input name="modulePrice" type="number" class="form-control" id="ModulePrice">
             </div>
 
 
             <div class="form-group">
                 <label for="LessonTitle">Lesson Tittle</label>
-                <input name="lessonTitle" type="text" class="form-group" id="LessonTitle">
+                <input name="lessonTitle" type="text" class="form-control" id="LessonTitle">
             </div>
 
 
             <div class="form-group">
             <label for="LessonVideoPath" >Lesson Video Path</label>
-            <input name="lessonVideoPath" type="text" class="form-group" id="LessonVideoPath">
+            <input name="lessonVideoPath" type="text" class="form-control" id="LessonVideoPath">
             </div>
 
 
             <div class="form-group">
                 <label for="TaskTitle" >Task Title</label>
-                <input name="taskTitle" type="text" class="form-group" id="TaskTitle">
+                <input name="taskTitle" type="text" class="form-control" id="TaskTitle">
             </div>
 
 
             <div class="form-group">
                 <label for="TaskDegree">Task Degree</label>
-                <input name="taskDegree" type="number" class="form-group" id="TaskDegree">
+                <input name="taskDegree" type="number" class="form-control" id="TaskDegree">
             </div>
 
             <div class="form-group">
                 <label for="TaskGrade">Task Grade</label>
-                <input name="taskGrade" type="number" class="form-group" id="TaskGrade">
+                <input name="taskGrade" type="number" class="form-control" id="TaskGrade">
             </div>
 
             <div class="form-group">
                 <label for="TaskBody">Task Body</label>
-                <textarea name="taskBody" id="TaskBody" placeholder="Enter task body...."></textarea>
+                <textarea class="form-control" name="taskBody" id="TaskBody" placeholder="Enter task body...."></textarea>
             </div>
             <button type="submit" class="btn btn-success">Save</button>
         </form>
