@@ -51,10 +51,14 @@
                 placeholder="Enter students grade">
     </div>
     <div class="form-group">
-        <label for="lessonName4">Task body: </label>
-        <input  name="body" type="text" class="form-control"
-                id="lessonName4"
-                placeholder="Enter task body here">
+        <label  for="lessonName4">Task body: </label>
+<%--        <input   name="body" type="text" class="form-control"--%>
+<%--                id="lessonName4"--%>
+<%--                placeholder="Enter task body here">--%>
+        <textarea id="lessonName4" name="body" type="text" class="form-control"
+                  placeholder="Enter task body here">
+
+        </textarea>
     </div>
             <div class="form-group">
                 <input hidden value="${moduleId}" name="module_id" type="text"
