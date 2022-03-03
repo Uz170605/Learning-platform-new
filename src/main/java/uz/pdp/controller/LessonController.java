@@ -90,6 +90,7 @@ public class LessonController {
         UUID modulId = UUID.fromString(moduleId);
         model.addAttribute("moduleId",modulId);
         return "lesson-form-by-module-id";
+
     }
 
     @PostMapping
