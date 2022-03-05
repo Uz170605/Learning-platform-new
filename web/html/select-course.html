@@ -153,7 +153,7 @@
                                       <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse"  aria-labelledby=    "panelsStayOpen-headingTwo">
                                           <div class="accordion-body">
                                               <h1 th:text="'Module lessons'" th:style="'color: rgb(157,94,255); padding: 0 15px'"></h1>
-                                              <ul th:each="lesson:${module.lessonList}">
+                                              <ul th:each="lesson:${module.lessons}">
                                                   <li th:text="${lesson.title}"/>
                                               </ul>
                                           </div>

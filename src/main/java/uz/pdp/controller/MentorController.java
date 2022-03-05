@@ -28,8 +28,7 @@ public class MentorController {
     public String test(Model model,HttpServletRequest request) {
         UUID uuid = loginService.sessionGetEmail(request, role);
         if (uuid == null) {
-            model.addAttribute("firstPassword", "Enter the password first");
-            return "/login";
+            return "login";
         }
         UserDto userById = userDao.getMentorById(uuid);
         List<Role> userRole = userDao.getUserRole();

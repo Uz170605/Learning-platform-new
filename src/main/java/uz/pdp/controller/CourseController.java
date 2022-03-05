@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import uz.pdp.dao.CourseDao;
 import uz.pdp.dto.CourseDto;
 import uz.pdp.dto.MentorCourseDto;
+import uz.pdp.model.Role;
 import uz.pdp.service.CourseService;
 import uz.pdp.service.LoginService;
 import uz.pdp.service.ModuleService;
@@ -39,65 +40,65 @@ public class CourseController {
     static String role = "MENTOR";
 
 
-    @GetMapping("/test")
-    public String test(
-            @RequestParam(required = false, name = "currentPage") Integer currentPage,
-            @RequestParam(required = false, name = "condition") String condition,
-            @RequestParam(required = false, name = "text") String text,
-            Model model) {
-        List<CourseDto> allCourses;
-        int interval = 6;
-        if (condition == null || condition.equals("main")) {
-            condition = "main";
-        }
-        int size = courseService.courseSize(text, condition);
-        model.addAttribute("size", size);
-        model.addAttribute("size1", (size % interval == 0 ?
-                size / interval : size / interval + 1));
-        if (currentPage == null) {
-            currentPage = 1;
-        }
-        if (text != null) {
-            condition = text;
-        }
-
-        allCourses = courseService.getAllCoursesByPage(interval, currentPage, condition, text);
-        if (text != null && size == 0) {
-            model.addAttribute("searchGoogle", "searchGoogle");
-        }
-        model.addAttribute("courseList", allCourses);
-        model.addAttribute("interval", interval);
-        model.addAttribute("condition", condition);
-        model.addAttribute("backType", "main");
-
-
-        return "taskview-tasks";
-    }
-
-
-    @GetMapping
-    public String getAllCourses(Model model,
-                                @RequestParam(required = false, name = "currentPage") Integer currentPage,  // TODO: 2/20/2022 add request param
-                                @RequestParam(required = false, name = "backType") String backType,  // TODO: 2/20/2022 add request param
-                                @RequestParam(required = false, name = "text") String text  // TODO: 2/20/2022 add request param
-    ) {
-
-        if (currentPage == null) {
-            currentPage = 1;
-        }
-        int interval = 6;
-        int size = courseService.getAllCourseTableCount(text);
-
-        int size2 = ((size % interval == 0) ? size / interval : size / interval + 1);
+//    @GetMapping("/test")
+//    public String test(
+//            @RequestParam(required = false, name = "currentPage") Integer currentPage,
+//            @RequestParam(required = false, name = "condition") String condition,
+//            @RequestParam(required = false, name = "text") String text,
+//            Model model) {
+//        List<CourseDto> allCourses;
+//        int interval = 6;
+//        if (condition == null || condition.equals("main")) {
+//            condition = "main";
+//        }
+//        int size = courseService.courseSize(text, condition);
+//        model.addAttribute("size", size);
+//        model.addAttribute("size1", (size % interval == 0 ?
+//                size / interval : size / interval + 1));
+//        if (currentPage == null) {
+//            currentPage = 1;
+//        }
+//        if (text != null) {
+//            condition = text;
+//        }
+//
+//        allCourses = courseService.getAllCoursesByPage(interval, currentPage, condition, text);
+//        if (text != null && size == 0) {
+//            model.addAttribute("searchGoogle", "searchGoogle");
+//        }
+//        model.addAttribute("courseList", allCourses);
+//        model.addAttribute("interval", interval);
+//        model.addAttribute("condition", condition);
+//        model.addAttribute("backType", "main");
+//
+//
+//        return "taskview-tasks";
+//    }
 
 
-        List<CourseDto> allCourses = courseService.getAllCourses(interval, currentPage, text);
-        model.addAttribute("courseList", allCourses);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("size2", size2);
-        model.addAttribute("size", size);
-        return "view-courses";
-    }
+//    @GetMapping
+//    public String getAllCourses(Model model,
+//                                @RequestParam(required = false, name = "currentPage") Integer currentPage,  // TODO: 2/20/2022 add request param
+//                                @RequestParam(required = false, name = "backType") String backType,  // TODO: 2/20/2022 add request param
+//                                @RequestParam(required = false, name = "text") String text  // TODO: 2/20/2022 add request param
+//    ) {
+//
+//        if (currentPage == null) {
+//            currentPage = 1;
+//        }
+//        int interval = 6;
+//        int size = courseService.getAllCourseTableCount(text);
+//
+//        int size2 = ((size % interval == 0) ? size / interval : size / interval + 1);
+//
+//
+//        List<CourseDto> allCourses = courseService.getAllCourses(interval, currentPage, text);
+//        model.addAttribute("courseList", allCourses);
+//        model.addAttribute("currentPage", currentPage);
+//        model.addAttribute("size2", size2);
+//        model.addAttribute("size", size);
+//        return "view-courses";
+//    }
 
     @GetMapping("/courseAllData/{id}")
     public String getCourseByIdWithAuthor(@PathVariable(required = false) String id, Model model,
@@ -111,14 +112,14 @@ public class CourseController {
         return "view-select-course";
     }
 
-    @GetMapping("/{id}")
-    public String getCourseById(@PathVariable(required = false) String id, Model model) {
-        UUID id1 = UUID.fromString(id);
-        CourseDto courseById = courseService.getCourseById(id1);
-        model.addAttribute("authors", userService.getAllMentors());
-        model.addAttribute("selectCourse", courseById);
-        return "course-form";
-    }
+//    @GetMapping("/{id}")
+//    public String getCourseById(@PathVariable(required = false) String id, Model model) {
+//        UUID id1 = UUID.fromString(id);
+//        CourseDto courseById = courseService.getCourseById(id1);
+//        model.addAttribute("authors", userService.getAllMentors());
+//        model.addAttribute("selectCourse", courseById);
+//        return "course-form";
+//    }
 
     @GetMapping("/addCourse")
     public String getCourse(Model model) {
@@ -126,12 +127,12 @@ public class CourseController {
         return "course-form";
     }
 
-    @PostMapping
-    public String addCourse(@ModelAttribute("courses") CourseDto courseDto, Model model) {
-        String str = courseService.addCourse(courseDto);
-        model.addAttribute("message", str);
-        return "redirect:/courses";
-    }
+//    @PostMapping
+//    public String addCourse(@ModelAttribute("courses") CourseDto courseDto, Model model) {
+//      //  String str = courseService.addCourse(courseDto);
+//      //  model.addAttribute("message", str);
+//        return "redirect:/courses";
+//    }
 
     @DeleteMapping("/{id}")
     public String deleteCourse(@PathVariable String id, Model model) {
@@ -142,8 +143,24 @@ public class CourseController {
     }
 
     @GetMapping("/course-table")
-    public String mentorCourses(Model model) {
-        model.addAttribute("courses", courseDao.getAllCourse());
+    public String mentorCourses(Model model, HttpServletRequest request) {
+        UUID uuid = loginService.sessionGetEmail(request, role);
+        if (uuid == null) {
+            model.addAttribute("firstPassword", "Enter the password first");
+            return "login";
+        }
+        List<Role> userRole = userService.getUserRole();
+        UUID roleId=null;
+        for (Role role1 : userRole) {
+            if (role1.getName().equals("MENTOR")) {
+                roleId=role1.getId();
+                break;
+            }
+        }
+        if (roleId != null) {
+            model.addAttribute("roleId",roleId);
+        }
+        model.addAttribute("courses", courseDao.getAllCourse(uuid));
         return "course-table";
     }
 
@@ -231,6 +248,14 @@ public class CourseController {
         }
         return "redirect:/courses/select-mentor";
     }
+
+
+
+
+
+    //todo by course and module
+
+
 
 
 }

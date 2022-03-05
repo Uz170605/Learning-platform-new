@@ -16,5 +16,7 @@ public class ModuleDto {
     private double price;
     private UUID courseId;
     private boolean isActive;
-    private List<LessonDto> lessonList;
+    private String status;
+    private List<LessonDto> lessons;
+    private List<UserDto> userDto;
 }

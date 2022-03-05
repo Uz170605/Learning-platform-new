@@ -18,7 +18,7 @@ public class FileUploadDao {
     JdbcTemplate jdbcTemplate;
 
     public Integer saveFileDb(UUID lessonId, String originalFilename, String contentType) {
-        String sql ="INSERT INTO attachment(file_name, file_type, lesson_id) VALUES ('"+originalFilename+"','"+contentType+"','"+lessonId+"')";
+        String sql ="INSERT INTO attachment(video_path, file_type, lesson_id) VALUES ('"+originalFilename+"','"+contentType+"','"+lessonId+"')";
         return jdbcTemplate.update(sql);
     }
 

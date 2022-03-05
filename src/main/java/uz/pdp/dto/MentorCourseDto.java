@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import java.util.UUID;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class MentorCourseDto {
     private UUID courseId;
@@ -17,12 +17,23 @@ public class MentorCourseDto {
     private byte[] courseImage;
 
     private UUID[] authorsId;
+    private List<UserDto> userDtos;
 
+    private UUID moduleId;
     private String moduleName;
     private double modulePrice;
+    private String status;
+    private boolean is_active;
+    private String moduleStatus;
 
+    private UUID lessonId;
     private String lessonTitle;
     private String lessonVideoPath;
+
+    private String taskTitle;
+    private Integer taskDegree;
+    private Integer taskGrade;
+    private String taskBody;
 
 
 }

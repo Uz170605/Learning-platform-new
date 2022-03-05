@@ -1,9 +1,11 @@
 package uz.pdp.config;
 
 
+
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +29,7 @@ import uz.pdp.dao.CourseDao;
 import uz.pdp.dao.FileDownloadDao;
 import uz.pdp.dao.LoginDao;
 import uz.pdp.dao.UserDao;
+import uz.pdp.dao.*;
 import uz.pdp.service.CourseService;
 import uz.pdp.service.UserService;
 
@@ -123,12 +126,18 @@ public class WebMvcConfig implements WebMvcConfigurer, ApplicationContextAware {
     }
 
     @Bean
+    public AdminDao adminDao(){return new AdminDao();}
+    @Bean
     public LoginDao loginDao(){return new LoginDao();}
     @Bean
     public FileDownloadDao fileDownloadDao(){
         return  new FileDownloadDao();
     }
 
+    @Bean
+    public MentorDao mentorDao(){
+        return new MentorDao();
+    }
     @Bean
     public CourseService courseService(){
         return  new CourseService();
@@ -140,7 +149,6 @@ public class WebMvcConfig implements WebMvcConfigurer, ApplicationContextAware {
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl("jdbc:postgresql://localhost:5432/learning_platform");
         dataSource.setUsername("postgres");
-
         dataSource.setPassword("root123");
 
 

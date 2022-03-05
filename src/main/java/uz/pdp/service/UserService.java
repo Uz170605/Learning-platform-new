@@ -15,6 +15,7 @@ public class UserService {
     UserDao userDao;
 
 
+
     public List<UserDto> getAllMentors() {
         List<UserDto> allMentors = userDao.getAllMentors();
         return allMentors;

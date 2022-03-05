@@ -34,17 +34,17 @@
                        id="lessonName"
                        placeholder="Enter lesson title here">
             </div>
-            <div class="form-group">
-                <label for="moduleName">Lesson module: </label>
-                <select class="custom-select custom-select-md mb-3" id="moduleName"
-                        name="moduleId">
-                    <c:forEach var="modul" items="${modules}">
-                        <option value="${modul.id}">
-                                ${modul.name}</option>
-                    </c:forEach>
+<%--            <div class="form-group">--%>
+<%--                <label for="moduleName">Lesson module: </label>--%>
+<%--                <select class="custom-select custom-select-md mb-3" id="moduleName"--%>
+<%--                        name="moduleId">--%>
+<%--                    <c:forEach var="modul" items="${modules}">--%>
+<%--                        <option value="${modul.id}">--%>
+<%--                                ${modul.name}</option>--%>
+<%--                    </c:forEach>--%>
 
-                </select>
-            </div>
+<%--                </select>--%>
+<%--            </div>--%>
 
 
 

@@ -10,7 +10,8 @@
 <html>
 <head>
     <title>Modules</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
     <script src=
@@ -19,17 +20,19 @@
 </head>
 <body>
 <div class="row ml-0 mr-0">
-    <div class="col-md-8 offset-2 mt-5">
+    <div class="col-md-10 offset-1 mt-5">
         <c:choose>
             <c:when test="${param.message !=null}">
                 <h1 style="color: #00cc00; font-family: 'Comic Sans MS'; text-align: center">${param.message}</h1>
             </c:when>
         </c:choose>
-        <a href="/modules/addModule" class="btn btn-success">+Add</a>
-        <form action="${pageContext.request.contextPath}/modules?search" class="d-flex" style="width:100%; margin-top: 20px;">
-                <input type="search" name="search" style="width: 85%;" class="form-control"
-                       placeholder="Search......">
-                <a href="/modules" class="btn btn-primary ml-3" style="width: 150px; height: 40px;">  Reset  </a>
+        <a href="/modules/select_mentor" class="btn btn-success">+Add</a>
+        <form action="${pageContext.request.contextPath}/modules?search" class="d-flex"
+              style="width:100%; margin-top: 20px;">
+            <input type="search" name="search" style="width: 85%;" class="form-control"
+                   placeholder="Search......">
+            <a href="/modules/courses_modules" class="btn btn-primary ml-3" style="width: 150px; height: 40px;">
+                Reset </a>
         </form>
         <div class="row mt-4 mr-0 ml-0">
             <table class="table table-hover table-responsive-sm table-striped">
@@ -37,27 +40,45 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Module name</th>
-                    <th scope="col">Is Active</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Price</th>
+                    <th scope="col">Add Lessons</th>
                     <th scope="col">Edit</th>
                     <th scope="col">Delete</th>
+                    <th scope="col">Send</th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach var="module" step="1" items="${moduleList}">
                     <tr>
-                        <th scope="row"> 📀 </th>
-                        <td><a href="/modules/moduleAllData/${module.id}"style="color:
-                        black;">${module.name}
-                        </a>
+                        <th scope="row"> 📀</th>
+                        <td>${module.moduleName}</td>
+                            <%--                        <td>${module.active == true ? "Active":"No active"}</td>--%>
+
+                        <td>${module.moduleStatus}</td>
+                        <td>${module.modulePrice}</td>
+                        <td><a href="/lessons/byModuleId/${module.moduleId}"
+                               class="btn btn-success">Add Lesson</a>
                         </td>
-                        <td>${module.active == true ? "Active":"No active"}</td>
-                        <td>${module.price}</td>
-                        <td><a href="/modules/${module.id}" class="btn btn-warning">Edit
-                        </a> </td>
-                        <td><button class="btn btn-danger"
-                                    onclick="makeDELETErequest('/modules/${module.id}')">Delete
-                        </button> </td>
+                        <td>
+                        <a href="/modules/editModule/${module.moduleId}"
+                           class="btn btn-warning">Edit</a>
+                        </td>
+                        <td>
+
+                                <a href="/modules/delete/${module.moduleId}" class="btn btn-danger" <c:if test="${module._active==true}"> style="pointer-events: none;"</c:if>>
+                                    Delete</a>
+
+                        </td>
+                            <td>
+
+
+                                    <a <c:if test="${module._active==true}">style="pointer-events: none;" </c:if>
+                                            href="/modules/module_message/${module.moduleId}"
+                                            class="btn btn-primary">Send
+                                    </a>
+
+                            </td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -70,10 +91,9 @@
                 </c:forEach>
             </div>
         </div>
-<a href="/courses/test" class="btn btn-primary mt-3"> Back </a>
+        <a href="/courses/course-table" class="btn btn-primary mt-3"> Back </a>
     </div>
 </div>
-
 
 
 <script>
@@ -90,7 +110,7 @@
     function makeDELETErequest(url) {
         fetch(
             url,
-            {method:'DELETE'}
+            {method: 'DELETE'}
         ).then(response => location.reload())
     }
 </script>

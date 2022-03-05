@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import uz.pdp.dto.CourseDto;
+import uz.pdp.dto.LessonDto;
 import uz.pdp.dto.ModuleDto;
 import uz.pdp.dto.UserDto;
+import uz.pdp.model.Attachment;
 import uz.pdp.model.Role;
+import uz.pdp.model.Task;
 
 import java.io.File;
 import java.io.IOException;
@@ -246,5 +249,66 @@ public class UserDao {
           courseDto.setModule(moduleList);
           return courseDto;
       });
+    }
+
+    public ModuleDto getModuleAllData(UUID uuid) {
+      String sql="SELECT * FROM get_module_by_user where id='"+uuid+"'";
+        ModuleDto moduleDto1 = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
+            ModuleDto moduleDto = new ModuleDto();
+            moduleDto.setId(UUID.fromString(rs.getString(1)));
+            moduleDto.setName(rs.getString(2));
+            return moduleDto;
+        });
+        moduleDto1.setLessons(getAllLessonForUser(uuid));
+        moduleDto1.setUserDto(getAllMentorForUser(uuid));
+        return moduleDto1;
+    }
+
+    private List<UserDto> getAllMentorForUser(UUID uuid) {
+        String sqlQuery="SELECT * from get_module_author_by_user where id='"+uuid+"'";
+        List<UserDto> getUserDb = jdbcTemplate.query(sqlQuery, (rs, row) -> {
+            UserDto userDto = new UserDto();
+            userDto.setFirstName(rs.getString(2));
+            userDto.setLastName(rs.getString(3));
+            byte[] encode = Base64.getEncoder().encode(rs.getBytes(4));
+            String base64Encode=null;
+            try {
+                base64Encode = new String(encode, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            userDto.setImage(base64Encode);
+            return userDto;
+        });
+        return getUserDb;
+    }
+
+    private List<LessonDto> getAllLessonForUser(UUID uuid) {
+        String sql="SELECT * FROM get_lesson_by_user where module_id='"+uuid+"';";
+       return jdbcTemplate.query(sql,(rs, rowNum) -> {
+            LessonDto lessonDto= new LessonDto();
+            lessonDto.setId(UUID.fromString(rs.getString(1)));
+            lessonDto.setTitle(rs.getString(2));
+           Array attachment = rs.getArray(4);
+           Type type = new TypeToken<ArrayList<Attachment>>() {
+           }.getType();
+           List<Attachment> attachmentList = new Gson().fromJson(attachment.toString(), type);
+           lessonDto.setAttachmentList(attachmentList);
+           Array task = rs.getArray(5);
+           Type taskType = new TypeToken<ArrayList<Task>>() {
+           }.getType();
+           List<Task> taskList=new Gson().fromJson(task.toString(),taskType);
+           lessonDto.setTaskList(taskList);
+           return lessonDto;
+        });
+    }
+
+    public String getLessonVideo(UUID id) {
+        String sql="SELECT video_path from attachment where id='"+id+"'";
+        return jdbcTemplate.queryForObject(sql,(rs, rowNum) -> rs.getString(1));
+    }
+    public String getLessonTitle(UUID id) {
+        String sql="SELECT title from lessons where id= (Select lesson_id from attachment where attachment.id='"+id+"')";
+        return jdbcTemplate.queryForObject(sql,(rs, rowNum) -> rs.getString(1));
     }
 }

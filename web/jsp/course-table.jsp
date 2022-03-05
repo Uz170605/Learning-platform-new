@@ -13,9 +13,21 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
-    <script src=
-                    "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js">
-    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/harvesthq/chosen/gh-pages/chosen.jquery.min.js"></script>
+
+
+<%--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">--%>
+<%--    <script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>--%>
+
+<%--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"--%>
+<%--          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">--%>
+<%--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">--%>
+<%--    <meta name='viewport' content='width=device-width, initial-scale=1'>--%>
+<%--    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>--%>
+<%--    <script src=--%>
+<%--                    "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js">--%>
+<%--    </script>--%>
 </head>
 <body>
 
@@ -28,8 +40,6 @@
         </c:choose>
         <div>
             <a href="<c:url value="/courses/select-mentor"/>" class="btn btn-success"> + Add</a>
-
-
 
 
             <form action="/users" class="d-flex mt-4">
@@ -58,37 +68,52 @@
                     <tr>
                         <th scope="row"> ⚫️</th>
                         <td>${course.name}</td>
-                        <td>${course.status}</td>
-                        <td><a href="#/${course.id}">modules</a></td>
-                        <td><a href="/courses/editCourse/${course.id}">edit</a></td>
+                        <c:if test="${course.status == 'Accepted'}">
+                            <td style="color: blue">${course.status}</td>
+                        </c:if>
+                        <c:if test="${course.status == 'Rejected'}">
+                            <td style="color: red">${course.status}</td>
+                        </c:if>
+                        <c:if test="${course.status == 'Process'}">
+                            <td>${course.status}</td>
+                        </c:if>
+                        <td><a href="/modules/courses_modules?courseId=${course.id}" class="btn btn-success">modules</a></td>
+                        <td><a href="/courses/editCourse/${course.id} " class="btn btn-warning">edit</a></td>
                         <td>
-                                <c:if test="${course.active==false}">
-                                    <a href="/courses/deleteCourses/${course.id}">delete</a>
-                                </c:if>
+                            <c:if test="${course.active==false}">
+                                <a href="/courses/deleteCourses/${course.id}" class="btn btn-danger">delete</a>
+                            </c:if>
+                            <c:if test="${course.active==true}">
+                                <a href="/courses/deleteCourses/${course.id}" class="btn btn-danger" style="pointer-events: none"
+                                   class="btn-danger">delete</a>
+                            </c:if>
                         </td>
                         <td>
                             <c:if test="${course.active==true}">
-                                send
+                                <a style="pointer-events: none" class="btn btn-primary">
+
+                                    send
+                                </a>
                             </c:if>
                             <c:if test="${course.active==false}">
-                                <a href="/courses/courseMessage/${course.id}">send</a>
+                                <a href="/courses/courseMessage/${course.id}" class="btn btn-primary">send</a>
                             </c:if>
                         </td>
 
 
-<%--                        <td><a href="/users/${user.id}" class="btn btn-warning">Edit</a></td>--%>
-<%--                        <td>--%>
-<%--                            <button class="btn btn-danger"--%>
-<%--                                    onclick="makeDELETErequest('/users/${user.id}')"> Delete--%>
-<%--                            </button>--%>
-<%--                        </td>--%>
+                            <%--                        <td><a href="/users/${user.id}" class="btn btn-warning">Edit</a></td>--%>
+                            <%--                        <td>--%>
+                            <%--                            <button class="btn btn-danger"--%>
+                            <%--                                    onclick="makeDELETErequest('/users/${user.id}')"> Delete--%>
+                            <%--                            </button>--%>
+                            <%--                        </td>--%>
                     </tr>
                 </c:forEach>
                 </tbody>
             </table>
         </div>
         <div>
-            <a href="#" class="btn btn-success">
+            <a href="/login/roleController/${roleId}" class="btn btn-success">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                      class="bi bi-house" viewBox="0 0 16 16">
                     <path fill-rule="evenodd"

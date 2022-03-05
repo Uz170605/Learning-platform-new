@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uz.pdp.model.Role;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Data
 public class UserDto {
-    private UUID id ;
+    private UUID id;
     private String firstName;
     private String lastName;
     private String phoneNumber;
@@ -24,4 +25,10 @@ public class UserDto {
     private List<Role> roles;
     private String image;
     private Double balance;
+    private List<MessageDto> messageDtos;
+    private UUID messageId;
+    private String message;
+    private UUID courseId;
+    private String time;
+
 }
