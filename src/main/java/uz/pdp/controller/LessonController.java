@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import uz.pdp.dao.LessonDao;
 import uz.pdp.dao.ModuleDao;
 import uz.pdp.dto.LessonDto;
+import uz.pdp.dto.MentorCourseDto;
 import uz.pdp.model.Attachment;
 import uz.pdp.model.Lesson;
 import uz.pdp.model.Task;
@@ -90,14 +91,15 @@ public class LessonController {
         UUID modulId = UUID.fromString(moduleId);
         model.addAttribute("moduleId",modulId);
         return "lesson-form-by-module-id";
+
     }
 
-    @PostMapping
-    public String addLesson(@ModelAttribute("lessons") LessonDto lessonDto, Model model){
-        String str = lessonService.addLesson(lessonDto);
-        model.addAttribute("message",str);
-        return "redirect:/lessons";
-    }
+//    @PostMapping
+//    public String addLesson(@ModelAttribute("lessons") LessonDto lessonDto, Model model){
+//        String str = lessonService.addLesson(lessonDto);
+//        model.addAttribute("message",str);
+//        return "redirect:/lessons";
+//    }
     @GetMapping("/delete/{id}")
     public String Cascade(@PathVariable String id, Model model){
         UUID id1=UUID.fromString(id);
@@ -139,8 +141,9 @@ public class LessonController {
         return "view-lessons-by-module-id";
     }
     @GetMapping("/addLessonToModule")
-    public String addLessonToSelectedModule(@ModelAttribute("lessons") Lesson lesson, Model model){
-        if (lesson.getId() != null){
+    public String addLessonToSelectedModule(@ModelAttribute("lessons") MentorCourseDto lesson,
+                                            Model model){
+        if (lesson.getLessonId() != null){
                 lessonDao.editLesson(lesson);
                 model.addAttribute("msg","Succesfully edited!!!");
         }else {

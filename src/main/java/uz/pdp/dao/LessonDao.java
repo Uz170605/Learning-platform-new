@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import uz.pdp.dto.LessonDto;
+import uz.pdp.dto.MentorCourseDto;
 import uz.pdp.dto.ModuleDto;
 import uz.pdp.model.Attachment;
-import uz.pdp.model.Lesson;
 import uz.pdp.model.Task;
 
 import java.lang.reflect.Type;
@@ -47,12 +47,31 @@ public class LessonDao {
 //        UUID uuid = UUID.fromString(Objects.requireNonNull(idStr));
         return jdbcTemplate.update(sqlQuery);
     }
-    public int addLessonByModuleId(Lesson lesson) {
-        String sqlQuery ="Insert into lessons(title, module_id) values('" + lesson.getTitle() +
-                "','" + lesson.getModule_id()+ "')";
+    public int addLessonByModuleId(MentorCourseDto lesson) {
+        String lessonId = "";
+        String sqlQuery ="Insert into lessons(title, module_id) values('" + lesson.getLessonTitle() +
+                "','" + lesson.getModuleId()+ "') returning id";
 //        String idStr = jdbcTemplate.queryForObject(sqlQuery, (rs, rowNum) -> rs.getString("id"));
 //        UUID uuid = UUID.fromString(Objects.requireNonNull(idStr));
-        return jdbcTemplate.update(sqlQuery);
+         lessonId = jdbcTemplate.queryForObject(sqlQuery, (rs, row) ->
+                rs.getString(1));
+         lesson.setLessonId(UUID.fromString(lessonId));
+         addVideoToLesson(lesson);
+         addTaskToLesson(lesson);
+        return 1;
+    }
+    public int addVideoToLesson(MentorCourseDto lesson){
+        String sql = "insert into attachment (file_path,file_type,lesson_id) values ('"+lesson.getLessonVideoPath()+
+                "'," +
+                "'.mp4','"+lesson.getLessonId()+"')";
+        return jdbcTemplate.update(sql);
+    }
+    public int addTaskToLesson(MentorCourseDto lesson){
+        String sql ="insert into tasks (title, difficulty_degree, grade, body, lesson_id) values" +
+                " ('"+lesson.getLessonTitle()+"',"+lesson.getTaskDegree()+","+lesson.getTaskGrade()+"," +
+                "'"+lesson.getTaskBody()+"'," +
+                "'"+lesson.getLessonId()+"')";
+        return jdbcTemplate.update(sql);
     }
 
     public int deleteLesson(UUID id) {
@@ -100,16 +119,29 @@ public class LessonDao {
         });
     }
 
-    public int editLesson(LessonDto lessonDto) {
+    public int editLesson(MentorCourseDto lesson) {
+        editTask(lesson);
+        editAttachment(lesson);
         String sqlString =
-                "update lessons set title='"+lessonDto.getTitle()+"' where id='" + lessonDto.getId() +"'";
+                "update lessons set title='"+lesson.getLessonTitle()+"' where id='" + lesson.getLessonId() +"'";
         return jdbcTemplate.update(sqlString);
     }
-    public int editLesson(Lesson lesson) {
-        String sqlString =
-                "update lessons set title='"+lesson.getTitle()+"' where id='" + lesson.getId() +"'";
-        return jdbcTemplate.update(sqlString);
+    public int editTask(MentorCourseDto lesson){
+        String sql =
+                "update tasks set title='"+lesson.getTaskTitle()+"',difficulty_degree="+lesson.getTaskDegree()+
+                ",grade="+lesson.getTaskGrade()+"," +
+                "body='"+lesson.getTaskBody()+"'";
+        return jdbcTemplate.update(sql);
     }
+    public int editAttachment(MentorCourseDto lesson){
+        String sql = "update attachment set file_path = '"+lesson.getLessonVideoPath()+"'";
+        return jdbcTemplate.update(sql);
+    }
+//    public int editLesson(Lesson lesson) {
+//        String sqlString =
+//                "update lessons set title='"+lesson.getTitle()+"' where id='" + lesson.getId() +"'";
+//        return jdbcTemplate.update(sqlString);
+//    }
 
     public List<LessonDto> getLessonsByPage(Integer currentPage){
         String sqlQuery = "select *\n" +
