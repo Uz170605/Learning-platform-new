@@ -9,9 +9,11 @@ import uz.pdp.dao.FileUploadDao;
 import uz.pdp.dao.LessonDao;
 import uz.pdp.dto.FileDto;
 import uz.pdp.dto.LessonDto;
+import uz.pdp.dto.MentorCourseDto;
 import uz.pdp.service.FileUploadService;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -113,5 +115,23 @@ public class FileUploadController {
             return "redirect:/upload/taskData";
         }
     }
+
+
+
+//    @PostMapping("/editCourse")
+//    public String editCourse(@ModelAttribute("courses") MentorCourseDto courseDto,
+//                             MultipartFile file) {
+//        if (!file.isEmpty()) {
+//            try {
+//                byte[] bytes = file.getBytes();
+//                courseDao.editCourseMentor(courseDto, bytes);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return "redirect:/courses/course-table";
+//    }
+
+
 
 }

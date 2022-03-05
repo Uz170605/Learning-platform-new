@@ -45,7 +45,7 @@
             <form action="/users" class="d-flex mt-4">
                 <input class="form-control me-2" type="search" name="text" placeholder="Search"
                        aria-label="Search">
-                <button class="btn btn-outline-warning" name="search" type="submit">Search</button>
+                <button class="btn btn-outline-warning" name="text" type="submit">Search</button>
             </form>
 
         </div>
@@ -137,7 +137,7 @@
 
             <div class="col-md-4 mt-5 d-flex">
                 <c:forEach var="j" begin="1" end="${size2   }">
-                    <a href="<c:url value="/users?currentPage=${j}"/>"
+                    <a href="<c:url value="/courses/course-table?currentPage=${j}"/>"
                        class="btn btn-info m-2 ">${j}</a>
 
                 </c:forEach>

@@ -128,8 +128,8 @@ public class CourseController {
 
     @PostMapping
     public String addCourse(@ModelAttribute("courses") CourseDto courseDto, Model model) {
-      //  String str = courseService.addCourse(courseDto);
-      //  model.addAttribute("message", str);
+        //  String str = courseService.addCourse(courseDto);
+        //  model.addAttribute("message", str);
         return "redirect:/courses";
     }
 
@@ -142,13 +142,23 @@ public class CourseController {
     }
 
     @GetMapping("/course-table")
-    public String mentorCourses(Model model, HttpServletRequest request) {
+    public String mentorCourses(Model model, HttpServletRequest request,
+                                @RequestParam(required = false, name = "currentPage") Integer currentPage,
+                                @RequestParam(required = false, name = "text") String text
+    ) {
         UUID uuid = loginService.sessionGetEmail(request, role);
         if (uuid == null) {
             model.addAttribute("firstPassword", "Enter the password first");
             return "/login";
         }
-        model.addAttribute("courses", courseDao.getAllCourse(uuid));
+        int limit = 3;
+        int size = courseService.courseSizeNew(text, uuid);
+        int buttonCount = (size % limit == 0 ? size / limit : size / limit + 1);
+        if (currentPage == null)
+            currentPage = 1;
+        model.addAttribute("size", size);
+        model.addAttribute("size2", buttonCount);
+        model.addAttribute("courses", courseDao.getAllCourse(uuid, limit, currentPage));
         return "course-table";
     }
 
@@ -191,7 +201,7 @@ public class CourseController {
                           @RequestParam(required = false, name = "message") String message,
                           HttpServletRequest request) {
         UUID userId = loginService.sessionGetEmail(request, role);
-        if (userId==null) {
+        if (userId == null) {
             return "login";
         }
         if (message == null) {
@@ -210,7 +220,7 @@ public class CourseController {
 //    }
 
     @GetMapping("/deleteCourses/{id}")
-    public String delete(@PathVariable UUID id){
+    public String delete(@PathVariable UUID id) {
         courseDao.deleteCourseMentor(id);
         return "redirect:/courses/course-table";
     }
@@ -238,12 +248,7 @@ public class CourseController {
     }
 
 
-
-
-
     //todo by course and module
-
-
 
 
 }

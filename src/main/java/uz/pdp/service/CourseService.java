@@ -36,7 +36,7 @@ public class CourseService {
             return size;
         }
         if (condition.equals("main")) {
-            return courseDao.getCourseCountByPage();
+            return courseDao.getCourseCountByPage(null);
         } else if (condition.equals("true") || condition.equals("false")) {
             boolean type = Boolean.parseBoolean(condition);
             return courseDao.getCourseCountByType(type);
@@ -81,6 +81,18 @@ public class CourseService {
             return  courseDao.getCourseCountBySearch(search);
         }
         return courseDao.getCourseCountByType();
+    }
+
+
+    public int courseSizeNew(String text, UUID authorId) {
+        if (text != null) {
+            int size = courseDao.getCourseCountBySearch(text);
+            if(size==0)
+                return 0;
+            return size;
+        }
+        else return courseDao.getCourseCountByPage( authorId);
+
     }
 
 

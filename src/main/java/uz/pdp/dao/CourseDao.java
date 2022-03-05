@@ -150,8 +150,15 @@ public class CourseDao {
     }
 
 
-    public int getCourseCountByPage() {
-        String sqlQuery = "select count (*) from courses";
+    public int getCourseCountByPage(UUID authorId) {
+        String sqlQuery = "select count(count1.id)\n" +
+                "from\n" +
+                "(select c.id\n" +
+                "from courses c\n" +
+                "         join modules m on c.id = m.course_id\n" +
+                "         join authors_modules am on m.id = am.module_id\n" +
+                "where am.author_id = '"+authorId+"'\n" +
+                "group by c.id) as count1;";
         return jdbcTemplate.queryForObject(sqlQuery, (rs, row) -> rs.getInt(1));
     }
 
@@ -247,14 +254,15 @@ public class CourseDao {
         });
     }
 
-    public List<CourseDto> getAllCourse(UUID authorId) {
+    public List<CourseDto> getAllCourse(UUID authorId, int interval, int currentPage) {
 
         String sqlQuery = "select c.id, c.name, c.status, c.is_active\n" +
                 "from courses c\n" +
                 "         join modules m on c.id = m.course_id\n" +
                 "join authors_modules am on m.id = am.module_id\n" +
                 "where am.author_id = '" + authorId + "'\n" +
-                "group by c.id;";
+                "group by c.id " +
+                "limit "+interval+" offset ("+currentPage+"-1)*"+interval+";";
 
         List<CourseDto> courseDtoListFromDb = jdbcTemplate.query(sqlQuery, (rs, row) -> {
             CourseDto courseDto = new CourseDto();
@@ -335,7 +343,7 @@ public class CourseDao {
                 "where m.id not in (select modules_id\n" +
                 "                   from users_modules\n" +
                 "                   where user_id = '" + userId + "')\n" +
-                "  and c.id = '" + moduleId + "';";
+                "  and m.is_active=true and c.id = '" + moduleId + "';";
         try {
 
             String priceStr = jdbcTemplate.queryForObject(priceQuery, (rs, row) -> {
@@ -360,7 +368,7 @@ public class CourseDao {
                     "where m.id not in (select modules_id\n" +
                     "                   from users_modules\n" +
                     "                   where user_id = '" + userId + "')\n" +
-                    "  and c.id = '" + moduleId + "';";
+                    "  and m.is_active=true and c.id = '" + moduleId + "';";
 
 
             List<UUID> courseDtoList = jdbcTemplate.query(sqlQuery, (rs, rowNum) -> {
