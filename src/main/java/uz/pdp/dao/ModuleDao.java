@@ -26,10 +26,9 @@ public class ModuleDao {
             MentorCourseDto moduleDto = new MentorCourseDto();
             moduleDto.setModuleId(UUID.fromString(rs.getString(1)));
             moduleDto.setModuleName(rs.getString(2));
-            moduleDto.setLessonTitle(rs.getString(3));
-            moduleDto.setModuleStatus(rs.getString(4));
-            moduleDto.set_active(rs.getBoolean(5));
-            moduleDto.setModulePrice(rs.getDouble(6));
+            moduleDto.setModuleStatus(rs.getString(3));
+            moduleDto.set_active(rs.getBoolean(4));
+            moduleDto.setModulePrice(rs.getDouble(5));
             return moduleDto;
         });
         return moduleDtoList;
@@ -52,8 +51,8 @@ public class ModuleDao {
         String lessonId = jdbcTemplate.queryForObject(lessonSql, (rs, rowNum) -> rs.getString(
                 "id"));
         UUID lessonUUID = UUID.fromString(Objects.requireNonNull(lessonId));
-        String attachmentSql = "insert into attachment(video_path,file_type,lesson_id)values " +
-                "('" + mentorCourseDto.getLessonVideoPath() + "','" + "video/mp4" + "','" + lessonUUID + "')";
+        String attachmentSql = "insert into attachment(video_path,lesson_id)values " +
+                "('" + mentorCourseDto.getLessonVideoPath() + "','" + lessonUUID + "')";
         int check = 0;
         check = jdbcTemplate.update(attachmentSql);
         String taskSql="insert into tasks(title,difficulty_degree,grade,body,lesson_id) values " +

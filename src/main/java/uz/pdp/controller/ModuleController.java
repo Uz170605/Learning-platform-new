@@ -35,7 +35,7 @@ public class ModuleController {
                                 Model model, HttpServletRequest request) {
         UUID userUUID = loginService.sessionGetEmail(request, role);
         if (userUUID == null) {
-            return "/login";
+            return "login";
         }
         String id = courseId;
         HttpSession session = request.getSession();
@@ -64,7 +64,6 @@ public class ModuleController {
                                      HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
-            //  String courseId= "63efece5-3fef-433d-a164-d64c7b357135";
             String courseId = (String) session.getAttribute("courseId");
             moduleService.addAndEditMethod(mentorCourseDto, UUID.fromString(courseId));
             return "redirect:/modules/courses_modules";
@@ -101,7 +100,7 @@ public class ModuleController {
                                       @RequestParam(required = false,name = "message")String message) {
         UUID userUUID = loginService.sessionGetEmail(request, role);
         if (userUUID == null) {
-            return "/login";
+            return "login";
         }
         else {
             if(message==null){
