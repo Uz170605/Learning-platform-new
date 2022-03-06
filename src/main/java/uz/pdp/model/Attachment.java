@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 public class Attachment {
     private UUID id;
-    private String file_path;
+    private String video_path;
     private UUID lesson_id;
     private UUID module_id;
 }

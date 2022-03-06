@@ -20,21 +20,11 @@
 
 <body>
      <div class="row ml-0 mr-0">
-         <div class="col-md-8 offset-2 mt-5">
-             <c:choose>
-                 <c:when test="${param.message != null}">
-                     <h1 style="color: #00cc00; font-family: 'Comic Sans MS'; text-align: center">${param.message}</h1>
-                 </c:when>
-             </c:choose>
+         <div class="col-md-10 offset-1 mt-5">
              <div class="row">
-             <table>
-                 <tr>
-         <td> <a href="/lessons/addLesson" class="btn btn-success mr-3">+Add</a> </td>
 
+        <a href="/lessons/addLesson" class="btn btn-success mr-3">+Add</a> </td>
 
-<%--          <td><a href="/upload/manualData" class="btn btn-success">Add Manual</a></td>--%>
-                 </tr>
-             </table>
              </div>
           <div class="row mt-4">
               <table class="table table-hover table-responsive-sm table-striped">

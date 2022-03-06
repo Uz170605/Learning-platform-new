@@ -20,23 +20,16 @@
 
 <body>
      <div class="row ml-0 mr-0">
-         <div class="col-md-8 offset-2 mt-5">
-             <c:choose>
-                 <c:when test="${param.message != null}">
-                     <h1 style="color: #00cc00; font-family: 'Comic Sans MS'; text-align: center">${param.message}</h1>
-                 </c:when>
-             </c:choose>
+         <div class="col-md-10 offset-1 mt-5">
              <div class="row">
-             <table>
-                 <tr>
-         <td> <a href="/lessons/addLesson/${moduleId}" class="btn btn-success mr-3">+Add</a> </td>
+
+          <a href="/lessons/addLesson/${moduleId}" class="btn btn-success mr-3">+Add</a>
 
 
 <%--          <td><a href="/upload/manualData" class="btn btn-success">Add Manual</a></td>--%>
-                 </tr>
-             </table>
+
              </div>
-          <div class="row mt-4">
+              <div class="row mt-4">
               <table class="table table-hover table-responsive-sm table-striped">
                   <thead>
                   <tr>
@@ -83,18 +76,20 @@
                 </c:forEach>
                   </tbody>
               </table>
+              </div>
               <div class="row">
-                  <div class="col-md-4 offset-4">
+                  <div class="col-md-4"></div>
+                  <div class="col-md-4 ">
                       <c:set var = "button" scope = "session" value = "${buttonCount}"/>
                       <c:forEach var = "i" begin = "1" end = "${button}">
-                          <a href="/lessons/page/${i}"  class="btn btn-success">${i}</a>
+                          <a href="/lessons/page/${i}"  class="btn btn-primary">${i}</a>
                       </c:forEach>
                   </div>
               </div>
-              <div class="row " style="margin-top: 50px;">
-              <a href="/modules"  class="btn btn-primary">Back</a>
+              <div class="row " style="margin-top: 15px;">
+              <a href="/modules/courses_modules"  class="btn btn-primary">Back</a>
               </div>
-          </div>
+
          </div>
      </div>
 

@@ -20,7 +20,7 @@
 </head>
 <body>
 <div class="row ml-0 mr-0">
-    <div class="col-md-8 offset-2 mt-5">
+    <div class="col-md-10 offset-1 mt-5">
         <c:choose>
             <c:when test="${param.message !=null}">
                 <h1 style="color: #00cc00; font-family: 'Comic Sans MS'; text-align: center">${param.message}</h1>
@@ -31,7 +31,7 @@
               style="width:100%; margin-top: 20px;">
             <input type="search" name="search" style="width: 85%;" class="form-control"
                    placeholder="Search......">
-            <a href="/modules" class="btn btn-primary ml-3" style="width: 150px; height: 40px;">
+            <a href="/modules/courses_modules" class="btn btn-primary ml-3" style="width: 150px; height: 40px;">
                 Reset </a>
         </form>
         <div class="row mt-4 mr-0 ml-0">
@@ -45,16 +45,14 @@
                     <th scope="col">Add Lessons</th>
                     <th scope="col">Edit</th>
                     <th scope="col">Delete</th>
+                    <th scope="col">Send</th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach var="module" step="1" items="${moduleList}">
                     <tr>
                         <th scope="row"> 📀</th>
-                        <td><a href="/modules/moduleAllData/${module.moduleId}"
-                               style="color:black;">${module.moduleName}
-                        </a>
-                        </td>
+                        <td>${module.moduleName}</td>
                             <%--                        <td>${module.active == true ? "Active":"No active"}</td>--%>
 
                         <td>${module.moduleStatus}</td>
@@ -93,7 +91,7 @@
                 </c:forEach>
             </div>
         </div>
-        <a href="/courses/test" class="btn btn-primary mt-3"> Back </a>
+        <a href="/courses/course-table" class="btn btn-primary mt-3"> Back </a>
     </div>
 </div>
 

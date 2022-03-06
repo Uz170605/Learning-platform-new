@@ -31,7 +31,7 @@ public class AdminRoleController {
         UUID uuid = loginService.sessionGetEmail(request, role);
 
         if(loginService.checked(model, request, role)==null)
-            return "/login";
+            return "login";
 
 //        if (uuid == null) {
 //            model.addAttribute("firstPassword", "Enter the password first");
@@ -45,7 +45,7 @@ public class AdminRoleController {
         UUID uuid = loginService.sessionGetEmail(request, role);
 
         if(loginService.checked(model, request, role)==null)
-            return "/login";
+            return "login";
         model.addAttribute("all", "all");
         model.addAttribute("messages", adminDao.getAllMessage());
         return "admin-answer-mentor";
@@ -57,7 +57,7 @@ public class AdminRoleController {
                          Model model, HttpServletRequest request
     ){
         if(loginService.checked(model, request, role)==null)
-            return "/login";
+            return "login";
         model.addAttribute("all", "select");
         model.addAttribute("messages", adminDao.getMessageById(UUID.fromString(messageId)));
         return "admin-answer-mentor";
@@ -67,7 +67,7 @@ public class AdminRoleController {
     public String accept( @RequestParam(required = false, name = "messageId") String messageId,Model model, HttpServletRequest request){
         UUID uuid1 = loginService.sessionGetEmail(request, role);
         if(loginService.checked(model, request, role)==null)
-            return "/login";
+            return "login";
         UUID uuid = UUID.fromString(messageId);
         adminDao.acceptCourse(uuid);
         return "admin-panel";
@@ -76,7 +76,7 @@ public class AdminRoleController {
     @GetMapping("/reject")
     public String reject(@RequestParam(required = false, name = "messageId") String messageId, Model model, HttpServletRequest request) {
         if(loginService.checked(model, request, role)==null)
-            return "/login";
+            return "login";
         UUID uuid = UUID.fromString(messageId);
         adminDao.rejectedCourse(uuid);
         return "admin-panel";
@@ -86,7 +86,7 @@ public class AdminRoleController {
     public String view( @RequestParam(required = false, name = "messageId") String messageId,
                         Model model, HttpServletRequest request){
         if(loginService.checked(model, request, role)==null)
-            return "/login";
+            return "login";
         UUID uuid = UUID.fromString(messageId);
         model.addAttribute("course", adminDao.getCourseById(uuid));
 

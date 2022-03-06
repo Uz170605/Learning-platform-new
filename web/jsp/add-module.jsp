@@ -80,7 +80,10 @@
                 <label for="TaskBody">Task Body</label>
                 <textarea class="form-control" name="taskBody" id="TaskBody" placeholder="Enter task body...."></textarea>
             </div>
+            <div class="form-group">
             <button type="submit" class="btn btn-success">Save</button>
+             <a href="/modules/courses_modules" class="btn btn-primary ml-3" style="width: 60px; height: 38px; text-align: center;"> Back </a>
+            </div>
         </form>
     </div>
 </div>

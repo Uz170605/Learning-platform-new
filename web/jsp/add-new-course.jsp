@@ -35,13 +35,13 @@
             <div class="form-group">
                 <label for="bio">Description: </label>
                 <textarea  name="description" type="text" class="form-control"
-                           id="bio" placeholder="Enter course description here">Text...</textarea>
+                           id="bio" placeholder="Enter course description here"></textarea>
             </div>
 
             <div class="form-group">
                 <label for="imageUpload">select course image: </label>
                 <input type="file" name="file" id="imageUpload"
-                       accept="image/jpeg"
+                       accept="image/png"
                 >
             </div>
 
@@ -81,7 +81,10 @@
                 <input  name="lessonVideoPath" type="text" class="form-control" id="LessonVideo"
                         placeholder="video path">
             </div>
+            <div class="form-group">
             <button type="submit" class="btn btn-success">Save</button>
+                <a href="/courses/course-table" class="btn btn-primary ml-3" style="width: 60px; height: 38px; text-align: center;"> Back </a>
+            </div>
         </form>
     </div>
 
