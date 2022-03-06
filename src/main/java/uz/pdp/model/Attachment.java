@@ -12,7 +12,6 @@ import java.util.UUID;
 public class Attachment {
     private UUID id;
     private String file_path;
-    private String file_type;
     private UUID lesson_id;
     private UUID module_id;
 }

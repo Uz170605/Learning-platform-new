@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Lessons</title>
+    <title>Tasks</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
@@ -29,7 +29,7 @@
              <div class="row">
              <table>
                  <tr>
-         <td> <a href="/lessons/addLesson/${moduleId}" class="btn btn-success mr-3">+Add</a> </td>
+         <td> <a href="/lessons/addVideo/${lesson.id}" class="btn btn-success mr-3">+Add</a> </td>
 
 
 <%--          <td><a href="/upload/manualData" class="btn btn-success">Add Manual</a></td>--%>
@@ -42,16 +42,16 @@
                   <tr>
                       <th scope="col">#</th>
                       <th scope="col">Title</th>
-<%--                      <th scope="col">Lesson module</th>--%>
-                      <th scope="col">Add Video</th>
-                      <th scope="col">Add Task</th>
+                      <th scope="col">Difficulty degree</th>
+                      <th scope="col">Grade</th>
+                      <th scope="col">Body</th>
                       <th scope="col">Edit</th>
                       <th scope="col">Delete</th>
 
                   </tr>
                   </thead>
                   <tbody>
-                <c:forEach var="lesson" step="1" items="${lessonList}">
+                <c:forEach var="lesson" step="1" items="${taskList}">
                   <tr>
                       <th scope="row"> ⚫️ </th>
                       <td><a href="/download/viewVideo/${lesson.id}" style="color:
@@ -68,11 +68,11 @@
 <%--                      </td>--%>
 <%--                      <td>${lesson.task}</td>--%>
 <%--                      <td>${lesson.guide}</td>--%>
-                      <td><a href="/lessons/viewVideo/${lesson.id}" class="btn btn-success
-                      mr-3">Videos</a></td>
+                      <td><a href="/lessons/addVideo/${lesson.id}" class="btn btn-success
+                      mr-3">Add Video</a></td>
                       <td><a href="/lessons/addTask/${lesson.id}"
                              class="btn btn-success
-                      mr-3">Tasks</a></td>
+                      mr-3">Add Task</a></td>
 
                       <td><a href="/lessons/editModuleId/${lesson.id}" class="btn btn-warning">Edit
                       </a></td>

@@ -38,14 +38,14 @@
                        id="lessonName"
                        placeholder="Enter video link here">
             </div>
-            <div class="form-group">
-                <input hidden value="${moduleId}" name="module_id" type="text"
-                       class="form-control">
-            </div>
+<%--            <div class="form-group">--%>
+<%--                <input hidden value="${moduleId}" name="module_id" type="text"--%>
+<%--                       class="form-control">--%>
+<%--            </div>--%>
 
 
             <button type="submit" class="btn btn-success">Save</button>
-    <a href="/lessons/byModuleId/${moduleId}" class="btn btn-success
+    <a href="/lessons/viewVideo/${lessonId}" class="btn btn-success
                       mr-3">Back</a>
         </form>
     </div>

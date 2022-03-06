@@ -121,6 +121,7 @@ public class LessonController {
         if (id!= null){
         HttpSession moduleSession = request.getSession();
         moduleSession.setAttribute("moduleId",id);
+
         }
         UUID moduleId =  UUID.fromString(String.valueOf(request.getSession().getAttribute("moduleId")));
         List<LessonDto> moduleDtoList = lessonService.getLessonsByModuleId(moduleId);
@@ -156,10 +157,23 @@ public class LessonController {
             return "redirect:/lessons/byModuleId";
     }
 
-    @GetMapping("/addVideo/{lessonId}")
-    public String addVideo(@PathVariable UUID lessonId,Model model){
+    @GetMapping("/viewVideo/{lessonId}")
+    public String viewVideo(@PathVariable UUID lessonId,Model model,HttpServletRequest request){
+        if (lessonId ==null){
+            lessonId = (UUID) request.getSession().getAttribute("lessonId");
+        }
+        HttpSession session = request.getSession();
+        session.setAttribute("lessonId",lessonId);
+        List<Attachment> attachmentList = lessonDao.getAttachmentByLessonId(lessonId);
         UUID moduleId = UUID.fromString(lessonService.getModuleIdByLessonId(lessonId));
+        model.addAttribute("lessonId",lessonId);
         model.addAttribute("moduleId",moduleId);
+        model.addAttribute("videoList",attachmentList);
+        return "view-videos-by-lesson-id";
+    }
+    @GetMapping("/addVideo/{lessonId}")
+    public String addVideoForm(@PathVariable UUID lessonId,Model model){
+        model.addAttribute("lessonId",lessonId);
         return "add-video";
     }
 
@@ -178,6 +192,6 @@ public class LessonController {
     @PostMapping("/addVideo")
     public String addVideoToDb(@ModelAttribute("lessons")Attachment attachment, Model model){
         lessonService.saveVideo(attachment);
-        return "redirect:/lessons/byModuleId/"+attachment.getModule_id();
+        return "redirect:/lessons/viewVideo/{lessonId}";
     }
 }
