@@ -42,7 +42,7 @@
             <a href="<c:url value="/courses/select-mentor"/>" class="btn btn-success"> + Add</a>
 
 
-            <form action="/users" class="d-flex mt-4">
+            <form action="/courses/course-table" class="d-flex mt-4">
                 <input class="form-control me-2" type="search" name="text" placeholder="Search"
                        aria-label="Search">
                 <button class="btn btn-outline-warning" name="text" type="submit">Search</button>

@@ -151,6 +151,9 @@ public class CourseController {
             model.addAttribute("firstPassword", "Enter the password first");
             return "/login";
         }
+        if(text!=null){
+            text = text.substring(0,text.length()-1);
+        }
         int limit = 3;
         int size = courseService.courseSizeNew(text, uuid);
         int buttonCount = (size % limit == 0 ? size / limit : size / limit + 1);
@@ -158,7 +161,7 @@ public class CourseController {
             currentPage = 1;
         model.addAttribute("size", size);
         model.addAttribute("size2", buttonCount);
-        model.addAttribute("courses", courseDao.getAllCourse(uuid, limit, currentPage));
+        model.addAttribute("courses", courseDao.getAllCourse(uuid, limit, currentPage, text));
         return "course-table";
     }
 

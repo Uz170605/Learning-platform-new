@@ -86,7 +86,7 @@ public class CourseService {
 
     public int courseSizeNew(String text, UUID authorId) {
         if (text != null) {
-            int size = courseDao.getCourseCountBySearch(text);
+            int size = courseDao.getCourseCountBySearchNew(text, authorId);
             if(size==0)
                 return 0;
             return size;

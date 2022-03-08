@@ -254,9 +254,12 @@ public class CourseDao {
         });
     }
 
-    public List<CourseDto> getAllCourse(UUID authorId, int interval, int currentPage) {
-
-        String sqlQuery = "select c.id, c.name, c.status, c.is_active\n" +
+    public List<CourseDto> getAllCourse(UUID authorId, int interval, int currentPage, String text) {
+        String sqlQuery = "";
+        if(text!=null){
+            sqlQuery = "select * from search_course('"+text+"', "+currentPage+", "+interval+", '"+authorId+"');";
+        }else
+         sqlQuery = "select c.id, c.name, c.status, c.is_active\n" +
                 "from courses c\n" +
                 "         join modules m on c.id = m.course_id\n" +
                 "join authors_modules am on m.id = am.module_id\n" +
@@ -362,7 +365,7 @@ public class CourseDao {
                 return 0;
             }
 
-            sqlQuery = "select m.id\n" +
+            sqlQuery = "select m.id, m.price\n" +
                     "from modules m\n" +
                     "         join courses c on c.id = m.course_id\n" +
                     "where m.id not in (select modules_id\n" +
@@ -371,13 +374,19 @@ public class CourseDao {
                     "  and m.is_active=true and c.id = '" + moduleId + "';";
 
 
-            List<UUID> courseDtoList = jdbcTemplate.query(sqlQuery, (rs, rowNum) -> {
+            List<ModuleDto> courseDtoList = jdbcTemplate.query(sqlQuery, (rs, rowNum) -> {
+                ModuleDto moduleDto = new ModuleDto();
                 UUID courseDto = UUID.fromString(rs.getString(1));
-                return courseDto;
+                moduleDto.setId(courseDto);
+                moduleDto.setPrice(rs.getDouble(2));
+                return moduleDto;
             });
 
-            for (UUID uuid : courseDtoList) {
-                String byCourses = "insert into users_modules(user_id, modules_id) VALUES ('" + userId + "', '" + uuid + "')";
+            for (ModuleDto module : courseDtoList) {
+                String byCourses = "insert into users_modules(user_id, modules_id) VALUES ('" + userId + "', '" + module.getId() + "')";
+                jdbcTemplate.update(byCourses);
+
+                byCourses = "insert into users_by_modules(user_id, module_id, price) VALUES ('"+userId+"', '"+module.getId()+"', "+module.getPrice()+");";
                 jdbcTemplate.update(byCourses);
             }
 
@@ -389,6 +398,11 @@ public class CourseDao {
         }
 
 
+    }
+
+    public int getCourseCountBySearchNew(String text, UUID authorId) {
+        String sqlQuery = "select count(course_id) from search_course_count('"+text+"', '"+authorId+"');\n";
+        return jdbcTemplate.queryForObject(sqlQuery, (rs, row) -> rs.getInt(1));
     }
 
 

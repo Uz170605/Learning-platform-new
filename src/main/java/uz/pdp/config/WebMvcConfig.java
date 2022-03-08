@@ -62,6 +62,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public MentorDao mentorDao(){
         return new MentorDao();
     }
+
+    @Bean
+    public ChatDao chatDao(){
+        return new ChatDao();
+    }
+
     @Bean
     public CourseService courseService(){
         return  new CourseService();
