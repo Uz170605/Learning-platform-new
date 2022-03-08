@@ -23,9 +23,12 @@ public class UserDto {
     private List<CourseDto> courses;
     private UUID[] role;
     private List<Role> roles;
+    private String image;
+    private Double balance;
     private List<MessageDto> messageDtos;
     private UUID messageId;
     private String message;
     private UUID courseId;
     private String time;
+
 }

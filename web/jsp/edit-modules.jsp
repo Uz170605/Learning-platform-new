@@ -43,7 +43,10 @@
                           id="bio"
                           placeholder="Enter module price here">${module.modulePrice}</textarea>
             </div>
+            <div class="form-group">
             <button type="submit" class="btn btn-success">Save</button>
+                <a href="/modules/courses_modules" class="btn btn-primary ml-3" style="width: 60px; height: 38px; text-align: center;"> Back </a>
+            </div>
         </form>
     </div>
 

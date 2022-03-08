@@ -61,9 +61,8 @@ public class LessonDao {
         return 1;
     }
     public int addVideoToLesson(MentorCourseDto lesson){
-        String sql = "insert into attachment (file_path,file_type,lesson_id) values ('"+lesson.getLessonVideoPath()+
-                "'," +
-                "'.mp4','"+lesson.getLessonId()+"')";
+        String sql = "insert into attachment (video_path,lesson_id) values ('"+lesson.getLessonVideoPath()+
+                "','"+lesson.getLessonId()+"')";
         return jdbcTemplate.update(sql);
     }
     public int addTaskToLesson(MentorCourseDto lesson){
@@ -134,7 +133,7 @@ public class LessonDao {
         return jdbcTemplate.update(sql);
     }
     public int editAttachment(MentorCourseDto lesson){
-        String sql = "update attachment set file_path = '"+lesson.getLessonVideoPath()+"'";
+        String sql = "update attachment set video_path = '"+lesson.getLessonVideoPath()+"'";
         return jdbcTemplate.update(sql);
     }
 //    public int editLesson(Lesson lesson) {
@@ -229,7 +228,7 @@ public class LessonDao {
     }
 
     public int saveVideo(Attachment attachment){
-        String sql ="insert into attachment (file_path,lesson_id) values ('"+attachment.getFile_path()
+        String sql ="insert into attachment (video_path,lesson_id) values ('"+attachment.getVideo_path()
                 +"','"+attachment.getLesson_id()+"')";
         return   jdbcTemplate.update(sql);
     }

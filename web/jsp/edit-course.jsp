@@ -51,23 +51,16 @@
                        accept="image/jpeg"
                 >
             </div>
+            <div class="form-group">
             <button type="submit" class="btn btn-success">Save</button>
+                <a href="/courses/course-table" class="btn btn-primary ml-3" style="width: 60px; height: 38px; text-align: center;"> Back </a>
+            </div>
         </form>
     </div>
 
 </div>
 
 
-<script>
-    $(document).ready(function () {
-        var multipleCancelButton = new Choices('#mentor', {
-            removeItemButton: true,
-            maxItemCount: 5,
-            searchResultLimit: 5,
-            renderChoiceLimit: 5
-        });
-    });
-</script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>

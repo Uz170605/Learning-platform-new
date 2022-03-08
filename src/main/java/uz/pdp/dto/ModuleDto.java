@@ -18,4 +18,5 @@ public class ModuleDto {
     private boolean isActive;
     private String status;
     private List<LessonDto> lessons;
+    private List<UserDto> userDto;
 }
