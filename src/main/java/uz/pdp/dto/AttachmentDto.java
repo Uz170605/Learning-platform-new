@@ -1,17 +1,16 @@
-package uz.pdp.model;
+package uz.pdp.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Task {
+public class AttachmentDto {
     private UUID id;
-    private String title;
-    private Integer difficulty_degree;
-    private Integer grade;
-    private String body;
+    private String video_path;
+    private UUID lesson_id;
 }

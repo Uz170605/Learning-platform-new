@@ -29,10 +29,7 @@
              <div class="row">
              <table>
                  <tr>
-         <td> <a href="/lessons/addVideo/${lesson.id}" class="btn btn-success mr-3">+Add</a> </td>
-
-
-<%--          <td><a href="/upload/manualData" class="btn btn-success">Add Manual</a></td>--%>
+         <td> <a href="/lessons/addTask/${lessonId}" class="btn btn-success mr-3">+Add</a> </td>
                  </tr>
              </table>
              </div>
@@ -47,38 +44,21 @@
                       <th scope="col">Body</th>
                       <th scope="col">Edit</th>
                       <th scope="col">Delete</th>
-
                   </tr>
                   </thead>
                   <tbody>
-                <c:forEach var="lesson" step="1" items="${taskList}">
+                <c:forEach var="task" step="1" items="${taskList}">
                   <tr>
                       <th scope="row"> ⚫️ </th>
-                      <td><a href="/download/viewVideo/${lesson.id}" style="color:
-                      black">${lesson.title}</a></td>
-<%--                      <td>--%>
-<%--                          <c:forEach var="author" items="${lesson.authors}">--%>
-<%--                              <span><a href="/users/userAllData/${author.id}" style="color: black">${author.firstName} ${author.lastName}</a>,</span>--%>
-<%--                          </c:forEach>--%>
-<%--                      </td>--%>
-<%--                      <td>${lesson.price}</td>--%>
-<%--                      <td>${lesson.active == true ?"Activ":"No activ"}</td>--%>
-<%--                      <td><a href="/modules/moduleAllData/${lesson.moduleDto.id}"--%>
-<%--                      >${lesson.moduleDto.name}</a>--%>
-<%--                      </td>--%>
-<%--                      <td>${lesson.task}</td>--%>
-<%--                      <td>${lesson.guide}</td>--%>
-                      <td><a href="/lessons/addVideo/${lesson.id}" class="btn btn-success
-                      mr-3">Add Video</a></td>
-                      <td><a href="/lessons/addTask/${lesson.id}"
-                             class="btn btn-success
-                      mr-3">Add Task</a></td>
-
-                      <td><a href="/lessons/editModuleId/${lesson.id}" class="btn btn-warning">Edit
-                      </a></td>
-<%--                      <td><a href="lessons/delete/${lesson.id}" class="btn btn-danger" >Delete</a></td>--%>
-                      <td><a href="/lessons/delete/${lesson.id}" class="btn btn-danger">Delete
-                      </a></td>
+                      <td><c:if test="${task!= null}"><a href="/download/viewVideo/${task.id}" style="color:
+                      black">${task.title}</a></c:if> </td>
+                      <td><c:if test="${task!=null}">${task.difficulty_degree}</c:if> </td>
+                      <td><c:if test="${task!=null}">${task.grade}</c:if> </td>
+                      <td><c:if test="${task!=null}">${task.body}</c:if> </td>
+                      <td><c:if test="${task!=null}"><a href="/lessons/editTask/${task.id}"
+                                                        class="btn btn-warning">Edit</a></c:if></td>
+                      <td><c:if test="${task!=null}"><a href="/lessons/deleteTask/${task.id}"
+                                                        class="btn btn-danger" >Delete</a></c:if> </td>
                   </tr>
                 </c:forEach>
                   </tbody>
@@ -87,12 +67,12 @@
                   <div class="col-md-4 offset-4">
                       <c:set var = "button" scope = "session" value = "${buttonCount}"/>
                       <c:forEach var = "i" begin = "1" end = "${button}">
-                          <a href="/lessons/page/${i}"  class="btn btn-success">${i}</a>
+                          <a href="/tasks/page/${i}"  class="btn btn-success">${i}</a>
                       </c:forEach>
                   </div>
               </div>
               <div class="row " style="margin-top: 50px;">
-              <a href="/modules"  class="btn btn-primary">Back</a>
+              <a href="/lessons/byModuleId/${moduleId}"  class="btn btn-primary">Back</a>
               </div>
           </div>
          </div>

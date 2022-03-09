@@ -42,9 +42,6 @@
                   <tr>
                       <th scope="col">#</th>
                       <th scope="col">Video path</th>
-<%--                      <th scope="col">Difficulty degree</th>--%>
-<%--                      <th scope="col">Grade</th>--%>
-<%--                      <th scope="col">Body</th>--%>
                       <th scope="col">Edit</th>
                       <th scope="col">Delete</th>
 
@@ -55,42 +52,21 @@
                   <tr>
                       <th scope="row"> ⚫️ </th>
                       <td><a href="/download/viewVideo/${lessonId}" style="color:
-                      black">${video.file_path}</a></td>
-<%--                      <td>--%>
-<%--                          <c:forEach var="author" items="${lesson.authors}">--%>
-<%--                              <span><a href="/users/userAllData/${author.id}" style="color: black">${author.firstName} ${author.lastName}</a>,</span>--%>
-<%--                          </c:forEach>--%>
-<%--                      </td>--%>
-<%--                      <td>${lesson.price}</td>--%>
-<%--                      <td>${lesson.active == true ?"Activ":"No activ"}</td>--%>
-<%--                      <td><a href="/modules/moduleAllData/${lesson.moduleDto.id}"--%>
-<%--                      >${lesson.moduleDto.name}</a>--%>
-<%--                      </td>--%>
-<%--                      <td>${lesson.task}</td>--%>
-<%--                      <td>${lesson.guide}</td>--%>
-<%--                      <td><a href="/lessons/addVideo/${lesson.id}" class="btn btn-success--%>
-<%--                      mr-3">Add Video</a></td>--%>
-<%--                      <td><a href="/lessons/addTask/${lesson.id}"--%>
-<%--                             class="btn btn-success--%>
-<%--                      mr-3">Add Task</a></td>--%>
+                      black">${video.video_path}</a></td>
 
-                      <td><a href="/lessons/editModuleId/${video.id}" class="btn btn-warning">Edit
-                      </a></td>
-<%--                      <td><a href="lessons/delete/${lesson.id}" class="btn btn-danger" >Delete</a></td>--%>
-                      <td><a href="/lessons/delete/${video.id}" class="btn btn-danger">Delete
-                      </a></td>
+                      <td><c:if test="${video != null}">
+                          <a href="/lessons/editAttachment/${video.id}" class="btn btn-warning">Edit
+                          </a>
+                      </c:if></td>
+                      <td><c:if test="${video != null}">
+                          <a href="/lessons/deleteAttachment/${video.id}"
+                             class="btn btn-danger">Delete
+                          </a>
+                      </c:if></td>
                   </tr>
                 </c:forEach>
                   </tbody>
               </table>
-              <div class="row">
-                  <div class="col-md-4 offset-4">
-                      <c:set var = "button" scope = "session" value = "${buttonCount}"/>
-                      <c:forEach var = "i" begin = "1" end = "${button}">
-                          <a href="/lessons/page/${i}"  class="btn btn-success">${i}</a>
-                      </c:forEach>
-                  </div>
-              </div>
               <div class="row " style="margin-top: 50px;">
               <a href="/lessons/byModuleId/${moduleId}"  class="btn btn-primary">Back</a>
               </div>
