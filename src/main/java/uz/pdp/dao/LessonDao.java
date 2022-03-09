@@ -5,9 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import uz.pdp.dto.LessonDto;
-import uz.pdp.dto.MentorCourseDto;
-import uz.pdp.dto.ModuleDto;
+import uz.pdp.dto.*;
 import uz.pdp.model.Attachment;
 import uz.pdp.model.Task;
 
@@ -74,7 +72,7 @@ public class LessonDao {
     }
 
     public int deleteLesson(UUID id) {
-        deletetask(id);
+        deleteTask(id);
         deleteAttachment(id);
         try {
             String sqlQuery1 = "Delete from" +
@@ -94,7 +92,7 @@ public class LessonDao {
             return 0;
         }
     }
-    public int deletetask(UUID lesson__id){
+    public int deleteTask(UUID lesson__id){
         try {
             String sql = "delete from tasks where lesson_id='" + lesson__id +"'";
             return jdbcTemplate.update(sql);
@@ -103,7 +101,7 @@ public class LessonDao {
         }
     }
     public LessonDto getLessonById(UUID id) {
-        String sqlQuery = "select * from get_all_lessons where lesson_id ='" + id+"'";
+        String sqlQuery = "select * from get_lesson_by_id('"+id+"')";
         return  jdbcTemplate.queryForObject(sqlQuery, (rs, row) -> {
             LessonDto lessonDto = new LessonDto();
             lessonDto.setId(UUID.fromString(rs.getString(1)));
@@ -119,38 +117,31 @@ public class LessonDao {
     }
 
     public int editLesson(MentorCourseDto lesson) {
-        editTask(lesson);
-        editAttachment(lesson);
         String sqlString =
                 "update lessons set title='"+lesson.getLessonTitle()+"' where id='" + lesson.getLessonId() +"'";
         return jdbcTemplate.update(sqlString);
     }
-    public int editTask(MentorCourseDto lesson){
+    public int editTask(TaskDto task){
         String sql =
-                "update tasks set title='"+lesson.getTaskTitle()+"',difficulty_degree="+lesson.getTaskDegree()+
-                ",grade="+lesson.getTaskGrade()+"," +
-                "body='"+lesson.getTaskBody()+"'";
+                "update tasks set title='"+task.getTitle()+"',difficulty_degree="+task.getDifficultyDegree()+
+                ",grade="+task.getGrade()+"," +
+                "body='"+task.getBody()+"' where id = '" +task.getId() + "'";
         return jdbcTemplate.update(sql);
     }
-    public int editAttachment(MentorCourseDto lesson){
-        String sql = "update attachment set video_path = '"+lesson.getLessonVideoPath()+"'";
+    public int editAttachment(AttachmentDto attachmentDto){
+        String sql = "update attachment set video_path = '"+attachmentDto.getVideo_path()+"' " +
+                "where id='" + attachmentDto.getId() + "'";
         return jdbcTemplate.update(sql);
     }
-//    public int editLesson(Lesson lesson) {
-//        String sqlString =
-//                "update lessons set title='"+lesson.getTitle()+"' where id='" + lesson.getId() +"'";
-//        return jdbcTemplate.update(sqlString);
-//    }
 
-    public List<LessonDto> getLessonsByPage(Integer currentPage){
+    public List<LessonDto> getLessonsByPage(Integer currentPage,UUID moduleId){
         String sqlQuery = "select *\n" +
-                " from get_lessons_by_page("+currentPage+");";
+                " from get_lessons_by_page("+currentPage+",'"+moduleId+"');";
         List<LessonDto> lessonDtoListFromDb = jdbcTemplate.query(sqlQuery, (rs, row) -> {
             LessonDto lessonDto = new LessonDto();
             lessonDto.setId(UUID.fromString(rs.getString(1)));
             lessonDto.setTitle(rs.getString(2));
-            lessonDto.setModuleId(UUID.fromString(rs.getString(3)));
-            Object object = rs.getObject(4);
+            Object object = rs.getObject(3);
             Type listType = new TypeToken<ModuleDto>(){}.getType();
             ModuleDto moduleDto = new Gson().fromJson( object.toString(), listType);
             lessonDto.setModuleDto(moduleDto);
@@ -158,16 +149,16 @@ public class LessonDao {
         });
         return lessonDtoListFromDb;
     }
-    public int  pageButtonCount(){
-        int  integer = jdbcTemplate.queryForObject("select count(*) from lessons", (rs, rom) -> {
-            int max_lessons = rs.getInt(1);
-            return max_lessons;
-        });
-        if (integer%5!=0) {
-            return integer/5+1;
-        }
-        return integer/5;
-    }
+//    public int  pageButtonCount(){
+//        int  integer = jdbcTemplate.queryForObject("select count(*) from lessons", (rs, rom) -> {
+//            int max_lessons = rs.getInt(1);
+//            return max_lessons;
+//        });
+//        if (integer%5!=0) {
+//            return integer/5+1;
+//        }
+//        return integer/5;
+//    }
     public int pageLessonsByModuleId(UUID id){
         int  integer = jdbcTemplate.queryForObject("select count(*) from " +
                 "get_all_lessons_by_module_id('"+id+"')", (rs, rom) -> {
@@ -198,7 +189,8 @@ public class LessonDao {
         return lessonDtoList;
     }
     public List<LessonDto> getLessonsByModuleId(UUID id){
-        String sqlString = "select * from get_all_lessons_by_module_id('"+id+"')";
+        String sqlString = "select * from get_all_lessons_by_module_id('"+id+"')" +
+                " limit 5";
         List<LessonDto> lessonDtoListFromDb = jdbcTemplate.query(sqlString, (rs, row) -> {
             LessonDto lessonDto = new LessonDto();
             lessonDto.setId(UUID.fromString(rs.getString(1)));
@@ -211,12 +203,12 @@ public class LessonDao {
         });
         return lessonDtoListFromDb;
     }
-    public int addTask(Task task){
+    public int addTask(TaskDto task){
         String sql =
                 "insert into tasks ( title, difficulty_degree, grade, body, lesson_id) " +
-                        "VALUES ('"+task.getTitle()+"',"+task.getDifficulty_degree()+","+task.getGrade()+
+                        "VALUES ('"+task.getTitle()+"',"+task.getDifficultyDegree()+","+task.getGrade()+
                         "," +
-                        "'"+task.getBody()+"','"+task.getLesson_id()+"')";
+                        "'"+task.getBody()+"','"+task.getLessonId()+"')";
         return jdbcTemplate.update(sql);
     }
     public String getModuleIdByLessonId(UUID lessonId){
@@ -226,20 +218,21 @@ public class LessonDao {
         String uuid = jdbcTemplate.queryForObject(sql, (rs, row) -> rs.getString(1));
         return uuid;
     }
-
-    public int saveVideo(Attachment attachment){
+ public int saveVideo(AttachmentDto attachment){
         String sql ="insert into attachment (video_path,lesson_id) values ('"+attachment.getVideo_path()
                 +"','"+attachment.getLesson_id()+"')";
         return   jdbcTemplate.update(sql);
     }
-    public List<Attachment> getAttachmentByLessonId(UUID lessonID){
+    public List<Attachment> getAttachmentsByLessonId(UUID lessonID){
         String sql ="select json_agg(row_to_json(a.*))\n" +
                 "from attachment a  where lesson_id='"+lessonID+"';";
         List<Attachment> attachmentList= jdbcTemplate.queryForObject(sql, (rs, row) -> {
             List<Attachment> attachmentList1 = new ArrayList<>();
             Array array = rs.getArray(1);
             Type listType = new TypeToken<List<Attachment>>(){}.getType();
+            if (array != null){
             attachmentList1 = new Gson().fromJson(array.toString(), listType);
+            }
             return attachmentList1;
         });
         return attachmentList;
@@ -252,9 +245,42 @@ public class LessonDao {
             List<Task> attachmentList1 = new ArrayList<>();
             Array array = rs.getArray(1);
             Type listType = new TypeToken<List<Task>>(){}.getType();
-            attachmentList1 = new Gson().fromJson(array.toString(), listType);
+            if (array!=null) {
+                attachmentList1 = new Gson().fromJson(array.toString(), listType);
+            }
             return attachmentList1;
         });
         return taskList;
+    }
+    public TaskDto getTaskById(UUID taskId){
+        String sql = "select * from tasks where id = '" + taskId + "'";
+        return jdbcTemplate.queryForObject(sql,(rs,row) ->{
+            TaskDto taskDto = new TaskDto();
+            taskDto.setId(UUID.fromString(rs.getString(1)));
+            taskDto.setTitle(rs.getString(2));
+            taskDto.setDifficultyDegree(rs.getInt(3));
+            taskDto.setGrade(rs.getInt(4));
+            taskDto.setBody(rs.getString(5));
+            taskDto.setLessonId(UUID.fromString(rs.getString(6)));
+           return taskDto;
+        });
+    }
+    public AttachmentDto getAttachmentById(UUID attachmentId){
+        String sql = "select * from attachment where id = '" + attachmentId + "'";
+        return jdbcTemplate.queryForObject(sql,(rs,row) ->{
+            AttachmentDto attachmentDto = new AttachmentDto();
+            attachmentDto.setId(UUID.fromString(rs.getString(1)));
+            attachmentDto.setVideo_path(rs.getString(2));
+            attachmentDto.setLesson_id(UUID.fromString(rs.getString(3)));
+            return attachmentDto;
+        });
+    }
+    public int deleteTaskById(UUID taskId){
+        String sql ="delete from tasks where id = '" + taskId + "'";
+        return jdbcTemplate.update(sql);
+    }
+    public int deleteVideoById(UUID videoId){
+        String sql = "delete from attachment where id = '" + videoId + "'";
+        return jdbcTemplate.update(sql);
     }
 }
