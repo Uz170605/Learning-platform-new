@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import uz.pdp.dao.CourseDao;
 import uz.pdp.dao.LessonDao;
 import uz.pdp.dao.ModuleDao;
 import uz.pdp.dto.AttachmentDto;
@@ -14,6 +15,7 @@ import uz.pdp.model.Attachment;
 import uz.pdp.model.Lesson;
 import uz.pdp.model.Task;
 import uz.pdp.service.LessonService;
+import uz.pdp.service.LoginService;
 import uz.pdp.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +34,10 @@ public class LessonController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    CourseDao courseDao;
+    @Autowired
+    LoginService loginService;
 
     @Autowired
     ModuleDao moduleDao;
@@ -241,5 +247,10 @@ public class LessonController {
     public String deleteVideo(@PathVariable UUID attachmentId) {
         lessonService.deleteVideoById(attachmentId);
         return "redirect:/lessons/viewVideo";
+    }
+    @RequestMapping("/buyModule/{moduleId}")
+    public String buyModule(@PathVariable UUID moduleId,HttpServletRequest request){
+        UUID userId = loginService.sessionGetEmail(request, "USER");
+        return "";
     }
 }

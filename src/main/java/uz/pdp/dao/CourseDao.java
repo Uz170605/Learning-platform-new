@@ -403,7 +403,7 @@ public class CourseDao {
         });
     }
 
-    public int byCourse(UUID moduleId, UUID userId) {
+    public int selectCourse(UUID moduleId, UUID userId) {
         String sqlQuery = "";
 
         String priceQuery = "select sum(m.price)\n" +
