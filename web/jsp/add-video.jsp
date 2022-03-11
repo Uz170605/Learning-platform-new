@@ -1,11 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: Azizjon
-  Date: 10.02.2022
-  Time: 14:00
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -25,46 +18,43 @@
 <div class="row mt-5 ml-0 mr-0" style="height: 400px;">
     <div class="col-md-6 offset-3 " style="background-color: white; border-radius:10px ;border: 2px solid gray;box-shadow: 5px 10px 8px #888888;z-index: 11;" >
         <form action="/lessons/addVideo" method="post" class="mt-5 mb-5">
-<%--            <div class="form-group">--%>
-<%--                <input hidden value="${moduleId}" name="id" type="text" class="form-control">--%>
-<%--            </div>--%>
-    <div class="form-group">
-        <input hidden value="${lessonId}" name="lesson_id" type="text"
-               class="form-control">
-    </div>
-            <div class="form-group">
-                <label for="lessonName">Video link: </label>
-                <input  name="file_path" type="text" class="form-control"
-                       id="lessonName"
-                       placeholder="Enter video link here">
-            </div>
-            <div class="form-group">
-                <input hidden value="${moduleId}" name="module_id" type="text"
-                       class="form-control">
-            </div>
-
+            <c:if test="${selectedVideo== null}">
+                <div class="form-group">
+                    <input hidden value="${lessonId}" name="lesson_id" type="text"
+                           class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="lessonName">Video link: </label>
+                    <input  name="video_path" type="text" class="form-control"
+                            id="lessonName"
+                            placeholder="Enter video link here">
+                </div>
+            </c:if>
+            <c:if test="${selectedVideo!=null}">
+                <div class="form-group">
+                    <input hidden value="${selectedVideo.id}" name="id" type="text"
+                           class="form-control">
+                </div>
+                <div class="form-group">
+                    <input hidden value="${selectedVideo.lesson_id}" name="lesson_id" type="text"
+                           class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="lessonName2">Video link: </label>
+                    <input  name="video_path" value="${selectedVideo.video_path}" type="text"
+                            class="form-control"
+                            id="lessonName2"
+                            placeholder="Enter video link here">
+                </div>
+            </c:if>
 
             <button type="submit" class="btn btn-success">Save</button>
-    <a href="/lessons/byModuleId/${moduleId}" class="btn btn-success
+    <a href="/lessons/viewVideo/${lessonId}" class="btn btn-success
                       mr-3">Back</a>
         </form>
     </div>
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <script>
   $(document).ready(function (){
 var multipleCancelButton = new Choices('#authors',{

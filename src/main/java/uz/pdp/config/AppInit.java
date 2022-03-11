@@ -11,7 +11,7 @@ public class    AppInit extends AbstractAnnotationConfigDispatcherServletInitial
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return null;
+        return new Class[]{WebMvcConfig.class};
     }
 
     @Override

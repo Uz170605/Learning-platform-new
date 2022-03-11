@@ -4,14 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import uz.pdp.dao.CourseDao;
 import uz.pdp.dao.LessonDao;
 import uz.pdp.dao.ModuleDao;
+import uz.pdp.dto.AttachmentDto;
 import uz.pdp.dto.LessonDto;
 import uz.pdp.dto.MentorCourseDto;
+import uz.pdp.dto.TaskDto;
 import uz.pdp.model.Attachment;
 import uz.pdp.model.Lesson;
 import uz.pdp.model.Task;
 import uz.pdp.service.LessonService;
+import uz.pdp.service.LoginService;
 import uz.pdp.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,161 +27,230 @@ import java.util.UUID;
 @RequestMapping("/lessons")
 public class LessonController {
     @Autowired
-     LessonService lessonService;
+    LessonService lessonService;
 
     @Autowired
     LessonDao lessonDao;
 
     @Autowired
     UserService userService;
+    @Autowired
+    CourseDao courseDao;
+    @Autowired
+    LoginService loginService;
 
     @Autowired
     ModuleDao moduleDao;
-    @GetMapping
-    public String getAllLessons(Model model){
-             List<LessonDto> moduleDtoList = lessonService.getAllLessons();
-        int buttonCount = lessonDao.pageButtonCount();
-        model.addAttribute("lessonList", moduleDtoList);
-        model.addAttribute("buttonCount",buttonCount);
-        return "view-lessons";
-    }
-
-
-    @GetMapping("page/{currentPage}")
-    public String getAllLessons(@PathVariable Integer currentPage,Model model){
-        List<LessonDto> moduleDtoList = lessonService.getLessonByPage(currentPage);
-        int buttonCount = lessonDao.pageButtonCount();
-        model.addAttribute("buttonCount",buttonCount);
-        model.addAttribute("lessonList", moduleDtoList);
-        return "view-lessons";
-    }
-//    @GetMapping("/lessonAllData/{id}")
-//    public String getLessonByIdWithAuthor(@PathVariable(required = false) String id, Model model){
-//        UUID id1 =UUID.fromString(id);
-//        LessonDto lessonById = lessonService.getLessonById(id1);
-//        model.addAttribute("selectLesson",lessonById);
-//        return "view-select-lesson";
+//    @GetMapping
+//    public String getAllLessons(Model model){
+//             List<LessonDto> moduleDtoList = lessonService.getAllLessons();
+//        int buttonCount = lessonDao.pageButtonCount();
+//        model.addAttribute("lessonList", moduleDtoList);
+//        model.addAttribute("buttonCount",buttonCount);
+//        return "view-lessons";
 //    }
-    @GetMapping("/{id}")
-    public String getLessonById(@PathVariable(required = false) String id, Model model){
-        UUID id1 =UUID.fromString(id);
-        LessonDto lessonById = lessonService.getLessonById(id1);
-        model.addAttribute("authors",userService.getAllMentors());
-//        model.addAttribute("modules",moduleDao.getAllModules());
-        model.addAttribute("selectLesson",lessonById);
-        return "lesson-form";
+
+
+    @GetMapping("page/{moduleIds}/{currentPage}")
+    public String getAllLessons(@PathVariable String moduleIds,
+                                @PathVariable Integer currentPage, Model model) {
+        UUID moduleId = UUID.fromString(moduleIds);
+        List<LessonDto> moduleDtoList = lessonService.getLessonByPage(currentPage, moduleId);
+        int buttonCount = lessonDao.pageLessonsByModuleId(moduleId);
+        model.addAttribute("buttonCount", buttonCount);
+        model.addAttribute("lessonList", moduleDtoList);
+        return "view-lessons-by-module-id";
     }
     @GetMapping("/editModuleId/{id}")
-    public String editLessonByModuleId(@PathVariable(required = false) String id, Model model){
-        UUID id1 =UUID.fromString(id);
+    public String editLessonByModuleId(@PathVariable(required = false) String id, Model model) {
+        UUID id1 = UUID.fromString(id);
         LessonDto lessonById = lessonService.getLessonById(id1);
-        model.addAttribute("selectLesson",lessonById);
+        model.addAttribute("selectLesson", lessonById);
         return "lesson-form-by-module-id";
     }
-//    @GetMapping("/add/{id}")
-//    public String addLessonByModule(@PathVariable String id,Model model){
-//        UUID uuid = UUID.fromString(id);
-//        List<LessonDto> lessonsByModuleId = lessonService.getLessonsByModuleId(uuid);
-//        model.addAttribute("module_lessons",lessonsByModuleId);
-//        return "view-modul-lessons";
-//    }
     @GetMapping("/addLesson")
-    public String getLesson(Model model){
+    public String getLesson(Model model) {
 //        model.addAttribute("modules",moduleDao.getAllModules());
         return "lesson-form";
     }
+
     @GetMapping("/addLesson/{moduleId}")
     public String getLessonByModuleId(@PathVariable String moduleId, Model model) {
         UUID modulId = UUID.fromString(moduleId);
-        model.addAttribute("moduleId",modulId);
+        model.addAttribute("moduleId", modulId);
         return "lesson-form-by-module-id";
 
     }
-
-//    @PostMapping
-//    public String addLesson(@ModelAttribute("lessons") LessonDto lessonDto, Model model){
-//        String str = lessonService.addLesson(lessonDto);
-//        model.addAttribute("message",str);
-//        return "redirect:/lessons";
-//    }
     @GetMapping("/delete/{id}")
-    public String Cascade(@PathVariable String id, Model model){
-        UUID id1=UUID.fromString(id);
+    public String Cascade(@PathVariable String id, Model model) {
+        UUID id1 = UUID.fromString(id);
         String str = lessonService.deleteLesson(id1);
-        model.addAttribute("message",str);
+        model.addAttribute("message", str);
 //        UUID id2 = UUID.fromString(lessonService.getModuleIdByLessonId(id1));
         return "redirect:/lessons/byModuleId";
     }
 
     @GetMapping("/search")
-    public String searchLesson(@RequestParam String word,Model model){
+    public String searchLesson(@RequestParam String word, Model model) {
         List<LessonDto> lessonDtos = lessonService.searchLesson(word);
         return "";
     }
 
     @GetMapping("/byModuleId/{id}")
     public String getLessonsByModuleId(@PathVariable String id, Model model,
-                                       HttpServletRequest request){
-        if (id!= null){
-        HttpSession moduleSession = request.getSession();
-        moduleSession.setAttribute("moduleId",id);
+                                       HttpServletRequest request) {
+        if (id != null) {
+            HttpSession moduleSession = request.getSession();
+            moduleSession.setAttribute("moduleId", id);
         }
-        UUID moduleId =  UUID.fromString(String.valueOf(request.getSession().getAttribute("moduleId")));
-        List<LessonDto> moduleDtoList = lessonService.getLessonsByModuleId(moduleId);
-        int buttonCount = lessonDao.pageLessonsByModuleId(moduleId);
-        model.addAttribute("moduleId",moduleId);
-        model.addAttribute("lessonList", moduleDtoList);
-        model.addAttribute("buttonCount",buttonCount);
-        return "view-lessons-by-module-id";
-    }
-    @GetMapping("/byModuleId")
-    public String getLessonsByModuleId2( Model model,HttpServletRequest request){
         UUID moduleId = UUID.fromString(String.valueOf(request.getSession().getAttribute("moduleId")));
         List<LessonDto> moduleDtoList = lessonService.getLessonsByModuleId(moduleId);
         int buttonCount = lessonDao.pageLessonsByModuleId(moduleId);
-        model.addAttribute("moduleId",moduleId);
+        model.addAttribute("moduleId", moduleId);
         model.addAttribute("lessonList", moduleDtoList);
-        model.addAttribute("buttonCount",buttonCount);
+        model.addAttribute("buttonCount", buttonCount);
         return "view-lessons-by-module-id";
     }
+
+    @GetMapping("/byModuleId")
+    public String getLessonsByModuleId2(Model model, HttpServletRequest request) {
+        UUID moduleId = UUID.fromString(String.valueOf(request.getSession().getAttribute("moduleId")));
+        List<LessonDto> moduleDtoList = lessonService.getLessonsByModuleId(moduleId);
+        int buttonCount = lessonDao.pageLessonsByModuleId(moduleId);
+        model.addAttribute("moduleId", moduleId);
+        model.addAttribute("lessonList", moduleDtoList);
+        model.addAttribute("buttonCount", buttonCount);
+        return "view-lessons-by-module-id";
+    }
+
     @GetMapping("/addLessonToModule")
     public String addLessonToSelectedModule(@ModelAttribute("lessons") MentorCourseDto lesson,
-                                            Model model){
-        if (lesson.getLessonId() != null){
-                lessonDao.editLesson(lesson);
-                model.addAttribute("msg","Succesfully edited!!!");
-        }else {
+                                            Model model) {
+        if (lesson.getLessonId() != null) {
+            lessonDao.editLesson(lesson);
+            model.addAttribute("msg", "Succesfully edited!!!");
+        } else {
             if (lessonService.addLessonToModule(lesson) > 0) {
                 model.addAttribute("message", "Succesfully added!!!");
             } else {
                 model.addAttribute("message", "Could not added!!!");
             }
         }
-            return "redirect:/lessons/byModuleId";
+        return "redirect:/lessons/byModuleId";
+    }
+
+    @GetMapping("/viewVideo/{lessonId}")
+    public String viewVideo(@PathVariable UUID lessonId, Model model, HttpServletRequest request) {
+        if (lessonId == null) {
+            lessonId = (UUID) request.getSession().getAttribute("lessonId");
+        }
+        HttpSession session = request.getSession();
+        session.setAttribute("lessonId", lessonId);
+        List<Attachment> attachmentList = lessonDao.getAttachmentsByLessonId(lessonId);
+        UUID moduleId = UUID.fromString(lessonService.getModuleIdByLessonId(lessonId));
+        model.addAttribute("lessonId", lessonId);
+        model.addAttribute("moduleId", moduleId);
+        model.addAttribute("videoList", attachmentList);
+        return "view-videos-by-lesson-id";
+    }
+
+    @GetMapping("/viewVideo")
+    public String viewVideos(Model model, HttpServletRequest request) {
+        UUID lessonId = (UUID) request.getSession().getAttribute("lessonId");
+        List<Attachment> attachmentList = lessonDao.getAttachmentsByLessonId(lessonId);
+        UUID moduleId = UUID.fromString(lessonService.getModuleIdByLessonId(lessonId));
+        model.addAttribute("lessonId", lessonId);
+        model.addAttribute("moduleId", moduleId);
+        model.addAttribute("videoList", attachmentList);
+        return "view-videos-by-lesson-id";
+    }
+
+    @GetMapping("/viewTask/{lessonId}")
+    public String viewTask(@PathVariable UUID lessonId, Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.setAttribute("lessonId", lessonId);
+        List<Task> taskList = lessonDao.getTaskByLessonId(lessonId);
+        UUID moduleId = UUID.fromString(lessonService.getModuleIdByLessonId(lessonId));
+        model.addAttribute("lessonId", lessonId);
+        model.addAttribute("moduleId", moduleId);
+        model.addAttribute("taskList", taskList);
+        return "view-tasks-by-lesson-id";
+    }
+
+    @GetMapping("/viewTask")
+    public String viewTask(Model model, HttpServletRequest request) {
+        UUID lessonId = (UUID) request.getSession().getAttribute("lessonId");
+        HttpSession session = request.getSession();
+        session.setAttribute("lessonId", lessonId);
+        List<Task> taskList = lessonDao.getTaskByLessonId(lessonId);
+        UUID moduleId = UUID.fromString(lessonService.getModuleIdByLessonId(lessonId));
+        model.addAttribute("lessonId", lessonId);
+        model.addAttribute("moduleId", moduleId);
+        model.addAttribute("taskList", taskList);
+        return "view-tasks-by-lesson-id";
     }
 
     @GetMapping("/addVideo/{lessonId}")
-    public String addVideo(@PathVariable UUID lessonId,Model model){
-        UUID moduleId = UUID.fromString(lessonService.getModuleIdByLessonId(lessonId));
-        model.addAttribute("moduleId",moduleId);
+    public String addVideoForm(@PathVariable UUID lessonId, Model model) {
+        model.addAttribute("lessonId", lessonId);
         return "add-video";
     }
 
     @GetMapping("/addTask/{lessonId}")
-    public String addTask(@PathVariable UUID lessonId,Model model){
-        UUID moduleId = UUID.fromString(lessonService.getModuleIdByLessonId(lessonId));
-        model.addAttribute("moduleId",moduleId);
+    public String addTask(@PathVariable UUID lessonId, Model model) {
+//        UUID moduleId = UUID.fromString(lessonService.getModuleIdByLessonId(lessonId));
+        model.addAttribute("lessonId", lessonId);
         return "add-task";
     }
 
     @PostMapping("/addTask")
-    public String addtasksToDb(@ModelAttribute("lessons")Task task,Model model){
-        lessonService.addTask(task);
-        return "redirect:/lessons/byModuleId/"+task.getModule_id();
+    public String addtasksToDb(@ModelAttribute("lessons") TaskDto task, Model model) {
+        if (task.getId() == null) {
+            lessonService.addTask(task);
+        } else {
+            lessonService.editTask(task);
+        }
+        return "redirect:/lessons/viewTask";
     }
+
     @PostMapping("/addVideo")
-    public String addVideoToDb(@ModelAttribute("lessons")Attachment attachment, Model model){
-        lessonService.saveVideo(attachment);
-        return "redirect:/lessons/byModuleId/"+attachment.getModule_id();
+    public String addVideoToDb(@ModelAttribute("lessons") AttachmentDto attachment) {
+        if (attachment.getId() != null) {
+            lessonService.editAttachment(attachment);
+        } else {
+            lessonService.saveVideo(attachment);
+        }
+        return "redirect:/lessons/viewVideo";
+    }
+
+    @GetMapping("/editTask/{taskId}")
+    public String editTask(@PathVariable UUID taskId, Model model) {
+        TaskDto taskById = lessonService.getTaskById(taskId);
+        model.addAttribute("selectedTask", taskById);
+        return "add-task";
+    }
+
+    @GetMapping("/editAttachment/{attachmentId}")
+    public String editAttachment(@PathVariable UUID attachmentId, Model model) {
+        AttachmentDto attachmentById = lessonService.getAttachmentById(attachmentId);
+        model.addAttribute("selectedVideo", attachmentById);
+        return "add-video";
+    }
+
+    @GetMapping("/deleteTask/{taskId}")
+    public String deleteTask(@PathVariable UUID taskId) {
+        lessonService.deleteTaskById(taskId);
+        return "redirect:/lessons/viewTask";
+    }
+
+    @GetMapping("/deleteAttachment/{attachmentId}")
+    public String deleteVideo(@PathVariable UUID attachmentId) {
+        lessonService.deleteVideoById(attachmentId);
+        return "redirect:/lessons/viewVideo";
+    }
+    @RequestMapping("/buyModule/{moduleId}")
+    public String buyModule(@PathVariable UUID moduleId,HttpServletRequest request){
+        UUID userId = loginService.sessionGetEmail(request, "USER");
+        return "";
     }
 }
