@@ -294,11 +294,6 @@ public class UserDao {
            }.getType();
            List<Attachment> attachmentList = new Gson().fromJson(attachment.toString(), type);
            lessonDto.setAttachmentList(attachmentList);
-           Array task = rs.getArray(5);
-           Type taskType = new TypeToken<ArrayList<Task>>() {
-           }.getType();
-           List<Task> taskList=new Gson().fromJson(task.toString(),taskType);
-           lessonDto.setTaskList(taskList);
            return lessonDto;
         });
     }
@@ -307,8 +302,28 @@ public class UserDao {
         String sql="SELECT video_path from attachment where id='"+id+"'";
         return jdbcTemplate.queryForObject(sql,(rs, rowNum) -> rs.getString(1));
     }
-    public String getLessonTitle(UUID id) {
-        String sql="SELECT title from lessons where id= (Select lesson_id from attachment where attachment.id='"+id+"')";
-        return jdbcTemplate.queryForObject(sql,(rs, rowNum) -> rs.getString(1));
+    public LessonDto getLessonTitle(UUID id) {
+        String sql="SELECT id,title from lessons where id= (Select lesson_id from attachment where attachment.id='"+id+"')";
+        return jdbcTemplate.queryForObject(sql,(rs, rowNum) ->{
+         LessonDto lessonDto = new LessonDto();
+         lessonDto.setId(UUID.fromString(rs.getString(1)));
+         lessonDto.setTitle(rs.getString(2));
+         return lessonDto;
+        });
+    }
+
+    public List<Task> getLessonTask(UUID lessonId,UUID moduleId) {
+        String sql="SELECT * from tasks where lesson_id='"+lessonId+"' ";
+        return jdbcTemplate.query(sql,(rs, rowNum) -> {
+           Task task = new Task();
+           task.setId(UUID.fromString(rs.getString(1)));
+           task.setTitle(rs.getString(2));
+           task.setDifficulty_degree(rs.getInt(3));
+           task.setGrade(rs.getInt(4));
+           task.setBody(rs.getString(5));
+           task.setLesson_id(UUID.fromString(rs.getString(6)));
+           task.setModule_id(moduleId);
+           return task;
+        });
     }
 }
