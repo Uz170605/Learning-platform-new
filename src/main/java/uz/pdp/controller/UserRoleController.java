@@ -9,13 +9,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import uz.pdp.dao.CourseDao;
 import uz.pdp.dao.UserDao;
 import uz.pdp.dto.CourseDto;
+import uz.pdp.dto.LessonDto;
 import uz.pdp.dto.ModuleDto;
 import uz.pdp.dto.UserDto;
 import uz.pdp.model.Role;
+import uz.pdp.model.Task;
 import uz.pdp.service.LoginService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -91,6 +94,8 @@ public class UserRoleController {
         if (roleId != null) {
             model.addAttribute("roleId",roleId);
         }
+        List<Task> taskList=new ArrayList<>();
+        model.addAttribute("taskList",taskList);
         ModuleDto moduleDto=userDao.getModuleAllData(id);
         model.addAttribute("modules",moduleDto);
         return "my-modules";
@@ -100,9 +105,17 @@ public class UserRoleController {
     @GetMapping("/selectLessonVideo")
     public String getLessonVideo(@RequestParam("attachmentId") UUID id,@RequestParam("moduleId") UUID moduleId, RedirectAttributes redirectAttributes){
         String lessonVideo = userDao.getLessonVideo(id);
-        String lessonTitle = userDao.getLessonTitle(id);
+        LessonDto lessonTitle = userDao.getLessonTitle(id);
         redirectAttributes.addFlashAttribute("lessonVideo",lessonVideo);
-        redirectAttributes.addFlashAttribute("lessonTitle",lessonTitle);
+        redirectAttributes.addFlashAttribute("lessonTitle",lessonTitle.getTitle());
+        redirectAttributes.addFlashAttribute("lessonId",lessonTitle.getId());
+        return "redirect:/userPanel/view-modules/"+moduleId;
+    }
+
+    @GetMapping("/task")
+        public String getLessonTask(@RequestParam("moduleId") UUID moduleId,@RequestParam("lessonId") UUID lessonId, RedirectAttributes redirectAttributes){
+       List<Task> taskList = userDao.getLessonTask(lessonId,moduleId);
+        redirectAttributes.addFlashAttribute("taskList",taskList);
         return "redirect:/userPanel/view-modules/"+moduleId;
     }
 }

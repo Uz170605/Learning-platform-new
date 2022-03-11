@@ -124,7 +124,7 @@
 <main style="margin-top: 104px;">
     <div class="container p-0" style="background-color: white; ">
         <div class="row ml-0 mr-0">
-            <div class="col-md-4 p-0" style=" border-right: 1px solid black; height: 800px;">
+            <div class="col-md-4 p-0" style=" border-right: 1px solid black; height: 1000px;">
                 <div th:each="mentor:${modules.userDto}" style="margin-top: 40px; margin-left: 15px;">
                     <div class="d-flex">
                         <div >
@@ -159,17 +159,29 @@
             </div>
             <div class="col-md-8">
                 <div style="margin-top: 50px; margin-left: 50px; ">
+
                     <!--/*@thymesVar id="lessonTitle" type="java.lang.String"*/-->
-                    <h1 th:text="${modules.name}+' > '+${lessonTitle!= null ? lessonTitle:modules.lessons.get(0).title}" style="margin-bottom: 25px;  "></h1>
+                    <h1 th:text="${modules.name}+' > '+${lessonTitle != null ? lessonTitle :modules.lessons.get(0).title}" style="margin-bottom: 25px;  "></h1>
                     <!--/*@thymesVar id="lessonVideo" type="java.lang.String"*/-->
-                    <iframe style="border: 4px solid yellow; " width="660" height="355" th:src="@{${lessonVideo != null ? lessonVideo:modules.lessons.get(0).attachmentList.get(0).video_path}}"   title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe style="border: 4px solid yellow; " width="660" height="355" th:src="@{${lessonVideo != null ? lessonVideo:modules.lessons.get(0).attachmentList.get(0).video_path}}"    title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
                 <div class="container">
+                    <div class="row" style="margin-left: 35px; margin-top: 20px;">
+                        <!--/*@thymesVar id="lessonTitle" type="java.util.UUID"*/-->
+                        <a th:href="@{'/userPanel/task?lessonId='+${lessonId != null ? lessonId:modules.lessons.get(0).getId()}+'&moduleId='+${modules.id}}" class="btn btn-primary" style="width: 120px; height: 40px;"><span style="margin-left: -15px;">Get task</span></a>
+                    </div>
+                    <!--/*@thymesVar id="taskList" type="uz.pdp.model.Task"*/-->
+
+
+                    <!--/*@thymesVar id="size" type="java.util.List"*/-->
+                    <div th:if="${taskList != null}">
                   <div class="row">
 
-                      <div class="col-md-3 mr-3" th:each="task:${modules.lessons.get(0).taskList}">
-                          <a th:href="@{'userPanelSelectTask?moduleId='+${modules.id}+'&taskId='+${task.id}}">
+                      <div class="col-md-3 mr-3" th:each="task:${taskList}">
+                          <!--/*@thymesVar id="lesson_id" type="uz.pdp.model.Task"*/-->
+                          <a th:href="@{'/userPanel/SelectTask?moduleId='+${modules.id}+'&lessonId='+${task.lesson_id}+'&taskId='+${task.id}}">
                           <div class="card">
+                              <!--/*@thymesVar id="title" type="uz.pdp.model.Task"*/-->
                               <div class="card-header bg-warning" th:text="${task.title}"></div>
                               <div class="card-body d-flex" >
                                   <svg xmlns="http://www.w3.org/2000/svg" style="color: red; margin-right: 15px; margin-top: 10px;" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
@@ -182,7 +194,7 @@
 
                       </div>
                   </div>
-
+                    </div>
                 </div>
             </div>
         </div>
